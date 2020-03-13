@@ -26,19 +26,19 @@ app.get('/shop', (req, res) => {
 })
 
 app.use('/access', (req, res) => {
-    proxy.web(req, res, { target: "http://localhost:8001/access" })
+    proxy.web(req, res, { target: "http://pikit-restful-server:8001/access" })
 })
 
 app.post('/graphql', (req, res) => {
-    proxy.web(req, res, { target: 'http://localhost:8000/graphql' });
+    proxy.web(req, res, { target: 'http://pikit-graphql-server:8000/graphql' });
 });
 
 app.get('/graphiql', (req, res) => {
-    proxy.web(req, res, { target: 'http://localhost:8000/graphiql' });
+    proxy.web(req, res, { target: 'http://pikit-graphql-server:8000/graphiql' });
 });
 
 app.get('/home', (req, res) => {
-    proxy.web(req, res, { target: 'http://localhost:3000/' });
+    proxy.web(req, res, { target: 'http://0.0.0.0:3000/' });
 });
 
 app.listen(PORT, () => {

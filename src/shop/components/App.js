@@ -28,9 +28,9 @@ const redirect_replace = (url) => {
 }
 
 const App = () => {
-    const signin = () => testFetch("POST", "http://localhost/access/signin/?username=david0608&password=123123");
-    const signout = () => testFetch("POST", "http://localhost/access/signout");
-    const session = () => testFetch("GET", "http://localhost/access/session");
+    const signin = () => testFetch("POST", `${location.origin}/access/signin/?username=david0608&password=123123`);
+    const signout = () => testFetch("POST", `${location.origin}/access/signout`);
+    const session = () => testFetch("GET", `${location.origin}/access/session`);
 
     return (
         <div>
