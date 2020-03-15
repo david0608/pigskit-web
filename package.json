@@ -1,7 +1,7 @@
 {
-  "name": "pikit-web",
+  "name": "pigskit-web",
   "version": "0.0.1",
-  "description": "Pikit web",
+  "description": "Pigskit web",
   "main": "index.js",
   "scripts": {
     "start": "node dist/server.js",
