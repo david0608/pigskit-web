@@ -1,10 +1,22 @@
+import fs from 'fs';
 import express from 'express';
+import https from 'https';
 import httpProxy from 'http-proxy';
 import * as path from 'path';
 
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 443;
 const app = express();
 const proxy = httpProxy.createProxyServer({});
+
+const privateKey = fs.readFileSync(path.join(__dirname, '../certificate/privkey.pem'), 'utf8');
+const certificate = fs.readFileSync(path.join(__dirname, '../certificate/cert.pem'), 'utf8');
+const ca = fs.readFileSync(path.join(__dirname, '../certificate/chain.pem'), 'utf8');
+
+const credentials = {
+    key: privateKey,
+    cert: certificate,
+    ca: ca,
+};
 
 proxy.on('error', function (err, req, res) {
     console.log(err)
@@ -41,6 +53,6 @@ app.get('/home', (req, res) => {
     proxy.web(req, res, { target: 'http://0.0.0.0:3000/' });
 });
 
-app.listen(PORT, () => {
-    console.log(`server listening port : ${PORT}`);
-});
+https.createServer(credentials, app).listen(PORT, () => {
+    console.log(`Server listening port : ${PORT}`);
+})
