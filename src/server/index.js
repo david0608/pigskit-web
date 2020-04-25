@@ -6,6 +6,9 @@ import httpProxy from 'http-proxy';
 import * as path from 'path';
 
 const PORT = process.env.PORT;
+const PIGSKIT_RESTFUL_HOST = process.env.LOCAL ? 'localhost' : 'pigskit-restful-server';
+const PIGSKIT_GRAPHQL_HOST = process.env.LOCAL ? 'localhost' : 'pigskit-graphql-server';
+
 const app = express();
 const proxy = httpProxy.createProxyServer({});
 
@@ -16,20 +19,16 @@ proxy.on('error', function (err, req, res) {
 
 app.use('/', express.static(__dirname + '/public/'));
 
-// app.use('/reply', (req, res) => {
-//     proxy.web(req, res, { target: 'http://localhost:3000/reply' });
-// });
-
-// app.use('/delay', (req, res) => {
-//     proxy.web(req, res, { target: 'http://localhost:3000/delay' });
-// });
-
 app.get('/shop', (req, res) => {
     res.send("shop")
 })
 
-app.use('/access', (req, res) => {
-    proxy.web(req, res, { target: "http://pigskit-restful-server:8001/access" })
+app.get('/home', (req, res) => {
+    proxy.web(req, res, { target: 'http://0.0.0.0:3000/' });
+});
+
+app.use('/api', (req, res) => {
+    proxy.web(req, res, { target: `http://${PIGSKIT_RESTFUL_HOST}:8001/api` })
 })
 
 app.post('/graphql', (req, res) => {
@@ -38,10 +37,6 @@ app.post('/graphql', (req, res) => {
 
 app.get('/graphiql', (req, res) => {
     proxy.web(req, res, { target: 'http://pigskit-graphql-server:8000/graphiql' });
-});
-
-app.get('/home', (req, res) => {
-    proxy.web(req, res, { target: 'http://0.0.0.0:3000/' });
 });
 
 console.log('Trying to start as https server...');

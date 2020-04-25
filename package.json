@@ -4,7 +4,7 @@
   "description": "Pigskit web",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "LOCAL=true node dist/server.js",
     "restart": "npm run build && npm run start",
     "build": "npm run clear && npm run build-server && npm run build-client && npm run build-shop",
     "clear": "rm -rf dist",
