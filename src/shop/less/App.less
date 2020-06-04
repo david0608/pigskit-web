@@ -1,3 +1,28 @@
 .App {
     color: black;
+
+    .TestRoot {
+        display: flex;
+        margin: 1em;
+
+        .TestButtonContainer {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .TestInputContainer {
+            display: flex;
+            flex-direction: column;
+
+            .InputFieldRoot {
+                display: flex;
+                justify-content: space-between;
+
+                p {
+                    margin: 0em 3em;
+                    font-size: 0.9em;
+                }
+            }
+        }
+    }
 }

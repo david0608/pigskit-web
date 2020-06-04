@@ -1,0 +1,46 @@
+.NavBarRoot {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    transition: box-shadow .3s;
+
+    &.Scrolled {
+        box-shadow: 0 2px 16px 0 rgba(0,0,0,0.08);
+    }
+
+    .Logo_desktop {
+        left: 32px;
+    }
+    .Logo_tablets, .Logo_mobile {
+        left: 50%;
+        transform: translate(-50%, 0px);
+    }
+
+    .LoginButton_mobile {
+        position: absolute;
+        left: 16px;
+    }
+}
+
+.NavBarSpace, .NavBarRoot {
+    height: 64px;
+    width: 100%;
+}
+
+.NavBarLogoRoot {
+    cursor: pointer;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    span {
+        font-size: 32px;
+        font-weight: bold;
+    }
+}
+
+.NavBarPopScreen {
+    color: black;
+}

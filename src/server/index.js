@@ -29,14 +29,18 @@ app.get('/home', (req, res) => {
 
 app.use('/api', (req, res) => {
     proxy.web(req, res, { target: `http://${PIGSKIT_RESTFUL_HOST}:8001/api` })
-})
+});
+
+app.use('/fs', (req, res) => {
+    proxy.web(req, res, { target: `http://${PIGSKIT_RESTFUL_HOST}:8001/fs` })
+});
 
 app.post('/graphql', (req, res) => {
-    proxy.web(req, res, { target: 'http://pigskit-graphql-server:8000/graphql' });
+    proxy.web(req, res, { target: `http://${PIGSKIT_GRAPHQL_HOST}:8000/graphql` });
 });
 
 app.get('/graphiql', (req, res) => {
-    proxy.web(req, res, { target: 'http://pigskit-graphql-server:8000/graphiql' });
+    proxy.web(req, res, { target: `http://${PIGSKIT_GRAPHQL_HOST}:8000/graphiql` });
 });
 
 console.log('Trying to start as https server...');
