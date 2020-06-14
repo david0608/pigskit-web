@@ -2,31 +2,42 @@ import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 import clsx from 'clsx';
 import PopScreen from '../PopScreen';
-import LoginButton from './NavBarLogin';
+import NavBarSignInUp from './NavBarSignInUp';
+import NavBarUser from './NavBarUser';
 import './index.less';
 
 const mapStateToProps = (state) => ({
-    deviceType: state.deviceInfo.type,
-    deviceScrolled: state.deviceInfo.scrolled,
+    state: {
+        deviceType: state.deviceInfo.type,
+        deviceScrolled: state.deviceInfo.scrolled,
+        userSignedIn: state.userInfo.signedIn,
+    }
 })
 
 const NavBar = connect(
     mapStateToProps
 )((props) => {
     const {
+        state
+    } = props;
+
+    const {
         deviceType,
         deviceScrolled,
-        logo = true,
-        login = true,
-    } = props;
+        userSignedIn,
+    } = state;
 
     const refPopScreen = useRef(null);
 
     return (<>
         <PopScreen ref={refPopScreen} className='NavBarPopScreen'/>
         <div className={clsx('NavBarRoot', deviceScrolled && 'Scrolled')}>
-            {logo ? <NavBarLogo className={`Logo_${deviceType}`}/> : null}
-            {login ? <LoginButton className={`LoginButton_${deviceType}`} deviceType={deviceType} popScreenRef={refPopScreen}/> : null}
+            <NavBarLogo className={`Logo_${deviceType}`}/>
+            {
+                userSignedIn
+                ? <NavBarUser deviceType={deviceType}/>
+                : <NavBarSignInUp deviceType={deviceType} popScreenRef={refPopScreen}/>
+            }
         </div>
         <div className='NavBarSpace'/>
     </>)

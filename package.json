@@ -23,10 +23,12 @@
   "license": "ISC",
   "dependencies": {
     "@material-ui/core": "^4.10.1",
+    "axios": "^0.19.2",
     "clsx": "^1.1.1",
     "express": "^4.17.1",
     "http-proxy": "^1.18.1",
     "lodash": "^4.17.15",
+    "rc-tween-one": "^2.7.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-icons": "^3.10.0",

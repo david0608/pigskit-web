@@ -13,3 +13,4 @@ export const StoreProvider = (props) => {
 }
 
 export * from './reducers/device_info';
+export * from './reducers/user_info';

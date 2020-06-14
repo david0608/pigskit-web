@@ -1,30 +1,6 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
 import clsx from 'clsx';
-import NavButton from '../components/NavBar/NavButton';
-import './index.less';
-
-const App = () => {
-    return (<>
-        <div className='NavBarRoot'>
-            <DropDown>
-                <NavButton>click</NavButton>
-                <p style={{ width: '150px' }}>hello</p>
-                <p>world</p>
-                <p>123</p>
-                <button>button</button>
-            </DropDown>
-            <DropDown className='RightAligned'>
-                <NavButton>test</NavButton>
-                <p style={{ width: '150px' }}>hello</p>
-                <p>world</p>
-                <p>123</p>
-                <button>button</button>
-            </DropDown>
-        </div>
-        <div className='test'/>
-    </>)
-}
+import './DropDown.less';
 
 const DropDown = (props) => {
     const {
@@ -60,7 +36,4 @@ const DropDown = (props) => {
     </>)
 }
 
-ReactDOM.render(
-    <App/>,
-    document.getElementById('root')
-);
+export default DropDown;

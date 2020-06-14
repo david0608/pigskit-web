@@ -1,0 +1,73 @@
+.SignInPageRoot, .SignUpPageRoot {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .Title {
+        position: relative;
+        height: 50px;
+        width: 100%;
+        font-size: 20px;
+        color: black;
+        font-weight: 500;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 1px;
+            width: 80%;
+            background-color: #d4d4d4;
+        }
+    }
+
+    .TextInput {
+        width: 80%;
+        height: 36px;
+        margin-top: 25px;
+    }
+
+    .RectButton {
+        width: 80%;
+        margin-top: 25px;
+    }
+
+    .FinishButton {
+        width: 80%;
+        margin: 10px 0px 25px 0px;
+    }
+
+    .SignInError {
+        color: #f44336;
+        text-align: center;
+        font-size: 14px;
+        width: 80%;
+        margin-top: 5px;
+    }
+
+    .Hint {
+        font-size: 14px;
+        a {
+            color: #f02040;
+            text-decoration: unset;
+            cursor: pointer;
+        }
+    }
+
+    .Desc, .HintError {
+        width: 80%;
+        font-size: 14px;
+        margin: 25px 0px 0px 0px;
+    }
+
+    .HintError {
+        color: #f44336;
+    }
+}
