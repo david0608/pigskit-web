@@ -5,11 +5,13 @@ import { StoreProvider, deviceInfoReducer, userInfoReducer } from '../components
 import Measurer from '../components/Measurer';
 import Session from '../components/Session';
 import NavBar from '../components/NavBar';
+import ShopsBody from './ShopsBody';
 import './index.less';
 
 const mapStateToProps = (state) => ({
     deviceType: state.deviceInfo.type,
     userInfoInited: state.userInfo.inited,
+    userSignedIn: state.userInfo.signedIn,
 })
 
 const App = connect(
@@ -18,16 +20,27 @@ const App = connect(
     const {
         deviceType,
         userInfoInited,
+        userSignedIn,
     } = props;
 
     if (userInfoInited) {
-        return (<>
-            <Measurer/>
-            {deviceType === 'unknown' ? null : <>
-                <NavBar/>
-                <div className='test'/>
-            </>}
-        </>)
+        if (userSignedIn) {
+            return (<>
+                <Measurer/>
+                {deviceType === 'unknown' ? null : <>
+                    <NavBar/>
+                    <div className='Shops-Root'>
+                        <div className='Shops-UserInfo'>
+                            <span className='Title'>Your shops</span>
+                        </div>
+                        <ShopsBody className='Shops-Body'/>
+                    </div>
+                </>}
+            </>)
+        } else {
+            location.href = `${location.origin}/home`
+            return null
+        }
     } else {
         return <Session/>
     }

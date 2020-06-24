@@ -1,88 +1,63 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import PopScreen from '../components/PopScreen';
+import clsx from 'clsx';
+import NavButton from '../components/NavBar/utils/NavButton';
 import './index.less';
-import { StoreProvider, deviceInfoReducer, deviceInfoActions } from '../components/store';
-import Measurer from '../components/Measurer';
-
-import { connect } from 'react-redux';
-
-
-
-const testInitState = {
-    test: false
-}
-
-function testReducer(state = testInitState, action = {}) {
-    switch (action.type) {
-        case 'UPDATE_TEST':
-            return Object.assign({}, state, { test: action.payload })
-        default:
-            return state;
-    }
-}
 
 const App = () => {
-    console.log('render App')
-    return (
-        <StoreProvider
-            reducers={{
-                deviceInfo: deviceInfoReducer,
-                test: testReducer,
-            }}
-        >
-            <_App/>
-            <Test/>
-        </StoreProvider>
-    )
+    return (<>
+        <div className='NavBarRoot'>
+            <DropDown>
+                <NavButton>click</NavButton>
+                <p style={{ width: '150px' }}>hello</p>
+                <p>world</p>
+                <p>123</p>
+                <button>button</button>
+            </DropDown>
+            <DropDown className='RightAligned'>
+                <NavButton>test</NavButton>
+                <p style={{ width: '150px' }}>hello</p>
+                <p>world</p>
+                <p>123</p>
+                <button>button</button>
+            </DropDown>
+        </div>
+        <div className='test'/>
+    </>)
 }
 
-const _App = connect(
-    (state) => ({
-        type: state.deviceInfo.type,
-    })
-)((props) => {
-    const { type } = props;
-    const refPopScreen = useRef(null);
-    console.log('render _App')
-    return (<>
-        <Measurer/>
-        <PopScreen ref={refPopScreen} />
-        <button onClick={() => refPopScreen.current.open(() => <Page/>)}>test</button>
-        <p>{type}</p>
-    </>)
-})
+const DropDown = (props) => {
+    const {
+        className,
+        children,
+    } = props;
 
-const Test = connect(
-    (state, ownProps) => ({
-        ...ownProps,
-        ...state.test,
-    }),
-    (dispatch) => ({
-        updateTest: (test) => {
-            dispatch({ type: 'UPDATE_TEST', payload: test })
-        },
-        updateScrolled: (scrolled) => {
-            dispatch(deviceInfoActions.updateScrolled(scrolled))
-        },
-    })
-)((props) => {
-    const { test, updateTest, updateScrolled } = props
-    console.log('render Test')
-    return (<>
-        <span>{test ? 'true' : 'false'}</span>
-        <button onClick={() => updateScrolled(test)}>updatescrolled</button>
-        <button onClick={() => updateTest(!test)}>updateTest</button>
-    </>)
-})
+    const [hidden, setHidden] = useState(true)
 
-const Page = () => {
-    return (
-        <div className='page'>
-            <div>hello</div>
-            <div>world</div>
+    let elements = React.Children.toArray(children);
+
+    let button = elements[0];
+    if (button) {
+        button = React.cloneElement(
+            button,
+            {
+                onClick: () => setHidden(false),
+            }
+        )
+    }
+
+    return (<>
+        <div className={clsx('DropDownRoot',hidden && 'Hidden', className)}>
+            {button}
+            <div className={clsx('DropDownList', hidden && 'Hidden')}>
+                {elements.slice(1)}
+            </div>
         </div>
-    )
+        {
+            hidden ? null
+            : <div className='DropDownShield' onClick={() => setHidden(true)}/>
+        }
+    </>)
 }
 
 ReactDOM.render(

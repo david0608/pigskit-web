@@ -1,5 +1,7 @@
 import React from 'react';
+import clsx from 'clsx';
 import { BsX } from 'react-icons/bs';
+import CircButton from '../utils/CircButton';
 import './index.less';
 
 class PopScreen extends React.PureComponent {
@@ -34,9 +36,19 @@ class PopScreen extends React.PureComponent {
 
     render() {
         return (<>
-            <div className={`PopScreenShadow${this.state.display ? ' display' : ''}`} onClick={this.close.bind(this)}/>
-            <div className={`PopScreenRoot${this.props.className ? ` ${this.props.className}` : ''}${this.state.display ? ' display' : ''}`}>
-                <div className="CloseIcon" onClick={this.close.bind(this)}><BsX/></div>
+            <div
+                className={clsx('PopScreenShadow', this.state.display && 'display')}
+                onClick={this.close.bind(this)}
+            />
+            <div
+                className={clsx('PopScreenRoot', this.props.className, this.state.display && 'display')}
+            >
+                <CircButton
+                    className='CloseButton'
+                    onClick={this.close.bind(this)}
+                >
+                    <BsX/>
+                </CircButton>
                 {this.state.contentRenderer()}
             </div>
         </>)

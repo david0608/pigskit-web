@@ -20,6 +20,10 @@ const ButtonBase = withStyles({
             color: '#f02040',
             fontSize: '20px',
             marginRight: '10%',
+        },
+        '& img': {
+            width: '34px',
+            borderRadius: '17px',
         }
     }
 })(Button);
@@ -47,9 +51,9 @@ const NavButton = (props) => {
 
     switch (deviceType) {
         case 'mobile':
-            return <ButtonMobile {...innerProps}/>
+            return <ButtonMobile disableRipple={true} {...innerProps}/>
         default:
-            return <ButtonBase {...innerProps}/>
+            return <ButtonBase disableRipple={true} {...innerProps}/>
     }
 }
 

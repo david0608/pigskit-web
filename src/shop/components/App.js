@@ -276,6 +276,49 @@ const TestProductApi = () => {
         }
     );
 
+    const createProduct2 = () => fetchWithJson(
+        "POST",
+        `${location.origin}/api/shop/product`,
+        {
+            shop_id: refShopId.current.value,
+            payload: JSON.stringify({
+                name: "prod2",
+                description: "product 2.",
+                price: 2000,
+                customizes: [
+                    {
+                        name: "cus2",
+                        description: "customize 2.",
+                        selections: [
+                            {
+                                name: "opt2",
+                                price: 200
+                            },
+                            {
+                                name: "opt3",
+                                price: 300
+                            }
+                        ]
+                    },
+                    {
+                        name: "cus3",
+                        description: "customize 3.",
+                        selections: [
+                            {
+                                name: "opt4",
+                                price: 400
+                            },
+                            {
+                                name: "otp5",
+                                price: 500
+                            }
+                        ]
+                    }
+                ]
+            })
+        }
+    )
+
     const deleteProduct = () => fetchWithJson(
         "DELETE",
         `${location.origin}/api/shop/product`,
@@ -312,6 +355,7 @@ const TestProductApi = () => {
         <div className="TestRoot">
             <div className="TestButtonContainer">
                 <button className="TestButton" onClick={createProduct}>create product</button>
+                <button className="TestButton" onClick={createProduct2}>create product2</button>
                 <button className="TestButton" onClick={deleteProduct}>delete product</button>
                 <button className="TestButton" onClick={updateProduct}>update product</button>
             </div>

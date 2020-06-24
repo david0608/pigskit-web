@@ -4,10 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const rootStyle = makeStyles({
     root: {
-        height: '40px',
-        width: '80%',
-        marginTop: '20px',
-        displat: 'flex',
+        // display: 'flex',
     }
 })
 
@@ -16,14 +13,17 @@ const inputStyle = makeStyles({
         height: '100%',
         margin: 'unset !important',
         border: '1px solid #dcdcdc',
+        fontFamily: 'inherit',
     },
     focused: {
         border: '1px solid black',
     },
+    error: {
+        border: '1px solid #f44336',
+    },
     input: {
-        position: 'absolute',
-        left: '10px',
-        width: '95%',
+        fontSize: '14px',
+        paddingLeft: '8px',
     },
     underline: {
         '&::before': {
@@ -37,14 +37,19 @@ const inputStyle = makeStyles({
 
 const labelStyle = makeStyles({
     root: {
+        fontSize: '14px',
         backgroundColor: 'white',
         top: '50%',
         left: '10px',
         transform: 'translate(0px, -50%) scale(1)',
         transition: 'color 200ms ,transform 200ms, top 200ms',
+        fontFamily: 'inherit',
     },
     focused: {
         color: 'black !important',
+    },
+    error: {
+        color: '#f44336 !important',
     },
     shrink: {
         top: '0',
@@ -54,10 +59,27 @@ const labelStyle = makeStyles({
     }
 })
 
+const helperTextStyle = makeStyles({
+    root: {
+        position: 'absolute',
+        left: 0,
+        right: '20px',
+        bottom: 0,
+        transform: 'translateY(100%)',
+        fontFamily: 'inherit',
+        textAlign: 'right',
+    }
+})
+
 const TextInput = React.memo((props) => {
+    const {
+        forwardRef,
+        ...innerProps
+    } = props;
 
     return (
         <TextField
+            inputRef={forwardRef}
             classes={rootStyle()}
             InputProps={{
                 classes: inputStyle()
@@ -65,9 +87,12 @@ const TextInput = React.memo((props) => {
             InputLabelProps={{
                 classes: labelStyle()
             }}
-            {...props}
+            FormHelperTextProps={{
+                classes: helperTextStyle()
+            }}
+            {...innerProps}
         />
     )
 })
 
-export default TextInput;
+export default React.forwardRef((props, ref) => <TextInput forwardRef={ref} {...props}/>)
