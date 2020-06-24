@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import clsx from 'clsx';
-import NavButton from '../components/NavBar/NavButton';
+import NavButton from '../components/NavBar/utils/NavButton';
 import './index.less';
 
 const App = () => {

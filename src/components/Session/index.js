@@ -38,4 +38,20 @@ const Session = connect(
     return null;
 })
 
+// For development usage.
+// const Session = connect(
+//     () => ({}),
+//     mapDispatchToProps,
+// )((props) => {
+//     const { initUserInfo } = props;
+
+//     useEffect(() => {
+//         initUserInfo({
+//             signedIn: true,
+//         })
+//     }, [])
+
+//     return null;
+// })
+
 export default Session;

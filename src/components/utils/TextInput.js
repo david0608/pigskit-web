@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const rootStyle = makeStyles({
     root: {
-        display: 'flex',
+        // display: 'flex',
     }
 })
 
@@ -62,10 +62,12 @@ const labelStyle = makeStyles({
 const helperTextStyle = makeStyles({
     root: {
         position: 'absolute',
+        left: 0,
+        right: '20px',
         bottom: 0,
-        right: 0,
-        transform: 'translate(-20px, 100%)',
+        transform: 'translateY(100%)',
         fontFamily: 'inherit',
+        textAlign: 'right',
     }
 })
 

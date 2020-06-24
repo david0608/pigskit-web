@@ -1,64 +1,66 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import clsx from 'clsx';
-import DropDown from '../utils/DropDown';
-import NavButton from './NavButton';
+import { FiLogOut } from "react-icons/fi";
+import NavBarDropDownList from './utils/NavBarDropDownList';
+import NavButton from './utils/NavButton';
 import RectButton from '../utils/RectButton';
-import './NavBarUser.less';
 
-const NavBarUser = React.memo(
+const NavBarUser = connect(
+    (state) => ({
+        username: state.userInfo.username,
+        nickname: state.userInfo.nickname,
+    })
+)(React.memo(
     (props) => {
         const {
             className,
             deviceType,
-        } = props;
+            username,
+            nickname,
+        } = props
 
         return (
-            <DropDown className={clsx('RightAligned', 'NavBarUserRoot', className)}>
-                <NavButton
-                    deviceType={deviceType}
-                >
+            <NavBarDropDownList className={className} rightAlign>
+                <NavButton deviceType={deviceType}>
                     <img src={`${location.origin}/fs/user/avatar`}/>
                 </NavButton>
-                <UserPage/>
-            </DropDown>
+                <p className='Title'>Hello, <strong>{nickname || username}</strong></p>
+                <div className='Devider'></div>
+                <dropdown-item>
+                    <LinkButton url={`${location.origin}/shops`}>Your shops</LinkButton>
+                </dropdown-item>
+                <dropdown-item>
+                    <SignOutButton/>
+                </dropdown-item>
+            </NavBarDropDownList>
         )
     }
-)
+))
 
-const mapStateToProps = (state) => ({
-    state: {
-        username: state.userInfo.username,
-        nickname: state.userInfo.nickname,
-    }
-})
-
-const UserPage = connect(
-    mapStateToProps
-)((props) => {
+const LinkButton = (props) => {
     const {
-        state,
+        url,
+        ...otherProps
     } = props;
 
-    const {
-        username,
-        nickname,
-    } = state;
+    const handleClick = () => {
+        location.href = url;
+    }
 
     return (
-        <div className='UserPageRoot'>
-            <p className='Title'>Hello, <strong>{nickname || username}</strong></p>
-            <div className='Devider'></div>
-            <SignOutButton/>
-        </div>
+        <RectButton
+            onClick={handleClick}
+            backgroundColor='white'
+            {...otherProps}
+        />
     )
-})
+}
 
 const SignOutButton = () => {
     const [busy, setBusy] = useState(false);
 
-    const handleLogOut = () => {
+    const handleClick = () => {
         if (!busy) {
             setBusy(true)
             axios({
@@ -76,11 +78,10 @@ const SignOutButton = () => {
 
     return (
         <RectButton
-            className='LogOutButton'
+            onClick={handleClick}
             backgroundColor='white'
-            onClick={handleLogOut}
         >
-            Sign out
+            <FiLogOut/>Sign out
         </RectButton>
     )
 }

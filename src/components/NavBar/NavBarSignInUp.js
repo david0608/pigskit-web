@@ -1,7 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { BsFillPersonFill } from 'react-icons/bs';
 import axios from 'axios';
-import NavButton from './NavButton';
+import NavButton from './utils/NavButton';
 import RectButton from '../utils/RectButton';
 import TextInput from '../utils/TextInput';
 import './NavBarSignInUp.less';

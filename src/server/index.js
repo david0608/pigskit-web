@@ -19,14 +19,6 @@ proxy.on('error', function (err, req, res) {
 
 app.use('/', express.static(__dirname + '/public/'));
 
-app.get('/shop', (req, res) => {
-    res.send("shop")
-})
-
-app.get('/home', (req, res) => {
-    proxy.web(req, res, { target: 'http://0.0.0.0:3000/' });
-});
-
 app.use('/api', (req, res) => {
     proxy.web(req, res, { target: `http://${PIGSKIT_RESTFUL_HOST}:8001/api` })
 });
