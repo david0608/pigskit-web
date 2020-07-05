@@ -1,9 +1,12 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const NAME = process.env.MODULE || 'main';
 const MODULE_PATH = path.join(__dirname, `src/${NAME}`);
+const PIGSKIT_RESTFUL_ORIGIN = process.env.REST_SERVER_PORT ? `http://localhost:${process.env.REST_SERVER_PORT}` : '';
+const PIGSKIT_GRAPHQL_ORIGIN = process.env.GRAPHQL_SERVER_PORT ? `http://localhost:${process.env.GRAPHQL_SERVER_PORT}` : '';
 
 module.exports = {
     mode: 'development',
@@ -43,6 +46,10 @@ module.exports = {
         }),
         new MiniCssExtractPlugin({
             filename: 'index.css'
+        }),
+        new webpack.DefinePlugin({
+            PIGSKIT_RESTFUL_ORIGIN: JSON.stringify(PIGSKIT_RESTFUL_ORIGIN),
+            PIGSKIT_GRAPHQL_ORIGIN: JSON.stringify(PIGSKIT_GRAPHQL_ORIGIN)
         })
     ]
 }

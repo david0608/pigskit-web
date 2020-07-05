@@ -1,16 +1,22 @@
-.NavBarDropDownList-Root {
-    height: inherit;
+.NavBarFloatList-Root {
+    height: 100%;
 
-    .DropDownList-Label::after {
-        transform: translateX(-50%) !important;
+    &.Open::after {
+        transform: translate(-50%, 0px) !important;
     }
 
-    .MuiButton-root {
-        width: unset;
+    .FoldList-Label {
+        height: inherit;
+
+        .MuiButton-root {
+            width: unset;
+        }
     }
 
-    .DropDownList-List {
-        transform: unset;
+    .FoldList-List {
+        width: 200px;
+        transform: unset !important;
+        display: block;
 
         .Title {
             color: black;
@@ -24,7 +30,7 @@
             border-width: 1px 0px 0px 0px;
         }
 
-        dropdown-item {
+        .FloatItem-Root {
             width: inherit;
 
             .MuiButton-root {

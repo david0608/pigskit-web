@@ -18,16 +18,19 @@
     "dev-shops": "MODULE=shops npm run webpack-dev",
     "dev-test": "MODULE=test npm run webpack-dev",
     "webpack-prod": "webpack --mode production --config webpack.config.prod.js",
-    "webpack-dev": "webpack-dev-server --config webpack.config.dev.js"
+    "webpack-dev": "REST_SERVER_PORT=8001 GRAPHQL_SERVER_PORT=8000 webpack-dev-server --config webpack.config.dev.js"
   },
   "author": "David",
   "private": true,
   "license": "ISC",
   "dependencies": {
+    "@apollo/react-hooks": "^3.1.5",
     "@material-ui/core": "^4.10.1",
+    "apollo-boost": "^0.4.9",
     "axios": "^0.19.2",
     "clsx": "^1.1.1",
     "express": "^4.17.1",
+    "graphql": "^15.1.0",
     "http-proxy": "^1.18.1",
     "lodash": "^4.17.15",
     "rc-tween-one": "^2.7.2",
@@ -40,6 +43,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
+    "@babel/plugin-proposal-class-properties": "^7.10.1",
+    "@babel/plugin-proposal-optional-chaining": "^7.10.4",
     "@babel/preset-react": "^7.8.3",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.4.2",

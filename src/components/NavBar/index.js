@@ -31,25 +31,31 @@ const NavBar = connect(
 
     return (<>
         <PopScreen ref={refPopScreen} className='NavBarPopScreen'/>
-        <div className={clsx('NavBarRoot', deviceScrolled && 'Scrolled')}>
-            <NavBarLogo className={`Logo_${deviceType}`}/>
-            {
-                userSignedIn
-                ? <NavBarUser deviceType={deviceType}/>
-                : <NavBarSignInUp deviceType={deviceType} popScreenRef={refPopScreen}/>
-            }
+        <div className={clsx('NavBar-Root', deviceScrolled && 'Scrolled')}>
+            <div className='NavBar-Body'>
+                <NavBarLogo deviceType={deviceType}/>
+                <div className='NavButtons-Root'>
+                    {
+                        userSignedIn
+                        ? <NavBarUser deviceType={deviceType}/>
+                        : <NavBarSignInUp deviceType={deviceType} popScreenRef={refPopScreen}/>
+                    }
+                </div>
+            </div>
         </div>
-        <div className='NavBarSpace'/>
+        <div className='NavBar-Space'/>
     </>)
 })
 
 const NavBarLogo = React.memo(
     (props) => {
-        const { className } = props;
+        const {
+            deviceType,
+        } = props
 
         return (
             <div
-                className={clsx('NavBarLogoRoot', className)}
+                className={clsx('NavLogo-Root', deviceType && `NavLogo-${deviceType}`)}
                 onClick={() => location.href = `${location.origin}/home`}
             >
                 <span>Pigskit</span>

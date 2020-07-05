@@ -1,21 +1,21 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import { userInfoActions } from '../store';
+import axios from '../../utils/axios';
 
 const mapDispatchToProps = (dispatch) => ({
     initUserInfo: (info = {}) => dispatch(userInfoActions.init(info))
 })
 
 const Session = connect(
-    () => {},
+    () => ({}),
     mapDispatchToProps,
 )((props) => {
     const { initUserInfo } = props;
 
     useEffect(() => {
         axios({
-            methid: 'GET',
+            method: 'GET',
             url: '/api/user/session',
         })
         .then((res) => {
@@ -37,21 +37,5 @@ const Session = connect(
     
     return null;
 })
-
-// For development usage.
-// const Session = connect(
-//     () => ({}),
-//     mapDispatchToProps,
-// )((props) => {
-//     const { initUserInfo } = props;
-
-//     useEffect(() => {
-//         initUserInfo({
-//             signedIn: true,
-//         })
-//     }, [])
-
-//     return null;
-// })
 
 export default Session;

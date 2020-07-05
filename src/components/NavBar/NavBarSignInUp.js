@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { BsFillPersonFill } from 'react-icons/bs';
-import axios from 'axios';
+import axios from '../../utils/axios';
+import { useAbort, createAbort } from '../../utils/abort';
 import NavButton from './utils/NavButton';
 import RectButton from '../utils/RectButton';
 import TextInput from '../utils/TextInput';
@@ -44,6 +45,7 @@ const SignInPage = (props) => {
     const [usernameError, setUsernameError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [signInError, setSignInError] = useState('');
+    const abort = useAbort()
 
     const handleSignIn = () => {
         if (!busy) {
@@ -90,10 +92,12 @@ const SignInPage = (props) => {
 
     const handleSignUp = () => {
         if (!busy) {
+            const abortTk = abort.signup()
             setBusy(true);
             axios({
                 method: 'POST',
                 url: '/api/user/register',
+                cancelToken: abortTk.axiosCancelTk(),
             })
             .then((res) => {
                 if (res.status === 200) {
@@ -101,7 +105,12 @@ const SignInPage = (props) => {
                 }
             })
             .catch((err) => console.log(err.response))
-            .finally(() => setBusy(false));
+            .finally(() => {
+                if (!abortTk.isAborted()) {
+                    abort.signout(abortTk)
+                    setBusy(false)
+                }
+            })
         }
     }
 
@@ -224,6 +233,7 @@ class StepComponent extends React.Component {
         super(props);
         this.inputdRef = React.createRef();
         this.checkRef = React.createRef();
+        this.abort = createAbort();
         this.state = {
             busy: false,
             inputError: '',
@@ -232,8 +242,13 @@ class StepComponent extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        this.abort.abort()
+    }
+
     next() {
         if (!this.state.busy) {
+            const abort = this.abort.signup()
             this.setState({
                 busy: true,
                 inputError: '',
@@ -253,14 +268,20 @@ class StepComponent extends React.Component {
                     data: {
                         operation: this.props.operation,
                         data: this.inputdRef.current.value,
-                    }
+                    },
+                    cancelToken: abort.axiosCancelTk()
                 })
                 .catch((err) => {
                     throw Error.fromAxios(err)
                 })
             })
             .then(this.props.onNextCB)
-            .then(() => this.setState({ busy: false }))
+            .then(() => {
+                if (!abort.isAborted()) {
+                    this.abort.signout(abort)
+                    this.setState({ busy: false })
+                }
+            })
             .catch((err) => {
                 let errors = this.props.errors;
                 if (errors.input[err.type]) {

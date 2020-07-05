@@ -1,0 +1,83 @@
+.Terminal-Root {
+    color: rgba(0, 0, 0, 0.75);
+
+    >.Label-Root {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 24px;
+    }
+
+    >.Control-Root {
+        margin: 0px 0px 16px 0px;
+
+        >.SearchField-Root .MuiInputBase-root {
+            border-radius: 5px;
+        }
+
+        >.BodyRight>.FloatList-Root {
+            height: 100%;
+
+            >.FoldList-Label {
+                height: 100%;
+
+                >button {
+                    height: inherit;
+                    color: white;
+                    background-color: #00A320;
+                    padding: 1px 12px;
+        
+                    svg {
+                        margin-right: 3px;
+                    }
+                }
+            }
+
+            >.FoldList-List {
+                padding: 10px 15px;
+            }
+        }
+
+        &.desktop, &.tablets {
+            height: 30px;
+            display: flex;
+
+            >.SearchField-Root {
+                width: 40%;
+            }
+
+            >.BodyRight {
+                margin-left: auto;
+            }
+        }
+
+        &.mobile {
+            >.SearchField-Root {
+                height: 30px;
+                width: 100%;
+            }
+
+            >.BodyRight {
+                margin-top: 16px;
+                height: 30px;
+                display: flex;
+                justify-content: flex-end;
+            }
+        }
+    }
+
+    >.Loading {
+        margin: 64px 0px;
+        text-align: center;
+    }
+
+    >.NotFound {
+        color: rgba(0, 0, 0, 0.5);
+        margin: 50px 0px;
+        text-align: center;
+    }
+    
+    >.Devider {
+        border: solid rgba(0, 0, 0, 0.1);
+        border-width: 1px 0px 0px 0px;
+    }
+}

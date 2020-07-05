@@ -1,20 +1,31 @@
 .Shops-Root {
-    max-width: 1280px;
-    margin: auto;
-    padding: 10px 30px;
-    display: flex;
+    max-width: 1200px;
+    margin: 36px auto;
+    padding: 0px 30px;
 
-    .Shops-UserInfo {
-        flex: 1;
+    &.desktop {
+        display: flex;
 
-        .Title {
-            color: black;
-            font-size: 24px;
+        >.UserInfo {
+            flex: 1;
+        }
+
+        >.ShopsBody {
+            flex: 3;
         }
     }
 
-    .Shops-Body {
-        flex: 4;
-        padding-top: 30px;
+    &.tablets, &.mobile {
+        display: block;
+
+        >.ShopsBody {
+            margin-top: 40px;
+        }
     }
+}
+
+.test {
+    height: 3000px;
+    width: 20px;
+    background-color: grey;
 }

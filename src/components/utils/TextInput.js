@@ -4,7 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const rootStyle = makeStyles({
     root: {
-        // display: 'flex',
+        height: p => p.height,
+        width: p => p.width,
     }
 })
 
@@ -52,6 +53,7 @@ const labelStyle = makeStyles({
         color: '#f44336 !important',
     },
     shrink: {
+        display: p => p.shrink?.display,
         top: '0',
         padding: '0 2px',
         transform: 'translate(0px, -50%) scale(0.75)',
@@ -74,18 +76,20 @@ const helperTextStyle = makeStyles({
 const TextInput = React.memo((props) => {
     const {
         forwardRef,
+        rootStyleProps = {},
+        inputLabelStyleProps = {},
         ...innerProps
     } = props;
 
     return (
         <TextField
             inputRef={forwardRef}
-            classes={rootStyle()}
+            classes={rootStyle(rootStyleProps)}
             InputProps={{
                 classes: inputStyle()
             }}
             InputLabelProps={{
-                classes: labelStyle()
+                classes: labelStyle(inputLabelStyleProps)
             }}
             FormHelperTextProps={{
                 classes: helperTextStyle()

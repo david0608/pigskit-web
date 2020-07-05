@@ -1,39 +1,52 @@
-.NavBarRoot {
+.NavBar-Root {
     position: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+    top: 0;
+    background-color: white;
     transition: box-shadow .3s;
+    z-index: 90;
 
     &.Scrolled {
         box-shadow: 0 2px 16px 0 rgba(0,0,0,0.08);
     }
 
-    .Logo_desktop {
-        left: 32px;
-    }
-    .Logo_tablets, .Logo_mobile {
-        left: 50%;
-        transform: translate(-50%, 0px);
+    .NavBar-Body {
+        height: inherit;
+        display: flex;
+        max-width: 1260px;
+        margin: auto;
+
+        .NavLogo-Root {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        
+            span {
+                font-size: 32px;
+                font-weight: bold;
+            }
+    
+            &.NavLogo-desktop {
+                margin-left: 30px;
+            }
+    
+            &.NavLogo-tablets, &.NavLogo-mobile {
+                position: absolute;
+                height: 100%;
+                left: 50%;
+                transform: translate(-50%, 0px);
+            }
+        }
+
+        .NavButtons-Root {
+            margin-left: auto;
+        }
     }
 }
 
-.NavBarSpace, .NavBarRoot {
+.NavBar-Space, .NavBar-Root {
     height: 64px;
     width: 100%;
-}
-
-.NavBarLogoRoot {
-    cursor: pointer;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    span {
-        font-size: 32px;
-        font-weight: bold;
-    }
 }
 
 .NavBarPopScreen {

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import { FiLogOut } from "react-icons/fi";
-import NavBarDropDownList from './utils/NavBarDropDownList';
+import axios from '../../utils/axios';
+import { NavBarFloatList, NavBarFloatItem } from './utils/NavBarFloatList';
 import NavButton from './utils/NavButton';
 import RectButton from '../utils/RectButton';
+import { pigskit_restful_origin } from '../../utils/service_origins';
 
 const NavBarUser = connect(
     (state) => ({
@@ -21,19 +22,22 @@ const NavBarUser = connect(
         } = props
 
         return (
-            <NavBarDropDownList className={className} rightAlign>
-                <NavButton deviceType={deviceType}>
-                    <img src={`${location.origin}/fs/user/avatar`}/>
-                </NavButton>
+            <NavBarFloatList
+                label={
+                    <NavButton deviceType={deviceType}>
+                        <img src={`${pigskit_restful_origin()}/fs/user/avatar`}/>
+                    </NavButton>
+                }
+            >
                 <p className='Title'>Hello, <strong>{nickname || username}</strong></p>
                 <div className='Devider'></div>
-                <dropdown-item>
+                <NavBarFloatItem>
                     <LinkButton url={`${location.origin}/shops`}>Your shops</LinkButton>
-                </dropdown-item>
-                <dropdown-item>
+                </NavBarFloatItem>
+                <NavBarFloatItem>
                     <SignOutButton/>
-                </dropdown-item>
-            </NavBarDropDownList>
+                </NavBarFloatItem>
+            </NavBarFloatList>
         )
     }
 ))
@@ -65,7 +69,7 @@ const SignOutButton = () => {
             setBusy(true)
             axios({
                 method: 'DELETE',
-                url: `${location.origin}/api/user/session`,
+                url: '/api/user/session',
             })
             .then((res) => {
                 if (res.status === 200) {
