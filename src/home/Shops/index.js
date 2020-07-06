@@ -1,27 +1,42 @@
 import React, { useState, useRef } from 'react'
+import ApolloClient from 'apollo-boost'
+import { ApolloProvider } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
+import clsx from 'clsx'
+import { queryComponent } from '../../utils/apollo'
 import axios from '../../utils/axios'
 import { useAbort } from '../../utils/abort'
-import { queryComponent } from '../../utils/apollo'
+import { pigskit_graphql_origin } from '../../utils/service_origins'
 import Terminal from '../../components/Terminal'
 import TextInput from '../../components/utils/TextInput'
 import Button from '../../components/utils/Button'
 import { FloatItem } from '../../components/utils/FloatList'
+import Avatar from '../../components/Avatar'
 import './index.less'
 
-const ShopsBody = (props) => {
+const graphqlClient = new ApolloClient({
+    uri: `${pigskit_graphql_origin()}/graphql`,
+    credentials: 'include',
+})
+
+const Shops = (props) => {
     const {
-        className,
+        deviceType,
     } = props
 
     return (
-        <Terminal
-            className={className}
-            label='Your shops'
-            NewComponent={New}
-            QueryComponent={Query}
-            DisplayComponent={Display}
-        />
+        <ApolloProvider client={graphqlClient}>
+            <div className={clsx('Shops-Root', deviceType)}>
+                <Avatar className='UserInfo'/>
+                <Terminal
+                    className='Body'
+                    label='Your shops'
+                    NewComponent={New}
+                    QueryComponent={Query}
+                    DisplayComponent={Display}
+                />
+            </div>
+        </ApolloProvider>
     )
 }
 
@@ -167,4 +182,4 @@ const New = (props) => {
     )
 }
 
-export default ShopsBody
+export default Shops

@@ -6,7 +6,6 @@ builds=(
     build-server
     build-shop
     build-home
-    build-shops
     build-test
 )
 

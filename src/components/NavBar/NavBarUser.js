@@ -32,7 +32,7 @@ const NavBarUser = connect(
                 <p className='Title'>Hello, <strong>{nickname || username}</strong></p>
                 <div className='Devider'></div>
                 <NavBarFloatItem>
-                    <LinkButton url={`${location.origin}/shops`}>Your shops</LinkButton>
+                    <LinkButton url={`${location.origin}/home`}>Your shops</LinkButton>
                 </NavBarFloatItem>
                 <NavBarFloatItem>
                     <SignOutButton/>

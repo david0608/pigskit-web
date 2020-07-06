@@ -1,3 +1,29 @@
+.Shops-Root {
+    max-width: 1200px;
+    margin: 36px auto;
+    padding: 0px 30px;
+
+    &.desktop {
+        display: flex;
+
+        >.UserInfo {
+            flex: 1;
+        }
+
+        >.Body {
+            flex: 3;
+        }
+    }
+
+    &.tablets, &.mobile {
+        display: block;
+
+        >.Body {
+            margin-top: 40px;
+        }
+    }
+}
+
 .ShopNew-Root {
     >.Desc {
         color: black;
