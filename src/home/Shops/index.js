@@ -85,10 +85,19 @@ const ShopEntry = (props) => {
         desc,
         latestUpdate,
     } = props
+
+    const onClick = () => {
+        location.href = `${location.origin}/shop?id=${shopId}`
+    }
     
     return (<>
         <div className='ShopEntry-Root'>
-            <span className='Name'>{shopName}</span>
+            <span
+                className='Name'
+                onClick={onClick}
+            >
+                {shopName}
+            </span>
             <span>{desc}</span>
             <span className='LatestUpdate'>{`Latest updated at ${(new Date(latestUpdate)).toLocaleString('en')}`}</span>
         </div>
