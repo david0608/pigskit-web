@@ -4,9 +4,9 @@ set -e
 declare -a builds
 builds=(
     build-server
-    build-shop
     build-home
     build-test
+    build-test-api
 )
 
 for (( i = 0; i < ${#builds[*]}; i++ ))
