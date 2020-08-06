@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { BsFillPersonFill } from 'react-icons/bs';
 import axios from '../../utils/axios';
 import { useAbort, createAbort } from '../../utils/abort';
+import { useDropScreen } from '../DropScreen'
 import NavButton from './utils/NavButton';
 import RectButton from '../utils/RectButton';
 import TextInput from '../utils/TextInput';
@@ -11,23 +12,16 @@ const NavBarSignInUp = React.memo(
     (props) => {
         const {
             className,
-            popScreenRef,
             deviceType,
         } = props;
 
-        const openSignIn = () => {
-            popScreenRef.current.open(() => <SignInPage openSignUp={openSignUp}/>)
-        }
+        const refDropScreen = useDropScreen()
 
-        const openSignUp = () => {
-            popScreenRef.current.open(() => <SignUpPage openSignIn={openSignIn}/>)
-        }
-        
         return (
             <NavButton
                 className={className}
                 deviceType={deviceType}
-                onClick={openSignIn}
+                onClick={() => refDropScreen.current.open(<SignInPage/>)}
             >
                 <BsFillPersonFill/>{deviceType === 'mobile' ? null : 'Sign in'}
             </NavButton>
@@ -35,9 +29,8 @@ const NavBarSignInUp = React.memo(
     }
 )
 
-const SignInPage = (props) => {
-    const { openSignUp } = props;
-
+const SignInPage = () => {
+    const refDropScreen = useDropScreen();
     const refUsername = useRef(null);
     const refPassword = useRef(null);
 
@@ -100,9 +93,7 @@ const SignInPage = (props) => {
                 cancelToken: abortTk.axiosCancelTk(),
             })
             .then((res) => {
-                if (res.status === 200) {
-                    openSignUp()
-                }
+                if (res.status === 200) refDropScreen.current.open(<SignUpPage/>)
             })
             .catch((err) => console.log(err.response))
             .finally(() => {
@@ -392,10 +383,11 @@ const SIGNUP_STEPS = [
 ];
 
 const SignUpPage = (props) => {
-    const { openSignIn } = props;
     const [step, setStep] = useState(0);
     const [stepProps, setStepProps] = useState({});
     const [finish, setFinish] = useState(false);
+
+    const refDropScreen = useDropScreen()
 
     let onNextCB;
     let nextStep = SIGNUP_STEPS[step + 1];
@@ -452,13 +444,18 @@ const SignUpPage = (props) => {
                 finish ?
                     <>
                         <p className='Hint'>Congratulations! You have successfully signed up.</p>
-                        <RectButton className='FinishButton' onClick={openSignIn}>Sign in</RectButton>
+                        <RectButton
+                            className='FinishButton'
+                            onClick={() => refDropScreen.current.open(<SignInPage/>)}
+                        >Sign in</RectButton>
                     </>
                 :
                     <>
                         {SIGNUP_STEPS[step].render({ onNextCB: onNextCB, onBackCB: onBackCB, ...stepProps })}
                         <p className='Hint'>
-                            Already have an account? <a onClick={openSignIn}>Sign in here</a>
+                            Already have an account? <a
+                                onClick={() => refDropScreen.current.open(<SignInPage/>)}
+                            >Sign in here</a>
                         </p>
                     </>
             }

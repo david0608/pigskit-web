@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const rectButtonStyle = makeStyles({
     root: {
-        position: 'unset',
+        // position: 'unset',
         fontFamily: 'inherit',
         fontSize: '14px',
         fontWeight: '400',

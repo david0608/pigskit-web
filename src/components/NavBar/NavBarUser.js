@@ -5,6 +5,7 @@ import axios from '../../utils/axios';
 import { NavBarFloatList, NavBarFloatItem } from './utils/NavBarFloatList';
 import NavButton from './utils/NavButton';
 import RectButton from '../utils/RectButton';
+import { DeviderL } from '../utils/Devider'
 import { pigskit_restful_origin } from '../../utils/service_origins';
 
 const NavBarUser = connect(
@@ -30,7 +31,7 @@ const NavBarUser = connect(
                 }
             >
                 <p className='Title'>Hello, <strong>{nickname || username}</strong></p>
-                <div className='Devider'></div>
+                <DeviderL/>
                 <NavBarFloatItem>
                     <LinkButton url={`${location.origin}/home`}>Your shops</LinkButton>
                 </NavBarFloatItem>

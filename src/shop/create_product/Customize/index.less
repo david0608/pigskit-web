@@ -1,0 +1,157 @@
+.Customize-outline {
+    margin: 8px 16px;
+
+    >.Info {
+        display: flex;
+
+        >.Name {
+            flex: 1;
+            font-size: 20px;
+        }
+
+        >.Desc {
+            flex: 2;
+            margin-top: 2px;
+
+            &.NoDesc {
+                color: rgba(0, 0, 0, 0.4);
+            }
+        }
+    }
+
+    >.Selections {
+        margin-top: 2px;
+
+        &.NoSelc {
+            color: rgba(0, 0, 0, 0.4);
+        }
+
+        >.Selection {
+            margin-bottom: 4px;
+            max-width: 200px;
+            display: flex;
+
+            >.Name {
+                flex: 1;
+            }
+        }
+    }
+
+    &.desktop {
+        display: flex;
+
+        >.Info {
+            flex: 3;
+        }
+
+        >.Selections {
+            flex: 2;
+        }
+    }
+
+    &.mobile {
+        >.Selections {
+            margin-top: 8px;
+        }
+    }
+}
+
+.Customize-detail {
+    margin: 16px;
+}
+
+.Customize-preview {
+    >.Title {
+        display: flex;
+
+        >.MuiButton-root {
+            margin-left: auto;
+
+            >.MuiButton-label>svg {
+                font-size: 16px;
+            }
+        }
+    }
+
+    >.Desc {
+        margin-bottom: 24px;
+
+        &.NoDesc {
+            color: rgba(0, 0, 0, 0.4);
+        }
+    }
+
+    >.Title-selections {
+        display: flex;
+
+        >.New {
+            margin-left: auto;
+        }
+    }
+
+    >.Blank {
+        margin: 16px 0px;
+    }
+
+    >.Selection-root {
+        margin-bottom: 8px;
+    }
+}
+
+.NewSelection-root {
+    >.FoldList-Label>button svg {
+        font-size: 16px;
+    }
+
+    >.FoldList-List {
+        padding: 10px 15px !important;
+
+        >.Title {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        >.MuiTextField-root {
+            margin: 5px 0px 25px;
+            width: 200px;
+        }
+
+        >.FloatItem-Root>.MuiButton-root {
+            padding: 3px 8px;
+
+            >.MuiButton-label {
+                text-transform: none;
+            }
+        }
+    }
+}
+
+.Customize-edit {
+    display: flex;
+    flex-direction: column;
+
+    >.MuiTextField-root {
+        margin: 0px 0px 24px;
+
+        &.Name {
+            max-width: 200px;
+        }
+    }
+
+    >.Footer {
+        display: flex;
+
+        >.MuiButton-root {
+            padding: 3px 8px;
+            margin-right: 8px;
+    
+            >.MuiButton-label {
+                text-transform: none;
+            }
+    
+            &.Delete {
+                margin-left: auto;
+            }
+        }
+    }
+}

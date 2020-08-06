@@ -1,28 +1,28 @@
-.PopScreenShadow {
+.DropScreen-shadow {
     display: none;
     position: fixed;
     height: 100%;
     width: 100%;
     top: 0;
+    left: 0;
     background-color: rgba(0, 0, 0, .1);
     z-index: 100;
     -webkit-tap-highlight-color: transparent;
 
-    &.display {
-        display: unset;
+    &.Display {
+        display: block;
     }
 }
 
-.PopScreenRoot {
+.DropScreen-root {
     position: fixed;
-    width: 400px;
     left: 50%;
+    transform: translate(-50%, -300px);
+    background-color: white;
     box-shadow: 0 2px 28px 0 rgba(0,0,0,0.12);
     border: 1px solid rgba(0,0,0,0.2);
-    background-color: white;
     z-index: 101;
-    transition: transform .5s;
-    transform: translate(-50%, -300px);
+    transition: unset;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -31,15 +31,16 @@
         width: 100%;
     }
 
-    &.display {
+    &.Display {
         transform: translate(-50%, 50px);
+        transition: transform .5s;
 
         @media screen and (max-width: 499px) {
             transform: translate(-50%, 0px)
         }
     }
 
-    .CloseButton {
+    >.Close {
         position: absolute;
         right: 10px;
         top: -12px;

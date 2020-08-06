@@ -1,0 +1,88 @@
+.Product-root {
+    color: rgba(0, 0, 0, 0.75);
+    font-size: 14px;
+
+    >.Info {
+        display: flex;
+        flex-direction: column;
+
+        >.MuiTextField-root {
+            margin-bottom: 24px;
+
+            &.Name, &.Price {
+                max-width: 200px;
+            }
+
+            &.Desc {
+                max-width: 400px;
+            }
+        }
+
+        >.Image {
+            max-width: 400px;
+        }
+
+        >.ImageError {
+            color: #f44336;
+            margin: 12px 0px 0px;
+        }
+    }
+
+    >.Title-customize {
+        display: flex;
+        margin: 24px 0px;
+    
+        >.New {
+            margin-left: auto;
+        }
+    }
+
+    >.Customizes {
+        margin-bottom: 36px;
+
+        >.Customize-root {
+            margin-bottom: 8px;
+        }
+    }
+
+    >.HintError {
+        color: #f44336;
+    }
+
+    >.Footer {
+        display: flex;
+        justify-content: center;
+
+        >.MuiButton-root {
+            padding: 3px 8px;
+        }
+    }
+}
+
+.NewCustomize-root {
+    >.FoldList-Label>button svg {
+        font-size: 16px;
+    }
+
+    >.FoldList-List {
+        padding: 10px 15px !important;
+
+        >.Title {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        >.MuiTextField-root {
+            margin: 5px 0px 25px;
+            width: 200px;
+        }
+
+        >.FloatItem-Root>.MuiButton-root {
+            padding: 3px 8px;
+
+            >.MuiButton-label {
+                text-transform: none;
+            }
+        }
+    }
+}

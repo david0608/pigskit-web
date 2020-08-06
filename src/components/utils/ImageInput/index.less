@@ -1,0 +1,56 @@
+.ImageInput-root {
+    >.Preview {
+        cursor: pointer;
+        width: 100%;
+        border: dashed 1px rgba(0, 0, 0, 0.75);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        >svg {
+            width: 25%;
+            height: 25%;
+        }
+
+        >img {
+            width: 100%;
+        }
+
+        &:hover {
+            position: relative;
+
+            &::before {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+        }
+    }
+
+    >.Input {
+        display: none;
+    }
+}
+
+.EditImage-root {
+    padding: 40px 16px 16px;
+
+    >.Footer {
+        margin-top: 16px;
+        display: flex;
+
+        >.MuiButton-root {
+            padding: 3px 8px;
+    
+            >.MuiButton-label {
+                text-transform: none;
+            }
+        }
+
+        >.Delete {
+            margin-left: auto;
+        }
+    }
+}

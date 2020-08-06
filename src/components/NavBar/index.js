@@ -1,7 +1,6 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import clsx from 'clsx';
-import PopScreen from '../PopScreen';
 import NavBarSignInUp from './NavBarSignInUp';
 import NavBarUser from './NavBarUser';
 import './index.less';
@@ -27,10 +26,7 @@ const NavBar = connect(
         userSignedIn,
     } = state;
 
-    const refPopScreen = useRef(null);
-
     return (<>
-        <PopScreen ref={refPopScreen} className='NavBarPopScreen'/>
         <div className={clsx('NavBar-Root', deviceScrolled && 'Scrolled')}>
             <div className='NavBar-Body'>
                 <NavBarLogo deviceType={deviceType}/>
@@ -38,7 +34,7 @@ const NavBar = connect(
                     {
                         userSignedIn
                         ? <NavBarUser deviceType={deviceType}/>
-                        : <NavBarSignInUp deviceType={deviceType} popScreenRef={refPopScreen}/>
+                        : <NavBarSignInUp deviceType={deviceType}/>
                     }
                 </div>
             </div>

@@ -381,7 +381,7 @@ const App = () => {
         }
 
         fetch(
-            'http://localhost/fs/user/avatar',
+            `${location.origin}/fs/user/avatar`,
             {
                 method: "POST",
                 body: formdata
@@ -402,7 +402,7 @@ const App = () => {
             <div>
                 <input type='file' onChange={upload_avatar}/>
                 <button className="App" onClick={delete_avatar} >delete avatar</button>
-                {/* <img src={`${location.origin}/fs/user/avatar`} /> */}
+                <img src={`${location.origin}/fs/user/avatar`} />
             </div>
         </div>
     );

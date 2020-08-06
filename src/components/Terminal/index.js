@@ -4,7 +4,9 @@ import clsx from 'clsx'
 import { GoPlus } from "react-icons/go"
 import { FloatList } from '../utils/FloatList'
 import Button from '../utils/Button'
+import { DeviderL } from '../utils/Devider'
 import SearchField from '../utils/SearchField'
+import Blank from '../utils/Blank'
 import LoadingRing from '../../components/utils/Loading'
 import { useQeuryContext } from '../../utils/apollo'
 import './index.less'
@@ -31,18 +33,14 @@ function reducer(state, action) {
     }
 }
 
-const Terminal = connect(
-    (state) => ({
-        deviceType: state.deviceInfo.type,
-    })
-)((props) => {
+const Terminal = (props) => {
     const {
-        deviceType,
         className,
         label,
-        NewComponent = () => { return null },
-        QueryComponent = () => { return null },
-        DisplayComponent = () => { return null },
+        newUrl,
+        NewComponent,
+        QueryComponent,
+        DisplayComponent,
     } = props
 
     const [state, dispatch] = useReducer(reducer, INIT_STATE)
@@ -65,17 +63,20 @@ const Terminal = connect(
         <div className={clsx('Terminal-Root', className)}>
             <Label>{label}</Label>
             <Control
-                deviceType={deviceType}
-                dispatch={dispatch}
+                terminalDispatch={dispatch}
+                newUrl={newUrl}
                 NewComponent={NewComponent}
             />
-            <Devider/>
-            <QueryComponent ref={refQuery}>
-                <Body DisplayComponent={DisplayComponent}/>
-            </QueryComponent>
+            <DeviderL/>
+            {
+                QueryComponent &&
+                <QueryComponent ref={refQuery}>
+                    <Body DisplayComponent={DisplayComponent}/>
+                </QueryComponent>
+            }
         </div>
     )
-})
+}
 
 const Label = (props) => {
     return props.children ?
@@ -86,52 +87,99 @@ const Label = (props) => {
         : null
 }
 
-const Control = (props) => {
+const Control = connect(
+    (state) => ({
+        deviceType: state.deviceInfo.type,
+    })
+)((props) => {
     const {
         deviceType,
-        dispatch,
+        terminalDispatch,
+        newUrl,
         NewComponent,
     } = props
 
     return (
         <div className={clsx('Control-Root', deviceType)}>
             <SearchField
-                onCommit={(value) => dispatch({ type: 'SEARCH_COMMIT', payload: value })}
+                onCommit={(value) => terminalDispatch({ type: 'SEARCH_COMMIT', payload: value })}
             />
-            <div className='BodyRight'>
-                <ControlFloatList
-                    className='New'
-                    deviceType={deviceType}
-                    label={<Button><GoPlus/>New</Button>}
-                >
-                    <NewComponent
-                        onComplete={() => dispatch({ type: 'REFRESH' })}
-                    />
-                </ControlFloatList>
+            <div className='Control-Right'>
+                <ControlNew
+                    terminalDispatch={terminalDispatch}
+                    newUrl={newUrl}
+                    NewComponent={NewComponent}
+                />
             </div>
         </div>
     )
+})
+
+const ControlNew = (props) => {
+    const {
+        terminalDispatch,
+        newUrl,
+        NewComponent,
+    } = props
+
+    if (newUrl) {
+        return (
+            <ControlItem
+                className='New'
+                onClick={() => location.href = newUrl}
+            >
+                <GoPlus/>New
+            </ControlItem>
+        )
+    } else if (NewComponent) {
+        return (
+            <ControlItem
+                className='New'
+                component={<NewComponent onComplete={() => terminalDispatch({ type: 'REFRESH' })}/>}
+            >
+                <GoPlus/>New
+            </ControlItem>
+        )
+    } else {
+        return null
+    }
 }
 
-const ControlFloatList = (props) => {
+const ControlItem = connect(
+    (state) => ({
+        deviceType: state.deviceInfo.type,
+    })
+)((props) => {
     const {
-        className,
         deviceType,
-        label,
+        className,
+        onClick,
+        component,
         children,
     } = props
 
-    return children ?
-        <FloatList
-            className={className}
-            label={label}
-            rightAligned
-            fullScreen={deviceType === 'mobile'}
-        >
-            {children}
-        </FloatList>
-        : null
-}
+    if (onClick) {
+        return (
+            <Button
+                className={clsx('ControlItem', className)}
+                onClick={onClick}
+            >
+                {children}
+            </Button>
+        )
+    } else {
+        return (
+            <FloatList
+                className={'ControlItem'}
+                label={<Button className={className}>{children}</Button>}
+                fullScreen={deviceType === 'mobile'}
+                rightAligned
+            >
+                {component}
+            </FloatList>
+        )
+    }
+})
 
 const Body = (props) => {
     const {
@@ -151,9 +199,12 @@ const Body = (props) => {
         } else {
             let data = queryContext.data()
             if (data && data.length > 0) {
-                return <DisplayComponent data={data}/>
+                return <>{
+                    DisplayComponent &&
+                    <DisplayComponent data={data}/>
+                }</>
             } else {
-                return <NotFound/>
+                return <Blank>Not found.</Blank>
             }
         }
     }
@@ -168,19 +219,8 @@ const Loading = () => {
                 stroke='rgba(0, 0, 0, 0.4)'
             />
         </div>
-        <Devider/>
+        <DeviderL/>
     </>)
-}
-
-const NotFound = () => {
-    return (<>
-        <div className='NotFound'>Not found.</div>
-        <Devider/>
-    </>)
-}
-
-const Devider = () => {
-    return <div className='Devider'></div>
 }
 
 export default Terminal

@@ -1,5 +1,21 @@
-.test {
-    height: 3000px;
-    width: 20px;
-    background-color: grey;
+.HomePage {
+    &.desktop {
+        display: flex;
+
+        >.UserInfo {
+            flex: 1;
+        }
+
+        >.Shops {
+            flex: 3;
+        }
+    }
+
+    &.tablets, &.mobile {
+        display: block;
+
+        >.Shops {
+            margin-top: 40px;
+        }
+    }
 }

@@ -2,20 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.less';
 
-import SearchField from '../components/utils/SearchField'
-import TextInput from '../components/utils/TextInput'
+import ImageInput from '../components/utils/ImageInput'
+import DropScreenProvider from '../components/DropScreen'
 
 const App = () => {
     return (
         <div className='TestRoot'>
-            <SearchField
-                className='Test-Search'
-                onCommit={(value) => console.log(value)}
-            />
-            <TextInput
-                className='Test-Input'
-                label='input'
-            />
+            <DropScreenProvider>
+                <ImageInput
+                    className='TextImageInput'
+                    aspect={2}
+                />
+            </DropScreenProvider>
         </div>
     )
 }

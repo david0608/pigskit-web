@@ -12,5 +12,13 @@ export const StoreProvider = (props) => {
     )
 }
 
-export * from './reducers/device_info';
-export * from './reducers/user_info';
+import { deviceInfoReducer } from './reducers/device_info'
+import { userInfoReducer } from './reducers/user_info'
+
+export const defaultReducers = {
+    deviceInfo: deviceInfoReducer,
+    userInfo: userInfoReducer,
+}
+
+export { deviceInfoActions } from './reducers/device_info'
+export { userInfoActions } from './reducers/user_info'

@@ -65,7 +65,6 @@ export const FoldList = (props) => {
             </div>
             <ParentFold.Provider value={fold}>
                 {open && <FoldListList
-                    className='FoldList-List'
                     preventScroll={preventScroll}
                     children={children}
                 />}
@@ -77,12 +76,16 @@ export const FoldList = (props) => {
 const FoldListList = (props) => {
     const {
         preventScroll,
-        ...otherProps
+        children
     } = props
 
     if (preventScroll) usePreventBodyScroll()
 
-    return <div {...otherProps}/>
+    return <div
+        className='FoldList-List'
+    >
+        {children}
+    </div>
 }
 
 class FoldItemComponent extends React.Component {

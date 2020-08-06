@@ -14,26 +14,34 @@
             border-radius: 5px;
         }
 
-        >.BodyRight>.FloatList-Root {
+        >.Control-Right {
             height: 100%;
 
-            >.FoldList-Label {
+            >.ControlItem {
                 height: 100%;
 
-                >button {
-                    height: inherit;
+                &.New, .New {
                     color: white;
                     background-color: #00A320;
-                    padding: 1px 12px;
+                    border-radius: 5px;
+                }
+
+                >.FoldList-Label {
+                    height: 100%;
+
+                    &>button {
+                        height: 100%;
+                        padding: 1px 12px;
         
-                    svg {
-                        margin-right: 3px;
+                        svg {
+                            margin-right: 3px;
+                        }
                     }
                 }
-            }
 
-            >.FoldList-List {
-                padding: 10px 15px;
+                >.FoldList-List {
+                    padding: 10px 15px;
+                }
             }
         }
 
@@ -45,7 +53,7 @@
                 width: 40%;
             }
 
-            >.BodyRight {
+            >.Control-Right {
                 margin-left: auto;
             }
         }
@@ -56,7 +64,7 @@
                 width: 100%;
             }
 
-            >.BodyRight {
+            >.Control-Right {
                 margin-top: 16px;
                 height: 30px;
                 display: flex;
@@ -68,16 +76,5 @@
     >.Loading {
         margin: 64px 0px;
         text-align: center;
-    }
-
-    >.NotFound {
-        color: rgba(0, 0, 0, 0.5);
-        margin: 50px 0px;
-        text-align: center;
-    }
-    
-    >.Devider {
-        border: solid rgba(0, 0, 0, 0.1);
-        border-width: 1px 0px 0px 0px;
     }
 }

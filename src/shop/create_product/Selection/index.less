@@ -1,0 +1,40 @@
+.Selection-root {
+    max-width: 400px;
+}
+
+.Selection-outline {
+    margin: 8px 16px;
+    display: flex;
+
+    >div {
+        flex: 1;
+    }
+}
+
+.Selection-detail {
+    margin: 16px;
+    display: flex;
+    flex-direction: column;
+
+    >.MuiTextField-root {
+        margin: 0px 0px 24px;
+        max-width: 200px;
+    }
+
+    >.Footer {
+        display: flex;
+
+        >.MuiButton-root {
+            padding: 3px 8px;
+            margin-right: 8px;
+
+            >.MuiButton-label {
+                text-transform: none;
+            }
+    
+            &.Delete {
+                margin-left: auto;
+            }
+        }
+    }
+}

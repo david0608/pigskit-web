@@ -12,27 +12,33 @@ const PIGSKIT_GRAPHQL_HOST = process.env.LOCAL ? 'localhost' : 'pigskit-graphql-
 const app = express();
 const proxy = httpProxy.createProxyServer({});
 
-proxy.on('error', function (err, req, res) {
-    console.log(err)
-    res.status(500).end()
-});
+app.use((req, res, next) => {
+    let contentLength = req.headers['content-length'] || 0
+    if (contentLength > 2000000) {
+        res.status(400).send({
+            type: 'PayloadTooLarge',
+        })
+    } else {
+        next()
+    }
+})
 
 app.use('/', express.static(__dirname + '/public/'));
 
-app.use('/api', (req, res) => {
-    proxy.web(req, res, { target: `http://${PIGSKIT_RESTFUL_HOST}:8001/api` })
+app.use('/api', (req, res, next) => {
+    proxy.web(req, res, { target: `http://${PIGSKIT_RESTFUL_HOST}:8001/api` }, next)
 });
 
-app.use('/fs', (req, res) => {
-    proxy.web(req, res, { target: `http://${PIGSKIT_RESTFUL_HOST}:8001/fs` })
+app.use('/fs', (req, res, next) => {
+    proxy.web(req, res, { target: `http://${PIGSKIT_RESTFUL_HOST}:8001/fs` }, next)
 });
 
-app.post('/graphql', (req, res) => {
-    proxy.web(req, res, { target: `http://${PIGSKIT_GRAPHQL_HOST}:8000/graphql` });
+app.post('/graphql', (req, res, next) => {
+    proxy.web(req, res, { target: `http://${PIGSKIT_GRAPHQL_HOST}:8000/graphql` }, next)
 });
 
-app.get('/graphiql', (req, res) => {
-    proxy.web(req, res, { target: `http://${PIGSKIT_GRAPHQL_HOST}:8000/graphiql` });
+app.get('/graphiql', (req, res, next) => {
+    proxy.web(req, res, { target: `http://${PIGSKIT_GRAPHQL_HOST}:8000/graphiql` }, next)
 });
 
 console.log('Trying to start as https server...');

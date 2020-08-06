@@ -1,50 +1,41 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { connect } from 'react-redux';
-import { StoreProvider, deviceInfoReducer, userInfoReducer } from '../components/store';
-import Measurer from '../components/Measurer';
-import Session from '../components/Session';
-import NavBar from '../components/NavBar';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { connect } from 'react-redux'
+import clsx from 'clsx'
+import App from '../components/App'
+import Page from '../components/Page'
+import NavBar from '../components/NavBar'
+import Avatar from '../components/Avatar'
 import Shops from './Shops'
-import './index.less';
+import './index.less'
 
-const mapStateToProps = (state) => ({
-    deviceType: state.deviceInfo.type,
-    userInfoInited: state.userInfo.inited,
-    userSignedIn: state.userInfo.signedIn,
-})
-
-const App = connect(
-    mapStateToProps
+const HomePage = connect(
+    (state) => ({
+        deviceType: state.deviceInfo.type,
+        userSignedIn: state.userInfo.signedIn,
+    })
 )((props) => {
     const {
         deviceType,
-        userInfoInited,
         userSignedIn,
-    } = props;
+    } = props
 
-    if (userInfoInited) {
-        return (<>
-            <Measurer/>
-            {deviceType !== 'unknown' && <>
-                <NavBar/>
-                {userSignedIn && <Shops deviceType={deviceType}/>}
-                <div className='test'/>
-            </>}
-        </>)
+    if (userSignedIn) {
+        return (
+            <Page className={clsx('HomePage', deviceType)}>
+                <Avatar className='UserInfo'/>
+                <Shops/>
+            </Page>
+        )
     } else {
-        return <Session/>
+        return null
     }
 })
 
 ReactDOM.render(
-    <StoreProvider
-        reducers={{
-            deviceInfo: deviceInfoReducer,
-            userInfo: userInfoReducer,
-        }}
-    >
-        <App/>
-    </StoreProvider>,
+    <App>
+        <NavBar/>
+        <HomePage/>
+    </App>,
     document.getElementById('root')
 );

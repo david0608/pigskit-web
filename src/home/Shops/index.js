@@ -1,43 +1,25 @@
 import React, { useState, useRef } from 'react'
-import ApolloClient from 'apollo-boost'
-import { ApolloProvider } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
-import clsx from 'clsx'
-import { queryComponent } from '../../utils/apollo'
+import { QueryProvider, queryComponent } from '../../utils/apollo'
 import axios from '../../utils/axios'
 import { useAbort } from '../../utils/abort'
-import { pigskit_graphql_origin } from '../../utils/service_origins'
 import Terminal from '../../components/Terminal'
 import TextInput from '../../components/utils/TextInput'
 import Button from '../../components/utils/Button'
+import { DeviderL } from '../../components/utils/Devider'
 import { FloatItem } from '../../components/utils/FloatList'
-import Avatar from '../../components/Avatar'
 import './index.less'
 
-const graphqlClient = new ApolloClient({
-    uri: `${pigskit_graphql_origin()}/graphql`,
-    credentials: 'include',
-})
-
-const Shops = (props) => {
-    const {
-        deviceType,
-    } = props
-
-    return (
-        <ApolloProvider client={graphqlClient}>
-            <div className={clsx('Shops-Root', deviceType)}>
-                <Avatar className='UserInfo'/>
-                <Terminal
-                    className='Body'
-                    label='Your shops'
-                    NewComponent={New}
-                    QueryComponent={Query}
-                    DisplayComponent={Display}
-                />
-            </div>
-        </ApolloProvider>
-    )
+const Shops = () => {
+    return <QueryProvider>
+        <Terminal
+            className='Shops'
+            label='Your shops'
+            NewComponent={New}
+            QueryComponent={Query}
+            DisplayComponent={Display}
+        />
+    </QueryProvider>
 }
 
 const Query = queryComponent({
@@ -101,12 +83,8 @@ const ShopEntry = (props) => {
             <span>{desc}</span>
             <span className='LatestUpdate'>{`Latest updated at ${(new Date(latestUpdate)).toLocaleString('en')}`}</span>
         </div>
-        <Devider/>
+        <DeviderL/>
     </>)
-}
-
-const Devider = () => {
-    return <div className='Devider'></div>
 }
 
 const New = (props) => {
@@ -180,7 +158,10 @@ const New = (props) => {
                 helperText={inputError}
             />
             {hintError ? <p className='HintError'>{hintError}</p> : null}
-            <FloatItem ref={refFoldItem} manualFold>
+            <FloatItem
+                ref={refFoldItem}
+                manualFold
+            >
                 <Button
                     onClick={handleCreate}
                 >

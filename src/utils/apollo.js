@@ -1,5 +1,8 @@
 import React, { useContext } from 'react'
+import ApolloClient from 'apollo-boost'
+import { ApolloProvider } from '@apollo/react-hooks'
 import { useQuery } from '@apollo/react-hooks'
+import { pigskit_graphql_origin } from './service_origins'
 
 const Context = React.createContext()
 
@@ -81,4 +84,15 @@ class QueryContext {
     data() {
         return this.queryReducer(this.rawData)
     }
+}
+
+const client = new ApolloClient({
+    uri: `${pigskit_graphql_origin()}/graphql`,
+    credentials: 'include',
+})
+
+export const QueryProvider = (props) => {
+    return <ApolloProvider client={client}>
+        {props.children}
+    </ApolloProvider>
 }
