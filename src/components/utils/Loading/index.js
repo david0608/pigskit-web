@@ -1,7 +1,30 @@
 import React from 'react';
+import clsx from 'clsx';
 import TweenOne from 'rc-tween-one';
 import SvgDrawPlugin from 'rc-tween-one/lib/plugin/SvgDrawPlugin';
 TweenOne.plugins.push(SvgDrawPlugin);
+import './index.less'
+
+const Loading = React.memo(
+    (props) => {
+        const {
+            className,
+            children,
+            ...otherProps
+        } = props
+
+        return (
+            <div className={clsx('Loading', className)}>
+                <LoadingRing
+                    radius={16}
+                    strokeWidth={4}
+                    stroke='#dcdcdc'
+                    {...otherProps}
+                />
+            </div>
+        )
+    }
+)
 
 const LoadingRing = (props) => {
     return (
@@ -86,4 +109,4 @@ function ringPos(radius, strokeWidth, ratio) {
     }
 }
 
-export default LoadingRing;
+export default Loading;

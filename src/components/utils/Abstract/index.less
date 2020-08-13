@@ -1,17 +1,21 @@
 .Abstract-root {
     cursor: pointer;
     outline: none;
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
-    border: solid 1px rgba(0, 0, 0, 0.3);
-    border-radius: 3px;
+    -webkit-tap-highlight-color: transparent;
 
-    &:hover {
-        border: solid 1px rgba(0, 0, 0, 1);
+    &.blur {
+        background-color: #f9f9f9;
+
+        >.Abstract-body:hover {
+            background-color: #ececec;
+        }
     }
 
-    &.Detail {
+    &.focus {
         cursor: unset;
-        border: solid 1px rgba(0, 0, 0, 1);
-        box-shadow: none;
+    }
+
+    >.Abstract-body {
+        outline: none;
     }
 }

@@ -1,26 +1,27 @@
 import React, { useState, useRef } from 'react'
 import { gql } from 'apollo-boost'
-import { QueryProvider, queryComponent } from '../../utils/apollo'
+import { QueryProvider, queryComponent, useQueryContext } from '../../utils/apollo'
 import axios from '../../utils/axios'
 import { useAbort } from '../../utils/abort'
 import Terminal from '../../components/Terminal'
 import TextInput from '../../components/utils/TextInput'
 import Button from '../../components/utils/Button'
-import { DeviderL } from '../../components/utils/Devider'
+import Loading from '../../components/utils/Loading'
+import Case from '../../components/utils/Case'
 import { FloatItem } from '../../components/utils/FloatList'
 import './index.less'
 
-const Shops = () => {
+const Shops = React.memo(() => {
     return <QueryProvider>
         <Terminal
             className='Shops'
-            label='Your shops'
+            title='Your shops'
             NewComponent={New}
             QueryComponent={Query}
-            DisplayComponent={Display}
+            BodyComponent={Body}
         />
     </QueryProvider>
-}
+})
 
 const Query = queryComponent({
     queryStr: gql`
@@ -34,37 +35,50 @@ const Query = queryComponent({
             }
         }
     `,
-    queryDispatcher: (params) => ({
+    paramDispatcher: (params) => ({
         name: params.searchValue,
     }),
-    queryReducer: (data) => (data.shop.my)
+    resReducer: (data) => (data.shop.my)
 })
 
-const Display = (props) => {
-    const {
-        data,
-    } = props
+const Body = () => {
+    const queryContext = useQueryContext()
 
-    return (
-        <div className='ShopsDisplay'>
-            {data.map((e) => {
-                return <ShopEntry
-                    key={e.id}
-                    shopId={e.id}
-                    shopName={e.name}
-                    desc={e.desc}
-                    latestUpdate={e.latestUpdate}
-                />
-            })}
-        </div>
-    )
+    if (!queryContext) return null
+
+    let children = null
+
+    if (queryContext.loading) {
+        children = <Loading/>
+    } else {
+        if (queryContext.error) {
+            console.log('Query error:', queryContext.error)
+        } else {
+            let data = queryContext.data()
+            if (data && data.length > 0) {
+                children = data.map((e, i) => (
+                    <ShopEntry
+                        key={i}
+                        shopId={e.id}
+                        shopName={e.name}
+                        description={e.description}
+                        latestUpdate={e.latestUpdate}
+                    />
+                ))
+            } else {
+                children = <Case.Blank>No data.</Case.Blank>
+            }
+        }
+    }
+
+    return <Case.DevideList>{children}</Case.DevideList>
 }
 
 const ShopEntry = (props) => {
     const {
         shopId,
         shopName,
-        desc,
+        description,
         latestUpdate,
     } = props
 
@@ -72,7 +86,7 @@ const ShopEntry = (props) => {
         location.href = `${location.origin}/shop?id=${shopId}`
     }
     
-    return (<>
+    return (
         <div className='ShopEntry-Root'>
             <span
                 className='Name'
@@ -80,11 +94,10 @@ const ShopEntry = (props) => {
             >
                 {shopName}
             </span>
-            <span>{desc}</span>
+            <span>{description}</span>
             <span className='LatestUpdate'>{`Latest updated at ${(new Date(latestUpdate)).toLocaleString('en')}`}</span>
         </div>
-        <DeviderL/>
-    </>)
+    )
 }
 
 const New = (props) => {

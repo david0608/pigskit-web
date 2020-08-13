@@ -1,14 +1,16 @@
 import React from 'react'
 import clsx from 'clsx'
+import Transition from '../Transition'
 import './index.less'
 
 class Abstract extends React.Component {
     constructor(props) {
         super(props)
         this.refRoot = React.createRef()
-        this.refPsudo = React.createRef()
+        this.refBody = React.createRef()
+        this.refContent = React.createRef()
         this.state = {
-            detail: false,
+            focus: false
         }
     }
 
@@ -19,45 +21,56 @@ class Abstract extends React.Component {
     }
 
     shouldOpenOnFocus(event) {
-        let root = event.currentTarget
+        let body = event.currentTarget
         let blured = event.relatedTarget
-        if (!root.contains(blured)) this.setState({ detail: true })
+        if (!body.contains(blured) && !this.state.focus) {
+            this.refContent.current.renderContent(1)
+            this.setState({ focus: true })
+        }
     }
 
     shouldCloseOnBlur(event) {
-        let root = event.currentTarget
+        let body = event.currentTarget
         let focused = event.relatedTarget
-        if (!root.contains(focused)) this.setState({ detail: false })
+        if (!body.contains(focused) && this.state.focus) {
+            this.refContent.current.renderContent(0)
+            this.setState({ focus: false })
+        }
     }
 
     focus() {
-        this.refRoot.current.focus()
+        this.refBody.current.focus()
     }
 
     blur() {
-        this.refPsudo.current.focus()
+        this.refRoot.current.focus()
     }
 
     render() {
-        return (<>
+        const {
+            className,
+            children,
+        } = this.props
+        
+        return (
             <div
                 ref={this.refRoot}
-                className={clsx('Abstract-root', this.state.detail && 'Detail', this.props.className)}
+                className={clsx('Abstract-root', this.state.focus ? 'focus' : 'blur', className)}
                 tabIndex={-1}
-                onFocus={(e) => this.shouldOpenOnFocus(e)}
-                onBlur={(e) => this.shouldCloseOnBlur(e)}
             >
-                {
-                    this.state.detail ?
-                    this.props.detailContent :
-                    this.props.outlineContent
-                }
+                <Transition.Height
+                    className='Abstract-body'
+                    ref={this.refContent}
+                    rootRef={this.refBody}
+                    tabIndex={-1}
+                    onFocus={this.shouldOpenOnFocus.bind(this)}
+                    onBlur={this.shouldCloseOnBlur.bind(this)}
+                    timeout={300}
+                >
+                    {children}
+                </Transition.Height>
             </div>
-            <div
-                ref={this.refPsudo}
-                tabIndex={-1}
-            />
-        </>)
+        )
     }
 }
 

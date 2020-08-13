@@ -7,9 +7,8 @@ import ImageInput from '../../../components/utils/ImageInput'
 import TextInput from '../../../components/utils/TextInput'
 import CircButton from '../../../components/utils/CircButton'
 import RectButton from '../../../components/utils/RectButton'
-import { DeviderL } from '../../../components/utils/Devider'
+import Case from '../../../components/utils/Case'
 import { T1 } from '../../../components/utils/Title'
-import Blank from '../../../components/utils/Blank'
 import axios from '../../../utils/axios'
 import { createAbort } from '../../../utils/abort'
 import { Customize, CustomizeData } from '../Customize'
@@ -233,23 +232,19 @@ class Product extends React.PureComponent {
                         product={this}
                     />
                 </T1>
-                <div className='Customizes'>
+                <Case.List className='Customizes'>
                     {
                         this.hasCustomize ?
-                        this.customizesMap((cus, id) => {
-                            return <Customize
+                        this.customizesMap((cus, id) => (
+                            <Customize
                                 key={id}
                                 data={cus}
                                 product={this}
                             />
-                        }) :
-                        <>
-                            <DeviderL/>
-                            <Blank>No customize</Blank>
-                            <DeviderL/>
-                        </>
+                        )) :
+                        <Case.Blank>No customize</Case.Blank>
                     }
-                </div>
+                </Case.List>
                 {this.state.hintError ? <p className='HintError'>{this.state.hintError}</p> : null}
                 <div className='Footer'>
                     <RectButton

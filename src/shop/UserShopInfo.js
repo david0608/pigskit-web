@@ -115,7 +115,7 @@ const InitUserShopInfo = (props) => {
             }
         })
         .then((res) => {
-            let shop = res.data.user.me.userShops[0]
+            let shop = res?.data?.user?.me?.userShops[0]
             if (shop) {
                 dispatch(actions.init(shop))
             } else {

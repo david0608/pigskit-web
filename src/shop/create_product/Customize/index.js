@@ -9,9 +9,8 @@ import { Switch, useSwitch } from '../../../components/utils/Switch'
 import TextInput from '../../../components/utils/TextInput'
 import RectButton from '../../../components/utils/RectButton'
 import CircButton from '../../../components/utils/CircButton'
+import Case from '../../../components/utils/Case'
 import { T2 } from '../../../components/utils/Title'
-import Blank from '../../../components/utils/Blank'
-import { DeviderL } from '../../../components/utils/Devider'
 import { Selection, SelectionData } from '../Selection'
 import './index.less'
 
@@ -110,17 +109,10 @@ export class Customize extends React.PureComponent {
             <Abstract
                 ref={this.refRoot}
                 className='Customize-root'
-                outlineContent={
-                    <Outline
-                        customize={this}
-                    />
-                }
-                detailContent={
-                    <Detail
-                        customize={this}
-                    />
-                }
-            />
+            >
+                <Outline customize={this}/>
+                <Detail customize={this}/>
+            </Abstract>
         )
     }
 }
@@ -134,7 +126,7 @@ const Outline = connect(
         deviceType,
         customize,
     } = props
-    
+
     return (
         <div className={clsx('Customize-outline', deviceType)}>
             <div className='Info'>
@@ -154,9 +146,9 @@ const Outline = connect(
                                 <div className='Name'>
                                     {sel.name}
                                 </div>
-                                <div className='Price'>
+                                <Case.Price>
                                     {sel.price}
-                                </div>
+                                </Case.Price>
                             </div>
                         )
                     }) :
@@ -213,21 +205,19 @@ const Preview = (props) => {
                     customize={customize}
                 />
             </T2>
-            {
-                customize.hasSelection ?
-                customize.selectionsMap((sel, id) => {
-                    return <Selection
-                        key={id}
-                        data={sel}
-                        customize={customize}
-                    />
-                }) :
-                <>
-                    <DeviderL/>
-                    <Blank>No selection</Blank>
-                    <DeviderL/>
-                </>
-            }
+            <Case.List>
+                {
+                    customize.hasSelection ?
+                    customize.selectionsMap((sel, id) => (
+                        <Selection
+                            key={id}
+                            data={sel}
+                            customize={customize}
+                        />
+                    )) :
+                    <Case.Blank>No selectiom</Case.Blank>
+                }
+            </Case.List>
         </div>
     )
 }

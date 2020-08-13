@@ -16,12 +16,12 @@ export function queryComponent(props) {
     })
 }
 
-export const Query = React.forwardRef((props, ref) => {
+export const Query = React.memo(React.forwardRef((props, ref) => {
     const {
         queryStr,
         queryVar = {},
-        queryDispatcher,
-        queryReducer,
+        paramDispatcher,
+        resReducer,
         children,
     } = props
 
@@ -30,7 +30,7 @@ export const Query = React.forwardRef((props, ref) => {
         loading: loading,
         error: error,
         data: data,
-        queryReducer: queryReducer,
+        resReducer: resReducer,
     })
 
     return (
@@ -38,13 +38,13 @@ export const Query = React.forwardRef((props, ref) => {
             <RefetchQuery
                 forwardRef={ref}
                 refetch={refetch}
-                dispatcher={queryDispatcher}
+                paramDispatcher={paramDispatcher}
                 queryVar={queryVar}
             />
             {children}
         </Context.Provider>
     )
-})
+}))
 
 class RefetchQuery extends React.Component {
     constructor(props) {
@@ -58,9 +58,9 @@ class RefetchQuery extends React.Component {
         }
     }
 
-    refetch(variables = {}) {
-        const dispatcher = this.props.dispatcher || function(v) { return v }
-        this.props.refetch(Object.assign({}, this.props.queryVar, dispatcher(variables)))
+    refetch(params = {}) {
+        const paramDispatcher = this.props.paramDispatcher || function(p) { return p }
+        this.props.refetch(Object.assign({}, this.props.queryVar, paramDispatcher(params)))
     }
 
     render() {
@@ -68,7 +68,7 @@ class RefetchQuery extends React.Component {
     }
 }
 
-export function useQeuryContext() {
+export function useQueryContext() {
     const queryContext = useContext(Context)
     return queryContext
 }
@@ -78,11 +78,11 @@ class QueryContext {
         this.loading = props.loading
         this.error = props.error
         this.rawData = props.data
-        this.queryReducer = props.queryReducer || function(p) { return p }
+        this.resReducer = props.resReducer || function(r) { return r }
     }
 
     data() {
-        return this.queryReducer(this.rawData)
+        return this.resReducer(this.rawData)
     }
 }
 

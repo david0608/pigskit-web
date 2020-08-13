@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import Abstract from '../../../components/utils/Abstract'
 import TextInput from '../../../components/utils/TextInput'
 import RectButton from '../../../components/utils/RectButton'
+import Case from '../../../components/utils/Case'
 import './index.less'
 
 export class SelectionData {
@@ -53,17 +54,10 @@ export class Selection extends React.PureComponent {
             <Abstract
                 ref={this.refRoot}
                 className='Selection-root'
-                outlineContent={
-                    <Outline
-                        selection={this}
-                    />
-                }
-                detailContent={
-                    <Detail
-                        selection={this}
-                    />
-                }
-            />
+            >
+                <Outline selection={this}/>
+                <Detail selection={this}/>
+            </Abstract>
         )
     }
 }
@@ -78,9 +72,9 @@ const Outline = (props) => {
             <div className='Name'>
                 {selection.name}
             </div>
-            <div className='Price'>
+            <Case.Price>
                 {selection.price}
-            </div>
+            </Case.Price>
         </div>
     )
 }

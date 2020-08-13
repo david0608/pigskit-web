@@ -1,9 +1,37 @@
 .TestRoot {
-    margin: 100px;
+    
 }
 
-.TextImageInput {
-    >.Preview {
-        width: 300px !important;
+.Extendable-root {
+    overflow: hidden;
+    height: 10px;
+    transition: height .3s;
+    border: solid 1px;
+
+    &.extend {
+        height: 100px;
     }
+
+    >.Extendable-body {
+
+        >.Extend {
+            height: 100px;
+        }
+    }
+}
+
+.Stretch-root {
+    transition: height .3s;
+
+    .Extendable {
+        background-color: gray;
+
+        &.extend {
+            height: 100px;
+        }
+    }
+}
+
+.ContentTwo {
+    height: 50px;
 }

@@ -1,0 +1,112 @@
+.Products-body {
+    margin: 16px 0px 16px 0px;
+
+    >.Blank {
+        background-color: #f9f9f9;
+    }
+}
+
+.Product-outline {
+    padding: 12px 16px;
+    display: flex;
+
+    >div {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    >.Name {
+        flex: 1;
+    }
+
+    >.Description {
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 14px;
+        flex: 2;
+    }
+
+    >.Price {
+        flex: 1;
+        justify-content: flex-end;
+    }
+}
+
+.Product-detail {
+    padding: 20px 16px;
+
+    >.Title {
+        display: flex;
+
+        >.Name {
+            flex: 1;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        >.MuiButton-root>.MuiButton-label>svg {
+            font-size: 16px;
+        }
+    }
+
+    >.Image-root {
+        max-width: 400px;
+
+        &.blank::before {
+            padding-top: 50%;
+        }
+    }
+
+    >.Info {
+        padding: 8px 0px 0px 40px;
+        display: flex;
+
+        >.Description {
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 14px;
+            flex: 1;
+        }
+    }
+
+    >.Customize {
+        margin-top: 8px;
+
+        >.Name {
+            margin-top: 8px;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        >.Description {
+            color: rgba(0, 0, 0, 0.6);
+            padding: 8px 0px 0px 40px;
+            font-size: 14px;
+        }
+
+        >.Selection {
+            display: flex;
+            align-items: center;
+            padding: 8px 0px 0px 40px;
+
+            >.Name {
+                flex: 1;
+                font-weight: 500;
+            }
+        }
+    }
+
+    &.mobile {
+        >.Info {
+            padding: 8px 0px 0px 0px;
+        }
+
+        >.Customize {
+            >.Description {
+                padding: 8px 0px 0px 0px;
+            }
+
+            >.Selection {
+                padding: 8px 0px 0px 0px;
+            }
+        }
+    }
+}
