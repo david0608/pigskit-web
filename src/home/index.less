@@ -1,21 +1,11 @@
 .HomePage {
-    &.desktop {
+    >.Header {
         display: flex;
+        align-items: center;
 
-        >.UserInfo {
-            flex: 1;
-        }
-
-        >.Shops {
-            flex: 3;
-        }
-    }
-
-    &.tablets, &.mobile {
-        display: block;
-
-        >.Shops {
-            margin-top: 40px;
+        >.Avatar-root {
+            width: 100px;
+            margin-right: 32px;
         }
     }
 }

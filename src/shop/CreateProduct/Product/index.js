@@ -7,7 +7,7 @@ import ImageInput from '../../../components/utils/ImageInput'
 import TextInput from '../../../components/utils/TextInput'
 import CircButton from '../../../components/utils/CircButton'
 import RectButton from '../../../components/utils/RectButton'
-import Case from '../../../components/utils/Case'
+import Decorate from '../../../components/utils/Decorate'
 import { T1 } from '../../../components/utils/Title'
 import axios from '../../../utils/axios'
 import { createAbort } from '../../../utils/abort'
@@ -161,7 +161,7 @@ class Product extends React.PureComponent {
             if (abortTK.isAborted() || res.status !== 200) {
                 throw new Error('Failed to create product.')
             } else {
-                location.href = `${location.origin}/shop?id=${this.props.shop_id}`
+                location.href = `${location.origin}/shop/?id=${this.props.shop_id}#/products`
             }
         })
         .catch((err) => {
@@ -232,7 +232,7 @@ class Product extends React.PureComponent {
                         product={this}
                     />
                 </T1>
-                <Case.List className='Customizes'>
+                <Decorate.List className='Customizes'>
                     {
                         this.hasCustomize ?
                         this.customizesMap((cus, id) => (
@@ -242,9 +242,9 @@ class Product extends React.PureComponent {
                                 product={this}
                             />
                         )) :
-                        <Case.Blank>No customize</Case.Blank>
+                        <Decorate.Blank>No customize</Decorate.Blank>
                     }
-                </Case.List>
+                </Decorate.List>
                 {this.state.hintError ? <p className='HintError'>{this.state.hintError}</p> : null}
                 <div className='Footer'>
                     <RectButton

@@ -8,7 +8,7 @@ import Terminal from '../../components/Terminal'
 import Abstract from '../../components/utils/Abstract'
 import CircButton from '../../components/utils/CircButton'
 import Image from '../../components/utils/Image'
-import Case from '../../components/utils/Case'
+import Decorate from '../../components/utils/Decorate'
 import Loading from '../../components/utils/Loading'
 import { DeviderL } from '../../components/utils/Devider'
 import UserShopInfo from '../UserShopInfo'
@@ -17,8 +17,8 @@ import './index.less'
 const Products = React.memo(() => {
     const userShopInfoState = UserShopInfo.useState()
 
-    const newUrl = userShopInfoState.productAuthority === 'ALL' ?
-        `${location.origin}/shop/create_product?id=${userShopInfoState.shop.id}` : null
+    const newPath = userShopInfoState.productAuthority === 'ALL' ?
+        `/create_product` : null
 
     const Query = useMemo(
         () => queryComponent({
@@ -63,8 +63,7 @@ const Products = React.memo(() => {
         <QueryProvider>
             <Terminal
                 className='Products'
-                title='Products'
-                newUrl={newUrl}
+                newPath={newPath}
                 QueryComponent={Query}
                 BodyComponent={Body}
             />
@@ -95,12 +94,12 @@ const Body = () => {
                     </Abstract>
                 ))
             } else {
-                children = <Case.Blank className='Blank'>No data.</Case.Blank>
+                children = <Decorate.Blank className='Blank'>No data.</Decorate.Blank>
             }
         }
     }
 
-    return <Case.List className='Products-body'>{children}</Case.List>
+    return <Decorate.List className='Products-body'>{children}</Decorate.List>
 }
 
 const Outline = connect(
@@ -117,7 +116,7 @@ const Outline = connect(
         <div className={clsx('Product-outline', deviceType)}>
             <div className='Name'>{data.name}</div>
             {deviceType !== 'mobile' && <div className='Description'>{data.description}</div>}
-            <Case.Price className='Price'>{data.price}</Case.Price>
+            <Decorate.Price className='Price'>{data.price}</Decorate.Price>
         </div>
     )
 })
@@ -142,7 +141,7 @@ const Detail = connect(
             <Image src={`/fs/shop/product/image?shop_id=${shopId}&product_key=${data.key}`}/>
             <div className='Info'>
                 <div className='Description'>{data.description}</div>
-                <Case.Price>{data.price}</Case.Price>
+                <Decorate.Price>{data.price}</Decorate.Price>
             </div>
             {
                 data.customizes.map((cus) => {
@@ -156,7 +155,7 @@ const Detail = connect(
                                     return (
                                         <div key={sel.key} className='Selection'>
                                             <div className='Name'>{sel.name}</div>
-                                            <Case.Price>{sel.price}</Case.Price>
+                                            <Decorate.Price>{sel.price}</Decorate.Price>
                                         </div>
                                     )
                                 })

@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import Abstract from '../../../components/utils/Abstract'
 import TextInput from '../../../components/utils/TextInput'
 import RectButton from '../../../components/utils/RectButton'
-import Case from '../../../components/utils/Case'
+import Decorate from '../../../components/utils/Decorate'
 import './index.less'
 
 export class SelectionData {
@@ -72,9 +72,9 @@ const Outline = (props) => {
             <div className='Name'>
                 {selection.name}
             </div>
-            <Case.Price>
+            <Decorate.Price>
                 {selection.price}
-            </Case.Price>
+            </Decorate.Price>
         </div>
     )
 }

@@ -7,7 +7,7 @@ import Terminal from '../../components/Terminal'
 import TextInput from '../../components/utils/TextInput'
 import Button from '../../components/utils/Button'
 import Loading from '../../components/utils/Loading'
-import Case from '../../components/utils/Case'
+import Decorate from '../../components/utils/Decorate'
 import { FloatItem } from '../../components/utils/FloatList'
 import './index.less'
 
@@ -15,7 +15,6 @@ const Shops = React.memo(() => {
     return <QueryProvider>
         <Terminal
             className='Shops'
-            title='Your shops'
             NewComponent={New}
             QueryComponent={Query}
             BodyComponent={Body}
@@ -66,12 +65,12 @@ const Body = () => {
                     />
                 ))
             } else {
-                children = <Case.Blank>No data.</Case.Blank>
+                children = <Decorate.Blank>No data.</Decorate.Blank>
             }
         }
     }
 
-    return <Case.DevideList>{children}</Case.DevideList>
+    return <Decorate.DevideList>{children}</Decorate.DevideList>
 }
 
 const ShopEntry = (props) => {

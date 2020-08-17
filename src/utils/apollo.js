@@ -25,7 +25,7 @@ export const Query = React.memo(React.forwardRef((props, ref) => {
         children,
     } = props
 
-    const { loading, error, data, refetch } = useQuery(queryStr, { variables: queryVar })
+    const { loading, error, data, refetch } = useQuery(queryStr, { variables: queryVar, fetchPolicy: 'network-only' })
     const context = new QueryContext({
         loading: loading,
         error: error,

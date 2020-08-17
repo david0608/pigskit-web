@@ -9,7 +9,7 @@ import { Switch, useSwitch } from '../../../components/utils/Switch'
 import TextInput from '../../../components/utils/TextInput'
 import RectButton from '../../../components/utils/RectButton'
 import CircButton from '../../../components/utils/CircButton'
-import Case from '../../../components/utils/Case'
+import Decorate from '../../../components/utils/Decorate'
 import { T2 } from '../../../components/utils/Title'
 import { Selection, SelectionData } from '../Selection'
 import './index.less'
@@ -146,9 +146,9 @@ const Outline = connect(
                                 <div className='Name'>
                                     {sel.name}
                                 </div>
-                                <Case.Price>
+                                <Decorate.Price>
                                     {sel.price}
-                                </Case.Price>
+                                </Decorate.Price>
                             </div>
                         )
                     }) :
@@ -205,7 +205,7 @@ const Preview = (props) => {
                     customize={customize}
                 />
             </T2>
-            <Case.List>
+            <Decorate.List>
                 {
                     customize.hasSelection ?
                     customize.selectionsMap((sel, id) => (
@@ -215,9 +215,9 @@ const Preview = (props) => {
                             customize={customize}
                         />
                     )) :
-                    <Case.Blank>No selectiom</Case.Blank>
+                    <Decorate.Blank>No selectiom</Decorate.Blank>
                 }
-            </Case.List>
+            </Decorate.List>
         </div>
     )
 }

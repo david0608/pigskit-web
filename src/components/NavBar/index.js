@@ -52,7 +52,7 @@ const NavBarLogo = React.memo(
         return (
             <div
                 className={clsx('NavLogo-Root', deviceType && `NavLogo-${deviceType}`)}
-                onClick={() => location.href = `${location.origin}/home`}
+                onClick={() => location.href = `${location.origin}/`}
             >
                 <span>Pigskit</span>
             </div>

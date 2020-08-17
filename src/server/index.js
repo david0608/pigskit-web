@@ -23,8 +23,6 @@ app.use((req, res, next) => {
     }
 })
 
-app.use('/', express.static(__dirname + '/public/'));
-
 app.use('/api', (req, res, next) => {
     proxy.web(req, res, { target: `http://${PIGSKIT_RESTFUL_HOST}:8001/api` }, next)
 });
@@ -40,6 +38,8 @@ app.post('/graphql', (req, res, next) => {
 app.get('/graphiql', (req, res, next) => {
     proxy.web(req, res, { target: `http://${PIGSKIT_GRAPHQL_HOST}:8000/graphiql` }, next)
 });
+
+app.use(express.static(__dirname + '/public/'));
 
 console.log('Trying to start as https server...');
 try {

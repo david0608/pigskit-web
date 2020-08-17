@@ -1,64 +1,19 @@
-.Avatar-Root {
-    >.Avatar-Box {
-        position: relative;
+.Avatar-root {
+    position: relative;
 
-        &::before {
-            content: '';
-            display: block;
-            padding-top: 100%;
-        }
-
-        img {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            top: 0;
-            left: 0;
-            border-radius: 50%;
-            object-fit: cover;
-        }
+    &::before {
+        content: '';
+        display: block;
+        padding-top: 100%;
     }
 
-    >.Path {
-        margin: 32px 32px 0px 0px;
-        display: flex;
-        flex-wrap: wrap;
-
-        >div {
-            color: black;
-            font-weight: 400;
-            font-size: 20px;
-            margin: 0px 2px;
-
-            &.Link {
-                cursor: pointer;
-                color: #0465d6;
-    
-                &:hover {
-                    text-decoration-line: underline;
-                }
-            }
-        }
-    }
-
-    &.desktop >.Avatar-Box {
-        width: 70%;
-    }
-
-    &.tablets, &.mobile {
-        display: flex;
-        align-items: center;
-
-        >.Path {
-            margin: 0px 0px 0px 16px;
-        }
-    }
-
-    &.tablets >.Avatar-Box {
-        width: 20%;
-    }
-
-    &.mobile >.Avatar-Box {
-        width: 30%;
+    img {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        border-radius: 50%;
+        object-fit: cover;
     }
 }

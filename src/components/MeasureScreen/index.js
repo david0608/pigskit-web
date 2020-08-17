@@ -3,7 +3,6 @@ import Measure from 'react-measure';
 import { connect } from 'react-redux';
 import { deviceInfoActions } from '../store';
 
-
 const mapStateToProps = (state) => ({
     deviceType: state.deviceInfo.type,
     deviceScrolled: state.deviceInfo.scrolled,
@@ -62,4 +61,20 @@ const Measurer = connect(
     )
 })
 
-export default Measurer;
+const MeasureScreen = connect(
+    (state) => ({
+        deviceType: state.deviceInfo.type,
+    })
+)((props) => {
+    const {
+        deviceType,
+        children,
+    } = props
+
+    return (<>
+        <Measurer/>
+        {deviceType === 'unknown' ? null : children}
+    </>)
+})
+
+export default MeasureScreen;

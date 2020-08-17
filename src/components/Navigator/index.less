@@ -1,0 +1,27 @@
+.Navigator-root {
+    &.Horizontal {
+        height: 36px;
+    }
+
+    &.Vertical {
+        >a {
+            height: 36px;
+        }
+    }
+
+    >a {
+        color: rgba(0, 0, 0, 0.75);
+        font-size: 14px;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        padding: 0px 24px;
+        text-decoration: none;
+        -webkit-tap-highlight-color: transparent;
+
+        &.Actived, &:hover {
+            color: white;
+            background-color: #f02040;
+        }
+    }
+}

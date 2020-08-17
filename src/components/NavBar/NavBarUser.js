@@ -33,7 +33,7 @@ const NavBarUser = connect(
                 <p className='Title'>Hello, <strong>{nickname || username}</strong></p>
                 <DeviderL/>
                 <NavBarFloatItem>
-                    <LinkButton url={`${location.origin}/home`}>Your shops</LinkButton>
+                    <LinkButton url={`${location.origin}/home/#/shops`}>Your shops</LinkButton>
                 </NavBarFloatItem>
                 <NavBarFloatItem>
                     <SignOutButton/>
@@ -74,7 +74,7 @@ const SignOutButton = () => {
             })
             .then((res) => {
                 if (res.status === 200) {
-                    location.href = `${location.origin}/home`
+                    location.href = `${location.origin}/`
                 }
             })
             .finally(() => setBusy(false))
