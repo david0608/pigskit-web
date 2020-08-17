@@ -1,6 +1,6 @@
-import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react'
+import TextField from '@material-ui/core/TextField'
+import { makeStyles } from '@material-ui/core/styles'
 
 const rootStyle = makeStyles({
     root: {
@@ -79,7 +79,7 @@ const TextInput = React.memo((props) => {
         rootStyleProps = {},
         inputLabelStyleProps = {},
         ...innerProps
-    } = props;
+    } = props
 
     return (
         <TextField

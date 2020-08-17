@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { FiLogOut } from "react-icons/fi";
-import axios from '../../utils/axios';
-import { NavBarFloatList, NavBarFloatItem } from './utils/NavBarFloatList';
-import NavButton from './utils/NavButton';
-import RectButton from '../utils/RectButton';
+import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import { FiLogOut } from "react-icons/fi"
+import axios from '../../utils/axios'
+import { NavBarFloatList, NavBarFloatItem } from './utils/NavBarFloatList'
+import NavButton from './utils/NavButton'
+import RectButton from '../utils/RectButton'
 import { DeviderL } from '../utils/Devider'
-import { pigskit_restful_origin } from '../../utils/service_origins';
+import { pigskit_restful_origin } from '../../utils/service_origins'
 
 const NavBarUser = connect(
     (state) => ({
@@ -47,10 +47,10 @@ const LinkButton = (props) => {
     const {
         url,
         ...otherProps
-    } = props;
+    } = props
 
     const handleClick = () => {
-        location.href = url;
+        location.href = url
     }
 
     return (
@@ -63,7 +63,7 @@ const LinkButton = (props) => {
 }
 
 const SignOutButton = () => {
-    const [busy, setBusy] = useState(false);
+    const [busy, setBusy] = useState(false)
 
     const handleClick = () => {
         if (!busy) {
@@ -91,4 +91,4 @@ const SignOutButton = () => {
     )
 }
 
-export default NavBarUser;
+export default NavBarUser

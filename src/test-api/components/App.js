@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import '../less/App.less';
+import React, { useState, useEffect, useRef } from 'react'
+import '../less/App.less'
 
 const fetchWithJson = (method, url, body) => {
     fetch(
@@ -17,24 +17,24 @@ const fetchWithJson = (method, url, body) => {
     .then(res => res.text())
     .then((text) => {
         try {
-            console.log(JSON.parse(text));
+            console.log(JSON.parse(text))
         } catch {
-            console.log(text);
+            console.log(text)
         }
     })
-    .catch((error) => console.log(error));
+    .catch((error) => console.log(error))
 }
 
 const redirect_href = (url) => {
-    window.location.href = url;
+    window.location.href = url
 }
 
 const redirect_replace = (url) => {
-    window.location.replace(url);
+    window.location.replace(url)
 }
 
 const InputField = (props) => {
-    const {className, inputRef, label} = props;
+    const {className, inputRef, label} = props
     return (
         <div className={`InputFieldRoot${className ? ` ${className}` : ''}`}>
             <p>{label}</p>
@@ -44,11 +44,11 @@ const InputField = (props) => {
 }
 
 const TestUserApi = () => {
-    const refUsername = useRef(null);
-    const refPassword = useRef(null);
-    const refName = useRef(null);
-    const refEmail = useRef(null);
-    const refPhone = useRef(null);
+    const refUsername = useRef(null)
+    const refPassword = useRef(null)
+    const refName = useRef(null)
+    const refEmail = useRef(null)
+    const refPhone = useRef(null)
 
     const register = () => fetchWithJson(
         "POST",
@@ -60,7 +60,7 @@ const TestUserApi = () => {
             email: refEmail.current.value,
             phone: refPhone.current.value
         }
-    );
+    )
 
     const signin = () => fetchWithJson(
         "POST",
@@ -69,17 +69,17 @@ const TestUserApi = () => {
             username: refUsername.current.value,
             password: refPassword.current.value
         }
-    );
+    )
 
     const signout = () => fetchWithJson(
         "DELETE",
         `${location.origin}/api/user/session`
-    );
+    )
 
     const session = () => fetchWithJson(
         "GET",
         `${location.origin}/api/user/session`
-    );
+    )
 
     return (
         <div className="TestRoot">
@@ -97,19 +97,19 @@ const TestUserApi = () => {
                 <InputField inputRef={refPhone} label={"Phone"} />
             </div>
         </div>
-    );
+    )
 }
 
 const TestRegisterApi = () => {
-    const refEmail = useRef(null);
-    const refPhone = useRef(null);
-    const refUsername = useRef(null);
-    const refPassword = useRef(null);
+    const refEmail = useRef(null)
+    const refPhone = useRef(null)
+    const refUsername = useRef(null)
+    const refPassword = useRef(null)
 
     const startRegister = () => fetchWithJson(
         "POST",
         `${location.origin}/api/user/register`
-    );
+    )
 
     const submitEmail = () => fetchWithJson(
         "PATCH",
@@ -118,7 +118,7 @@ const TestRegisterApi = () => {
             operation: "email",
             data: refEmail.current.value
         }
-    );
+    )
 
     const submitPhone = () => fetchWithJson(
         "PATCH",
@@ -127,7 +127,7 @@ const TestRegisterApi = () => {
             operation: "phone",
             data: refPhone.current.value
         }
-    );
+    )
 
     const submitUsername = () => fetchWithJson(
         "PATCH",
@@ -136,7 +136,7 @@ const TestRegisterApi = () => {
             operation: "username",
             data: refUsername.current.value
         }
-    );
+    )
 
     const submitPassword = () => fetchWithJson(
         "PATCH",
@@ -145,7 +145,7 @@ const TestRegisterApi = () => {
             operation: "password",
             data: refPassword.current.value
         }
-    );
+    )
 
     const register = () => fetchWithJson(
         "PATCH",
@@ -158,17 +158,17 @@ const TestRegisterApi = () => {
     const getEmail = () => fetchWithJson(
         "GET",
         `${location.origin}/api/user/register?operation=email`,
-    );
+    )
 
     const getPhone = () => fetchWithJson(
         "GET",
         `${location.origin}/api/user/register?operation=phone`,
-    );
+    )
 
     const getUsername = () => fetchWithJson(
         "GET",
         `${location.origin}/api/user/register?operation=username`,
-    );
+    )
 
     return (
         <div className="TestRoot">
@@ -194,11 +194,11 @@ const TestRegisterApi = () => {
 }
 
 const TestShopApi = () => {
-    const refShopName = useRef(null);
-    const refShopId = useRef(null);
-    const refMemberId = useRef(null);
-    const refAuthority = useRef(null);
-    const refPermission = useRef(null);
+    const refShopName = useRef(null)
+    const refShopId = useRef(null)
+    const refMemberId = useRef(null)
+    const refAuthority = useRef(null)
+    const refPermission = useRef(null)
 
     const createShop = () => fetchWithJson(
         "POST",
@@ -206,7 +206,7 @@ const TestShopApi = () => {
         {
             shop_name: refShopName.current.value
         }
-    );
+    )
 
     const addShopMember = () => fetchWithJson(
         "POST",
@@ -215,7 +215,7 @@ const TestShopApi = () => {
             shop_id: refShopId.current.value,
             member_id: refMemberId.current.value
         }
-    );
+    )
 
     const setShopMemberAuthority = () => fetchWithJson(
         "PATCH",
@@ -226,7 +226,7 @@ const TestShopApi = () => {
             authority: refAuthority.current.value,
             permission: refPermission.current.value
         }
-    );
+    )
 
     return (
         <div className="TestRoot">
@@ -247,9 +247,9 @@ const TestShopApi = () => {
 }
 
 const TestProductApi = () => {
-    const refShopId = useRef(null);
-    const refProductKey = useRef(null);
-    const refCustomizeKey = useRef(null);
+    const refShopId = useRef(null)
+    const refProductKey = useRef(null)
+    const refCustomizeKey = useRef(null)
     
     const createProduct = () => fetchWithJson(
         "POST",
@@ -274,7 +274,7 @@ const TestProductApi = () => {
                 ]
             })
         }
-    );
+    )
 
     const createProduct2 = () => fetchWithJson(
         "POST",
@@ -326,7 +326,7 @@ const TestProductApi = () => {
             shop_id: refShopId.current.value,
             product_key: refProductKey.current.value
         }
-    );
+    )
 
     const updateProduct = () => fetchWithJson(
         "PATCH",
@@ -349,7 +349,7 @@ const TestProductApi = () => {
                 ]
             })
         }
-    );
+    )
 
     return (
         <div className="TestRoot">
@@ -371,13 +371,13 @@ const TestProductApi = () => {
 const App = () => {
 
     const upload_avatar = (evt) => {
-        evt.preventDefault();
-        const formdata = new FormData();
+        evt.preventDefault()
+        const formdata = new FormData()
 
-        formdata.append('image', evt.target.files[0]);
+        formdata.append('image', evt.target.files[0])
 
         for (var value of formdata.values()) {
-            console.log(value);
+            console.log(value)
         }
 
         fetch(
@@ -390,8 +390,8 @@ const App = () => {
         .then(res => res.text())
         .then(text => console.log(text))
         .catch(error => console.log(error))
-    };
-    const delete_avatar = () => fetchWithJson("DELETE", `${location.origin}/fs/user/avatar`);
+    }
+    const delete_avatar = () => fetchWithJson("DELETE", `${location.origin}/fs/user/avatar`)
 
     return (
         <div className="App">
@@ -405,7 +405,7 @@ const App = () => {
                 <img src={`${location.origin}/fs/user/avatar`} />
             </div>
         </div>
-    );
+    )
 }
 
-export default App;
+export default App

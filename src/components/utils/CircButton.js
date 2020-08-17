@@ -1,6 +1,6 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react'
+import Button from '@material-ui/core/Button'
+import { makeStyles } from '@material-ui/core/styles'
 
 const styles = makeStyles({
     root: {
@@ -32,7 +32,7 @@ const CircButton = React.memo(
             labelSize = '20px',
             labelColor = '#f02040',
             ...innerProps
-        } = props;
+        } = props
 
         const classes = styles({
             backgroundColor: backgroundColor,
@@ -40,7 +40,7 @@ const CircButton = React.memo(
             size: size,
             labelSize: labelSize,
             labelColor: labelColor,
-        });
+        })
 
         return (
             <Button
@@ -51,4 +51,4 @@ const CircButton = React.memo(
     }
 )
 
-export default CircButton;
+export default CircButton

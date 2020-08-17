@@ -25,4 +25,4 @@ ReactDOM.render(
         <RootPage/>
     </App>,
     document.getElementById('root')
-);
+)

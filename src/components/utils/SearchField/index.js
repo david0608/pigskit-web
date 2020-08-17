@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import clsx from 'clsx'
-import { BsX } from 'react-icons/bs';
+import { BsX } from 'react-icons/bs'
 import TextInput from '../TextInput'
 import './index.less'
 

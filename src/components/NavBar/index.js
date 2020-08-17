@@ -1,9 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import clsx from 'clsx';
-import NavBarSignInUp from './NavBarSignInUp';
-import NavBarUser from './NavBarUser';
-import './index.less';
+import React from 'react'
+import { connect } from 'react-redux'
+import clsx from 'clsx'
+import NavBarSignInUp from './NavBarSignInUp'
+import NavBarUser from './NavBarUser'
+import './index.less'
 
 const mapStateToProps = (state) => ({
     state: {
@@ -18,13 +18,13 @@ const NavBar = connect(
 )((props) => {
     const {
         state
-    } = props;
+    } = props
 
     const {
         deviceType,
         deviceScrolled,
         userSignedIn,
-    } = state;
+    } = state
 
     return (<>
         <div className={clsx('NavBar-Root', deviceScrolled && 'Scrolled')}>
@@ -60,4 +60,4 @@ const NavBarLogo = React.memo(
     }
 )
 
-export default NavBar;
+export default NavBar

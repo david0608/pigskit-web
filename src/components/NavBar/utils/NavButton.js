@@ -1,5 +1,5 @@
-import React from 'react';
-import { withStyles, Button } from '@material-ui/core';
+import React from 'react'
+import { withStyles, Button } from '@material-ui/core'
 
 const ButtonBase = withStyles({
     root: {
@@ -26,7 +26,7 @@ const ButtonBase = withStyles({
             borderRadius: '17px',
         }
     }
-})(Button);
+})(Button)
 
 const ButtonMobile = withStyles({
     root: {
@@ -41,13 +41,13 @@ const ButtonMobile = withStyles({
             marginRight: 'unset',
         }
     }
-})(ButtonBase);
+})(ButtonBase)
 
 const NavButton = (props) => {
     const {
         deviceType,
         ...innerProps
-    } = props;
+    } = props
 
     switch (deviceType) {
         case 'mobile':
@@ -57,4 +57,4 @@ const NavButton = (props) => {
     }
 }
 
-export default NavButton;
+export default NavButton

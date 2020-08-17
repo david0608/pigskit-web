@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect } from 'react';
-import Measure from 'react-measure';
-import { connect } from 'react-redux';
-import { deviceInfoActions } from '../store';
+import React, { useCallback, useEffect } from 'react'
+import Measure from 'react-measure'
+import { connect } from 'react-redux'
+import { deviceInfoActions } from '../store'
 
 const mapStateToProps = (state) => ({
     deviceType: state.deviceInfo.type,
@@ -22,37 +22,37 @@ const Measurer = connect(
         updateDeviceType,
         deviceScrolled,
         updateDeviceScrolled,
-    } = props;
+    } = props
 
     useEffect(() => {
         const handleScroll = () => {
             if (window.pageYOffset >= 1 && !deviceScrolled) {
-                updateDeviceScrolled(true);
+                updateDeviceScrolled(true)
             } else if (window.pageYOffset < 1 && deviceScrolled) {
-                updateDeviceScrolled(false);
+                updateDeviceScrolled(false)
             }
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [deviceScrolled, updateDeviceScrolled]);
+        }
+        window.addEventListener('scroll', handleScroll)
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [deviceScrolled, updateDeviceScrolled])
 
     const handleResize = useCallback(({ entry }) => {
         if (entry) {
             if (entry.width < 500) {
                 if (deviceType != 'mobile') {
-                    updateDeviceType('mobile');
+                    updateDeviceType('mobile')
                 }
             } else if (entry.width < 900) {
                 if (deviceType != 'tablets') {
-                    updateDeviceType('tablets');
+                    updateDeviceType('tablets')
                 }
             } else {
                 if (deviceType != 'desktop') {
-                    updateDeviceType('desktop');
+                    updateDeviceType('desktop')
                 }
             }
         }
-    }, [deviceType, updateDeviceType]);
+    }, [deviceType, updateDeviceType])
     
     return (
         <Measure onResize={handleResize}>
@@ -77,4 +77,4 @@ const MeasureScreen = connect(
     </>)
 })
 
-export default MeasureScreen;
+export default MeasureScreen

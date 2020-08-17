@@ -1,10 +1,9 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react'
+import Button from '@material-ui/core/Button'
+import { makeStyles } from '@material-ui/core/styles'
 
 const rectButtonStyle = makeStyles({
     root: {
-        // position: 'unset',
         fontFamily: 'inherit',
         fontSize: '14px',
         fontWeight: '400',
@@ -24,12 +23,12 @@ const RectButton = React.memo(
             backgroundColor = '#f02040',
             backgroundColorHover = '#ff2040',
             ...otherProps
-        } = props;
+        } = props
 
         const classes = rectButtonStyle({
             backgroundColor: backgroundColor,
             backgroundColorHover: backgroundColorHover,
-        });
+        })
 
         return (
             <Button
@@ -40,4 +39,4 @@ const RectButton = React.memo(
     }
 )
 
-export default RectButton;
+export default RectButton

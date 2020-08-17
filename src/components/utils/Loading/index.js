@@ -1,8 +1,8 @@
-import React from 'react';
-import clsx from 'clsx';
-import TweenOne from 'rc-tween-one';
-import SvgDrawPlugin from 'rc-tween-one/lib/plugin/SvgDrawPlugin';
-TweenOne.plugins.push(SvgDrawPlugin);
+import React from 'react'
+import clsx from 'clsx'
+import TweenOne from 'rc-tween-one'
+import SvgDrawPlugin from 'rc-tween-one/lib/plugin/SvgDrawPlugin'
+TweenOne.plugins.push(SvgDrawPlugin)
 import './index.less'
 
 const Loading = React.memo(
@@ -46,9 +46,9 @@ const AnimatedRing = (props) => {
         radius = 12,
         strokeWidth = 3,
         ...otherProps
-    } = props;
+    } = props
 
-    const svgSize = 2 * (radius + strokeWidth);
+    const svgSize = 2 * (radius + strokeWidth)
 
     return (
         <svg
@@ -80,11 +80,11 @@ const Ring = (props) => {
         stroke = 'white',
         strokeLinecap = 'round',
         fill = 'none',
-    } = props;
+    } = props
 
-    const p0 = ringPos(radius, strokeWidth, 0.99);
-    const p1 = ringPos(radius, strokeWidth, 0.5);
-    const p2 = ringPos(radius, strokeWidth, 0.01);
+    const p0 = ringPos(radius, strokeWidth, 0.99)
+    const p1 = ringPos(radius, strokeWidth, 0.5)
+    const p2 = ringPos(radius, strokeWidth, 0.01)
 
     return (
         <path
@@ -102,11 +102,11 @@ const Ring = (props) => {
 }
 
 function ringPos(radius, strokeWidth, ratio) {
-    let phaseAngle = ratio * 2 * Math.PI;
+    let phaseAngle = ratio * 2 * Math.PI
     return {
         x: radius * (1 + Math.sin(phaseAngle)) + strokeWidth,
         y: radius * (1 - Math.cos(phaseAngle)) + strokeWidth,
     }
 }
 
-export default Loading;
+export default Loading

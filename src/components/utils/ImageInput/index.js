@@ -2,7 +2,7 @@ import React from 'react'
 import clsx from 'clsx'
 import Measure from 'react-measure'
 import ReactCrop from 'react-image-crop'
-import "react-image-crop/dist/ReactCrop.css";
+import "react-image-crop/dist/ReactCrop.css"
 import { GoPlus } from "react-icons/go"
 import { useDropScreen } from '../../DropScreen'
 import RectButton from '../RectButton'

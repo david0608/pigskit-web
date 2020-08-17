@@ -1,12 +1,12 @@
-import ReactDOM from 'react-dom';
-import React, { useState } from "react";
+import ReactDOM from 'react-dom'
+import React, { useState } from "react"
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link,
   Redirect,
-} from "react-router-dom";
+} from "react-router-dom"
 
 function ForceLink() {
     const [trigger, setTrigger] = useState(false)
@@ -52,22 +52,22 @@ function App() {
         </Switch>
       </div>
     </Router>
-  );
+  )
 }
 
 function Home() {
-  return <h2>Home</h2>;
+  return <h2>Home</h2>
 }
 
 function About() {
-  return <h2>About</h2>;
+  return <h2>About</h2>
 }
 
 function Users() {
-  return <h2>Users</h2>;
+  return <h2>Users</h2>
 }
 
 ReactDOM.render(
     <App/>,
     document.getElementById('root')
-);
+)

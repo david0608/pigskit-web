@@ -1,19 +1,19 @@
-import React, { useRef, useState } from 'react';
-import { BsFillPersonFill } from 'react-icons/bs';
-import axios from '../../utils/axios';
-import { useAbort, createAbort } from '../../utils/abort';
+import React, { useRef, useState } from 'react'
+import { BsFillPersonFill } from 'react-icons/bs'
+import axios from '../../utils/axios'
+import { useAbort, createAbort } from '../../utils/abort'
 import { useDropScreen } from '../DropScreen'
-import NavButton from './utils/NavButton';
-import RectButton from '../utils/RectButton';
-import TextInput from '../utils/TextInput';
-import './NavBarSignInUp.less';
+import NavButton from './utils/NavButton'
+import RectButton from '../utils/RectButton'
+import TextInput from '../utils/TextInput'
+import './NavBarSignInUp.less'
 
 const NavBarSignInUp = React.memo(
     (props) => {
         const {
             className,
             deviceType,
-        } = props;
+        } = props
 
         const refDropScreen = useDropScreen()
 
@@ -30,32 +30,32 @@ const NavBarSignInUp = React.memo(
 )
 
 const SignInPage = () => {
-    const refDropScreen = useDropScreen();
-    const refUsername = useRef(null);
-    const refPassword = useRef(null);
+    const refDropScreen = useDropScreen()
+    const refUsername = useRef(null)
+    const refPassword = useRef(null)
 
-    const [busy, setBusy] = useState(false);
-    const [usernameError, setUsernameError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
-    const [signInError, setSignInError] = useState('');
+    const [busy, setBusy] = useState(false)
+    const [usernameError, setUsernameError] = useState('')
+    const [passwordError, setPasswordError] = useState('')
+    const [signInError, setSignInError] = useState('')
     const abort = useAbort()
 
     const handleSignIn = () => {
         if (!busy) {
-            setUsernameError('');
-            setPasswordError('');
-            setSignInError('');
-            let checked = true;
+            setUsernameError('')
+            setPasswordError('')
+            setSignInError('')
+            let checked = true
             if (!refUsername.current.value) {
-                setUsernameError('Please enter username.');
-                checked = false;
+                setUsernameError('Please enter username.')
+                checked = false
             }
             if (!refPassword.current.value) {
-                setPasswordError('Please enter password.');
-                checked = false;
+                setPasswordError('Please enter password.')
+                checked = false
             }
             if (checked) {
-                setBusy(true);
+                setBusy(true)
                 axios({
                     method: 'POST',
                     url: '/api/user/session',
@@ -66,19 +66,19 @@ const SignInPage = () => {
                 })
                 .then((res) => {
                     if (res.status === 200) {
-                        location.href = `${location.origin}/home`;
+                        location.href = `${location.origin}/home`
                     }
                 })
                 .catch((err) => {
                     switch (err.response.data.type) {
                         case 'Unauthorized':
-                            setSignInError('Invalid username or password.');
-                            break;
+                            setSignInError('Invalid username or password.')
+                            break
                         default:
-                            setSignInError('Encountered an unknown error, please try again.');
+                            setSignInError('Encountered an unknown error, please try again.')
                     }
                 })
-                .finally(() => setBusy(false));
+                .finally(() => setBusy(false))
             }
         }
     }
@@ -86,7 +86,7 @@ const SignInPage = () => {
     const handleSignUp = () => {
         if (!busy) {
             const abortTk = abort.signup()
-            setBusy(true);
+            setBusy(true)
             axios({
                 method: 'POST',
                 url: '/api/user/register',
@@ -139,7 +139,7 @@ const SignInPage = () => {
 
 class Error {
     constructor(type) {
-        this.type = type;
+        this.type = type
     }
 
     static fromAxios(error) {
@@ -149,10 +149,10 @@ class Error {
 
 class Step {
     constructor(props = {}, component) {
-        let errors = props.errors || {};
-        let input = errors.input || {};
-        let check = errors.check || {};
-        let hint = errors.hint || {};
+        let errors = props.errors || {}
+        let input = errors.input || {}
+        let check = errors.check || {}
+        let hint = errors.hint || {}
         this.props = {
             ...props,
             errors: {
@@ -172,8 +172,8 @@ class Step {
                     ...hint,
                 },
             }
-        };
-        this.component = component;
+        }
+        this.component = component
     }
 
     render(props) {
@@ -221,10 +221,10 @@ class PasswordStep extends Step {
 
 class StepComponent extends React.Component {
     constructor(props) {
-        super(props);
-        this.inputdRef = React.createRef();
-        this.checkRef = React.createRef();
-        this.abort = createAbort();
+        super(props)
+        this.inputdRef = React.createRef()
+        this.checkRef = React.createRef()
+        this.abort = createAbort()
         this.state = {
             busy: false,
             inputError: '',
@@ -245,11 +245,11 @@ class StepComponent extends React.Component {
                 inputError: '',
                 checkError: '',
                 hintError: '',
-            });
+            })
             Promise.resolve()
             .then(() => {
                 if (this.props.isPassword && this.inputdRef.current.value !== this.checkRef.current.value) {
-                    throw new Error('CheckFailed');
+                    throw new Error('CheckFailed')
                 }
             })
             .then(() => {
@@ -274,27 +274,27 @@ class StepComponent extends React.Component {
                 }
             })
             .catch((err) => {
-                let errors = this.props.errors;
+                let errors = this.props.errors
                 if (errors.input[err.type]) {
                     this.setState({
                         busy: false,
                         inputError: errors.input[err.type],
-                    });
+                    })
                 } else if (errors.check[err.type]) {
                     this.setState({
                         busy: false,
                         checkError: errors.check[err.type],
-                    });
+                    })
                 } else if (errors.hint[err.type]) {
                     this.setState({
                         busy: false,
                         hintError: errors.check[err.type],
-                    });
+                    })
                 } else {
                     this.setState({
                         busy: false,
                         hintError: 'Encountered an unknown error, please try again.',
-                    });
+                    })
                 }
             })
         }
@@ -302,10 +302,10 @@ class StepComponent extends React.Component {
 
     back() {
         if (!this.state.busy) {
-            this.setState({ busy: true });
+            this.setState({ busy: true })
             Promise.resolve()
             .then(this.props.onBackCB)
-            .finally(() => this.setState({ busy: false }));
+            .finally(() => this.setState({ busy: false }))
         }
     }
 
@@ -380,17 +380,17 @@ const SIGNUP_STEPS = [
         },
     }),
     new PasswordStep({}),
-];
+]
 
 const SignUpPage = (props) => {
-    const [step, setStep] = useState(0);
-    const [stepProps, setStepProps] = useState({});
-    const [finish, setFinish] = useState(false);
+    const [step, setStep] = useState(0)
+    const [stepProps, setStepProps] = useState({})
+    const [finish, setFinish] = useState(false)
 
     const refDropScreen = useDropScreen()
 
-    let onNextCB;
-    let nextStep = SIGNUP_STEPS[step + 1];
+    let onNextCB
+    let nextStep = SIGNUP_STEPS[step + 1]
     if (nextStep && nextStep.prepare) {
         onNextCB = () => {
             return nextStep.prepare()
@@ -398,12 +398,12 @@ const SignUpPage = (props) => {
                 .catch(() => setStepProps({}))
                 .finally(() => {
                     setStep(step + 1)
-                });
-        };
+                })
+        }
     } else if (nextStep) {
         onNextCB = () => {
-            setStepProps({});
-            setStep(step + 1);
+            setStepProps({})
+            setStep(step + 1)
         }
     } else {
         onNextCB = () => {
@@ -421,20 +421,20 @@ const SignUpPage = (props) => {
         }
     }
 
-    let onBackCB;
-    let prevStep = SIGNUP_STEPS[step - 1];
+    let onBackCB
+    let prevStep = SIGNUP_STEPS[step - 1]
     if (prevStep && prevStep.prepare) {
         onBackCB = () => {
             return prevStep.prepare()
                 .then((props) => setStepProps(props))
                 .catch(() => setStepProps({}))
-                .finally(() => setStep(step - 1));
-        };
+                .finally(() => setStep(step - 1))
+        }
     } else if (prevStep) {
         onBackCB = () => {
             setStepProps({})
-            setStep(step - 1);
-        };
+            setStep(step - 1)
+        }
     }
 
     return (
@@ -463,4 +463,4 @@ const SignUpPage = (props) => {
     )
 }
 
-export default NavBarSignInUp;
+export default NavBarSignInUp

@@ -85,4 +85,4 @@ ReactDOM.render(
         </CheckSignedIn>
     </App>,
     document.getElementById('root')
-);
+)

@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { userInfoActions } from '../store';
-import axios from '../../utils/axios';
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
+import { userInfoActions } from '../store'
+import axios from '../../utils/axios'
 
 const mapDispatchToProps = (dispatch) => ({
     initUserInfo: (info = {}) => dispatch(userInfoActions.init(info))
@@ -11,7 +11,7 @@ const Session = connect(
     () => ({}),
     mapDispatchToProps,
 )((props) => {
-    const { initUserInfo } = props;
+    const { initUserInfo } = props
 
     useEffect(() => {
         axios({
@@ -25,17 +25,17 @@ const Session = connect(
                     ...res.data
                 })
             } else {
-                throw 'Unexpected';
+                throw 'Unexpected'
             }
         })
         .catch(() => {
             initUserInfo({
                 signedIn: false,
             })
-        });
-    }, []);
+        })
+    }, [])
     
-    return null;
+    return null
 })
 
 export const UserInfo = connect(
