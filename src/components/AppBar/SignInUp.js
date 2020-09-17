@@ -1,14 +1,16 @@
 import React, { useRef, useState } from 'react'
+import { connect } from 'react-redux'
+import clsx from 'clsx'
 import { BsFillPersonFill } from 'react-icons/bs'
 import axios from '../../utils/axios'
 import { useAbort, createAbort } from '../../utils/abort'
 import { useDropScreen } from '../DropScreen'
-import NavButton from './utils/NavButton'
+import { TopBarButton } from '../utils/Decorate/TopBar'
 import RectButton from '../utils/RectButton'
 import TextInput from '../utils/TextInput'
-import './NavBarSignInUp.less'
+import './SignInUp.less'
 
-const NavBarSignInUp = React.memo(
+const SignInUp = React.memo(
     (props) => {
         const {
             className,
@@ -18,18 +20,26 @@ const NavBarSignInUp = React.memo(
         const refDropScreen = useDropScreen()
 
         return (
-            <NavButton
+            <TopBarButton
                 className={className}
                 deviceType={deviceType}
                 onClick={() => refDropScreen.current.open(<SignInPage/>)}
             >
                 <BsFillPersonFill/>{deviceType === 'mobile' ? null : 'Sign in'}
-            </NavButton>
+            </TopBarButton>
         )
     }
 )
 
-const SignInPage = () => {
+const SignInPage = connect(
+    (state) => ({
+        deviceType: state.deviceInfo.type,
+    })
+)((props) => {
+    const {
+        deviceType
+    } = props
+
     const refDropScreen = useDropScreen()
     const refUsername = useRef(null)
     const refPassword = useRef(null)
@@ -106,7 +116,7 @@ const SignInPage = () => {
     }
 
     return (
-        <div className='SignInPageRoot'>
+        <div className={clsx('SignInPageRoot', deviceType)}>
             <p className='Title'>Sign in</p>
             <TextInput
                 ref={refUsername}
@@ -135,7 +145,7 @@ const SignInPage = () => {
             </p>
         </div>
     )
-}
+})
 
 class Error {
     constructor(type) {
@@ -222,7 +232,7 @@ class PasswordStep extends Step {
 class StepComponent extends React.Component {
     constructor(props) {
         super(props)
-        this.inputdRef = React.createRef()
+        this.inputRef = React.createRef()
         this.checkRef = React.createRef()
         this.abort = createAbort()
         this.state = {
@@ -248,17 +258,15 @@ class StepComponent extends React.Component {
             })
             Promise.resolve()
             .then(() => {
-                if (this.props.isPassword && this.inputdRef.current.value !== this.checkRef.current.value) {
+                if (this.props.isPassword && this.inputRef.current.value !== this.checkRef.current.value) {
                     throw new Error('CheckFailed')
                 }
-            })
-            .then(() => {
                 return axios({
                     method: 'PATCH',
                     url: '/api/user/register',
                     data: {
                         operation: this.props.operation,
-                        data: this.inputdRef.current.value,
+                        data: this.inputRef.current.value,
                     },
                     cancelToken: abort.axiosCancelTk()
                 })
@@ -267,34 +275,30 @@ class StepComponent extends React.Component {
                 })
             })
             .then(this.props.onNextCB)
-            .then(() => {
-                if (!abort.isAborted()) {
-                    this.abort.signout(abort)
-                    this.setState({ busy: false })
-                }
-            })
             .catch((err) => {
                 let errors = this.props.errors
                 if (errors.input[err.type]) {
                     this.setState({
-                        busy: false,
                         inputError: errors.input[err.type],
                     })
                 } else if (errors.check[err.type]) {
                     this.setState({
-                        busy: false,
                         checkError: errors.check[err.type],
                     })
                 } else if (errors.hint[err.type]) {
                     this.setState({
-                        busy: false,
                         hintError: errors.check[err.type],
                     })
                 } else {
                     this.setState({
-                        busy: false,
                         hintError: 'Encountered an unknown error, please try again.',
                     })
+                }
+            })
+            .finally(() => {
+                if (!abort.isAborted()) {
+                    this.abort.signout(abort)
+                    this.setState({ busy: false })
                 }
             })
         }
@@ -302,10 +306,16 @@ class StepComponent extends React.Component {
 
     back() {
         if (!this.state.busy) {
+            const abort = this.abort.signup()
             this.setState({ busy: true })
             Promise.resolve()
             .then(this.props.onBackCB)
-            .finally(() => this.setState({ busy: false }))
+            .finally(() => {
+                if (!abort.isAborted()) {
+                    this.abort.signout(abort)
+                    this.setState({ busy: false })
+                }
+            })
         }
     }
 
@@ -317,7 +327,7 @@ class StepComponent extends React.Component {
                 <p className='Desc'>{this.props.desc}</p>
             }
             <TextInput
-                ref={this.inputdRef}
+                ref={this.inputRef}
                 className='TextInput'
                 label={this.props.label}
                 type={this.props.isPassword ? 'password' : 'string'}
@@ -382,7 +392,15 @@ const SIGNUP_STEPS = [
     new PasswordStep({}),
 ]
 
-const SignUpPage = (props) => {
+const SignUpPage = connect(
+    (state) => ({
+        deviceType: state.deviceInfo.type,
+    })
+)((props) => {
+    const {
+        deviceType,
+    } = props
+
     const [step, setStep] = useState(0)
     const [stepProps, setStepProps] = useState({})
     const [finish, setFinish] = useState(false)
@@ -438,7 +456,7 @@ const SignUpPage = (props) => {
     }
 
     return (
-        <div className='SignUpPageRoot'>
+        <div className={clsx('SignUpPageRoot', deviceType)}>
             <p className='Title'>Sign up</p>
             {
                 finish ?
@@ -461,6 +479,6 @@ const SignUpPage = (props) => {
             }
         </div>
     )
-}
+})
 
-export default NavBarSignInUp
+export default SignInUp

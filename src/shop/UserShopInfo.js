@@ -1,6 +1,6 @@
 import React, { useContext, useReducer, useEffect } from 'react'
-import ApolloClient, { gql } from 'apollo-boost'
-import { pigskit_graphql_origin } from '../utils/service_origins'
+import { gql } from 'apollo-boost'
+import { Client } from '../utils/apollo'
 
 const StateContext = React.createContext()
 const DispatchContext = React.createContext()
@@ -77,10 +77,7 @@ const InitUserShopInfo = (props) => {
     const dispatch = useDispatch()
     
     useEffect(() => {
-        const client = new ApolloClient({
-            uri: `${pigskit_graphql_origin()}/graphql`,
-            credentials: 'include',
-        })
+        const client = new Client()
 
         let url = new URL(location.href)
         let search = new URLSearchParams(url.search)

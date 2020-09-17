@@ -1,70 +1,31 @@
 import ReactDOM from 'react-dom'
-import React, { useState } from "react"
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Redirect,
-} from "react-router-dom"
-
-function ForceLink() {
-    const [trigger, setTrigger] = useState(false)
-
-    return (<>
-        <button onClick={() => setTrigger(true)}>Home</button>
-        {trigger ? <Redirect to="/test"/> : null}
-    </>)
-}
+import React from "react"
+import CheckList from '../components/utils/CheckList'
+import './index.less'
 
 function App() {
-  return (
-    <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              {/* <Link to="/test/">Home</Link> */}
-              {/* <button onClick={() => location.href = `/test`}>Home</button> */}
-              <ForceLink/>
-            </li>
-            <li>
-              <Link to="/test/about">About</Link>
-            </li>
-            <li>
-              <Link to="/test/users">Users</Link>
-            </li>
-          </ul>
-        </nav>
+    return (
+        <CheckList
+            multiple
+            listItems={{
+                1: 'one',
+                2: 'two',
+                3: 'three',
+            }}
+            ItemComponent={(props) => {
+                const {
+                    itemKey,
+                    itemValue,
+                } = props
 
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-        <Switch>
-          <Route path="/test/about">
-            <About />
-          </Route>
-          <Route path="/test/users">
-            <Users />
-          </Route>
-          <Route path="/test/">
-            <Home />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
-  )
-}
-
-function Home() {
-  return <h2>Home</h2>
-}
-
-function About() {
-  return <h2>About</h2>
-}
-
-function Users() {
-  return <h2>Users</h2>
+                return (
+                    <div>
+                        {itemValue}
+                    </div>
+                )
+            }}
+        />
+    )
 }
 
 ReactDOM.render(

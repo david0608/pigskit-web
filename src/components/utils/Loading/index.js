@@ -26,7 +26,7 @@ const Loading = React.memo(
     }
 )
 
-const LoadingRing = (props) => {
+export const LoadingRing = (props) => {
     return (
         <TweenOne
             animation={{

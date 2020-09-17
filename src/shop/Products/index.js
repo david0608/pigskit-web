@@ -17,8 +17,8 @@ import './index.less'
 const Products = React.memo(() => {
     const userShopInfoState = UserShopInfo.useState()
 
-    const newPath = userShopInfoState.productAuthority === 'ALL' ?
-        `/create_product` : null
+    const newUrl = userShopInfoState.productAuthority === 'ALL' ?
+        `${location.origin}${location.pathname}${location.search}#/create_product` : null
 
     const Query = useMemo(
         () => queryComponent({
@@ -31,6 +31,7 @@ const Products = React.memo(() => {
                                 name
                                 description
                                 price
+                                hasPicture
                                 latestUpdate
                                 customizes {
                                     key
@@ -63,7 +64,7 @@ const Products = React.memo(() => {
         <QueryProvider>
             <Terminal
                 className='Products'
-                newPath={newPath}
+                newUrl={newUrl}
                 QueryComponent={Query}
                 BodyComponent={Body}
             />
@@ -85,7 +86,7 @@ const Body = () => {
         if (queryContext.error) {
             console.log('Query error:', queryContext.error)
         } else {
-            let data = queryContext.data()
+            let data = queryContext.data
             if (data && data.length > 0) {
                 children = data.map((e, i) => (
                     <Abstract key={i}>
@@ -138,7 +139,7 @@ const Detail = connect(
                 <div className='Name'>{data.name}</div>
                 <CircButton><MdEdit/></CircButton>
             </div>
-            <Image src={`/fs/shop/product/image?shop_id=${shopId}&product_key=${data.key}`}/>
+            <Image url={data.hasPicture ? `/fs/shop/product/image?shop_id=${shopId}&product_key=${data.key}` : null}/>
             <div className='Info'>
                 <div className='Description'>{data.description}</div>
                 <Decorate.Price>{data.price}</Decorate.Price>

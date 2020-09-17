@@ -1,0 +1,83 @@
+.Orders-root {
+    color: rgba(0, 0, 0, 0.75);
+
+    >.Order {
+        margin-top: 8px;
+    }
+}
+
+.Order-body {
+    &.Outline {
+        font-size: 12px;
+        padding: 8px 16px;
+
+        >.Header {
+            font-size: 16px;
+            align-items: center;
+
+            >.Right {
+                margin-left: auto;
+                font-size: 12px;
+            }
+        }
+    }
+
+    &.Detail {
+        font-size: 14px;
+        padding: 24px 16px 28px;
+
+        >.Header {
+            font-size: 22px;
+            font-weight: 600;
+        }
+    }
+
+    >.Header, >.TotalPrice, >.OrderAt {
+        padding: 8px 0px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    >.TotalPrice>.Right, >.OrderAt>.Right {
+        margin-left: auto;
+    }
+
+    >.Item {
+        padding: 8px 0px;
+
+        >div {
+            margin: 8px 0px;
+        }
+
+        >.Header {
+            display: flex;
+            flex-wrap: wrap;
+
+            >.Name {
+                font-size: 16px;
+                font-weight: 600;
+            }
+
+            >.Price {
+                margin-left: auto;
+            }
+        }
+
+        >.Customize {
+            padding: 0px 16px;
+        }
+
+        >.Customize {
+            display: flex;
+            flex-wrap: wrap;
+
+            >.Selection {
+                margin-left: auto;
+            }
+        }
+
+        >.Quantity {
+            text-align: end;
+        }
+    }
+}

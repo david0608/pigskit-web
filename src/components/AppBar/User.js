@@ -2,13 +2,14 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { FiLogOut } from "react-icons/fi"
 import axios from '../../utils/axios'
-import { NavBarFloatList, NavBarFloatItem } from './utils/NavBarFloatList'
-import NavButton from './utils/NavButton'
+import { TopBarFloatList } from '../utils/Decorate/TopBar'
+import { FloatItem } from '../utils/FloatList'
+import { TopBarButton } from '../utils/Decorate/TopBar'
 import RectButton from '../utils/RectButton'
 import { DeviderL } from '../utils/Devider'
 import { pigskit_restful_origin } from '../../utils/service_origins'
 
-const NavBarUser = connect(
+const User = connect(
     (state) => ({
         username: state.userInfo.username,
         nickname: state.userInfo.nickname,
@@ -23,22 +24,22 @@ const NavBarUser = connect(
         } = props
 
         return (
-            <NavBarFloatList
+            <TopBarFloatList
                 label={
-                    <NavButton deviceType={deviceType}>
+                    <TopBarButton deviceType={deviceType}>
                         <img src={`${pigskit_restful_origin()}/fs/user/avatar`}/>
-                    </NavButton>
+                    </TopBarButton>
                 }
             >
                 <p className='Title'>Hello, <strong>{nickname || username}</strong></p>
                 <DeviderL/>
-                <NavBarFloatItem>
-                    <LinkButton url={`${location.origin}/home/#/shops`}>Your shops</LinkButton>
-                </NavBarFloatItem>
-                <NavBarFloatItem>
+                <FloatItem>
+                    <LinkButton url={`${location.origin}${location.pathname}#/shops`}>Your shops</LinkButton>
+                </FloatItem>
+                <FloatItem>
                     <SignOutButton/>
-                </NavBarFloatItem>
-            </NavBarFloatList>
+                </FloatItem>
+            </TopBarFloatList>
         )
     }
 ))
@@ -91,4 +92,4 @@ const SignOutButton = () => {
     )
 }
 
-export default NavBarUser
+export default User

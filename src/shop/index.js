@@ -2,9 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { HashRouter, Switch, Route } from 'react-router-dom'
+import QRCode from 'qrcode.react'
 import App, { CheckSignedIn } from '../components/App'
 import { Page, Block, SideBar, Content } from '../components/utils/Decorate/Page'
-import NavBar from '../components/NavBar'
+import AppBar from '../components/AppBar'
 import Path from '../components/Path'
 import UserShopInfo from './UserShopInfo'
 import Products from './Products'
@@ -19,14 +20,6 @@ const LINKS = [
     {
         name: 'products',
         to: '/products',
-    },
-    {
-        name: 'members',
-        to: '/members',
-    },
-    {
-        name: 'settings',
-        to: '/settings',
     }
 ]
 
@@ -38,8 +31,8 @@ const SwitchContent = () => (
         <Route path='/create_product'>
             <CreateProduct/>
         </Route>
-        <Route path=''>
-
+        <Route path='/'>
+            <QRCode value='hello world!'/>
         </Route>
     </Switch>
 )
@@ -94,7 +87,7 @@ ReactDOM.render(
         <CheckSignedIn>
             <UserShopInfo.Provider>
                 <HashRouter>
-                    <NavBar/>
+                    <AppBar/>
                     <ShopPage/>
                 </HashRouter>
             </UserShopInfo.Provider>

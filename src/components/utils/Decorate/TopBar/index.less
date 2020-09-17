@@ -1,4 +1,28 @@
-.NavBarFloatList-Root {
+.Decorate-TopBar {
+    position: fixed;
+    top: 0;
+    background-color: white;
+    transition: box-shadow .3s;
+    z-index: 90;
+
+    >.Decorate-TopBar-body {
+        height: inherit;
+        display: flex;
+        max-width: 1260px;
+        margin: auto;
+    }
+
+    &.Scrolled {
+        box-shadow: 0 2px 16px 0 rgba(0,0,0,0.08);
+    }
+}
+
+.Decorate-TopBar, .Decorate-TopBar-space {
+    height: 64px;
+    width: 100%;
+}
+
+.Decorate-TopBarFloatList {
     height: 100%;
 
     &.Open::after {

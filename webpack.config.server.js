@@ -26,17 +26,21 @@ module.exports = (env, argv) => {
                     use: {
                         loader: "babel-loader"
                     }
+                },
+                {
+                    test: /\.hbs$/,
+                    loader: "handlebars-loader"
                 }
             ]
         },
         plugins: [
             new webpack.ContextReplacementPlugin(
-              /express\/lib/,
-              resolve('node_modules'),
-              {
-                'ejs': 'ejs'
-              }
+                /express\/lib/,
+                resolve('node_modules'),
+                {
+                    'ejs': 'ejs'
+                }
             )
-          ]
+        ]
     })
 }

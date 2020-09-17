@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { Redirect } from 'react-router-dom'
+import React from 'react'
 import { connect } from 'react-redux'
 import clsx from 'clsx'
 import { GoPlus } from "react-icons/go"
@@ -28,7 +27,7 @@ class Terminal extends React.PureComponent {
         const {
             className,
             title,
-            newPath,
+            newUrl,
             NewComponent,
             QueryComponent = () => null,
             BodyComponent = () => null,
@@ -39,7 +38,7 @@ class Terminal extends React.PureComponent {
                 <Title>{title}</Title>
                 <Control
                     terminal={this}
-                    newPath={newPath}
+                    newUrl={newUrl}
                     NewComponent={NewComponent}
                 />
                 <QueryComponent
@@ -68,31 +67,25 @@ const Control = connect(
     const {
         deviceType,
         terminal,
-        newPath,
+        newUrl,
         NewComponent,
     } = props
 
-    const [redirect, setRedirect] = useState(false)
-
-    if (redirect) {
-        return <Redirect push to={newPath}/>
-    } else {
-        return (
-            <div className={clsx('Control', deviceType)}>
-                <SearchField onCommit={(value) => terminal.search(value)}/>
-                <div className='Right'>
-                    <ControlItem
-                        className='New'
-                        deviceType={deviceType}
-                        onClick={newPath ? () => setRedirect(true) : null}
-                        contentElements={NewComponent ? <NewComponent onComplete={() => terminal.refresh()}/> : null}
-                    >
-                        <GoPlus/>New
-                    </ControlItem>
-                </div>
+    return (
+        <div className={clsx('Control', deviceType)}>
+            <SearchField onCommit={(value) => terminal.search(value)}/>
+            <div className='Right'>
+                <ControlItem
+                    className='New'
+                    deviceType={deviceType}
+                    onClick={newUrl ? () => location.href = newUrl : null}
+                    contentElements={NewComponent ? <NewComponent onComplete={() => terminal.refresh()}/> : null}
+                >
+                    <GoPlus/>New
+                </ControlItem>
             </div>
-        )
-    }
+        </div>
+    )
 })
 
 const ControlItem = (props) => {

@@ -1,0 +1,138 @@
+.Menu-root {
+    color: rgba(0, 0, 0, 0.75);
+
+    >.SearchField-Root {
+        height: 30px;
+        width: 100%;
+
+        .MuiInput-root {
+            border-radius: 5px;
+        }
+    }
+
+    >.Products {
+        margin-top: 16px;
+    }
+
+    >.Blank {
+        background-color: #f9f9f9;
+    }
+
+    .Decorate-Price {
+        font-size: 15px;
+        color: rgba(0, 0, 0, 0.6);
+        margin-left: auto;
+    }
+}
+
+.Product-outline {
+    padding: 8px 16px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.Product-detail {
+    padding: 32px 16px 38px;
+    display: flex;
+    flex-direction: column;
+
+    >.Title {
+        display: flex;
+        flex-wrap: wrap;
+
+        >.Name {
+            font-size: 22px;
+            font-weight: 600;
+        }
+    }
+
+    >.Image-root {
+        margin-top: 8px;
+        max-width: 300px;
+    }
+
+    >.Description {
+        margin-top: 8px;
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 14px;
+    }
+
+    >.Customizes {
+        margin-top: 24px;
+    }
+
+    >.Quantity {
+        margin: 24px auto 0 0;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+
+        >.Label {
+            font-size: 18px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+
+        >.QuantityInput-root {
+            width: 180px;
+        }
+    }
+
+    >.MuiTextField-root, >.MuiButton-root {
+        margin-top: 24px;
+    }
+
+    .Error {
+        margin-top: 4px;
+        color: #f02040;
+        font-size: 14px;
+    }
+}
+
+.Customize-root {
+    padding: 18px 0px 24px;
+
+    >.Title {
+        font-size: 22px;
+        font-weight: 600;
+    }
+
+    >.Info {
+        margin-top: 4px;
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 14px;
+    }
+
+    >.Selections {
+        margin-top: 16px;
+
+        >.CheckItem-root {
+            background-color: #f9f9f9;
+            padding: 8px 12px;
+
+            &.Checked {
+                background-color: unset;
+
+                >svg {
+                    color: #ff5e76;
+                }
+            }
+
+            >svg {
+                color: rgba(0, 0, 0, 0.6);
+                min-width: 18px;
+                font-size: 18px;
+                margin-right: 8px;
+            }
+
+            >.Selection-root {
+                flex: 1;
+            }
+        }
+    }
+}
+
+.Selection-root {
+    display: flex;
+    flex-wrap: wrap;
+}

@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo, useEffect } from 'react'
+import { connect } from 'react-redux'
 import ApolloClient from 'apollo-boost'
-import { ApolloProvider } from '@apollo/react-hooks'
-import { useQuery } from '@apollo/react-hooks'
+import { ApolloProvider, useQuery } from '@apollo/react-hooks'
 import { pigskit_graphql_origin } from './service_origins'
 
 const Context = React.createContext()
@@ -69,8 +69,7 @@ class RefetchQuery extends React.Component {
 }
 
 export function useQueryContext() {
-    const queryContext = useContext(Context)
-    return queryContext
+    return useContext(Context)
 }
 
 class QueryContext {
@@ -81,18 +80,152 @@ class QueryContext {
         this.resReducer = props.resReducer || function(r) { return r }
     }
 
-    data() {
+    get data() {
         return this.resReducer(this.rawData)
     }
 }
 
-const client = new ApolloClient({
-    uri: `${pigskit_graphql_origin()}/graphql`,
-    credentials: 'include',
-})
+export class Client extends ApolloClient {
+    constructor() {
+        super({
+            uri: `${pigskit_graphql_origin()}/graphql`,
+            credentials: 'include',
+        })
+    }
+}
 
 export const QueryProvider = (props) => {
-    return <ApolloProvider client={client}>
+    return <ApolloProvider client={new Client}>
         {props.children}
     </ApolloProvider>
+}
+
+export function createQueryStore({
+    name,
+    queryStr,
+    produceQueryVariables = (state) => ({}),
+    produceResponseData = (data) => data,
+}) {
+    if (!name) throw 'name must be provide in createQueryStroe.'
+
+    const initState = {
+        inited: false,
+        refetch: false,
+        loading: false,
+        error: false,
+        data: null,
+    }
+
+    const actionType = {
+        loadingAction: `${name}_LOADING`,
+        refetchAction: `${name}_REFETCH`,
+        responseAction: `${name}_RESPONSE`,
+        errorAction: `${name}_ERROR`,
+    }
+
+    const actions = {
+        loadingAction: () => ({
+            type: actionType.loadingAction,
+        }),
+        refetchAction: () => ({
+            type: actionType.refetchAction,
+        }),
+        responseAction: (data) => ({
+            type: actionType.responseAction,
+            payload: data
+        }),
+        errorAction: () => ({
+            type: actionType.errorAction
+        })
+    }
+
+    function reducer(state = initState, action = {}) {
+        switch (action.type) {
+            case actionType.loadingAction:
+                return {
+                    ...state,
+                    loading: true,
+                    refetch: false,
+                    error: false,
+                }
+            case actionType.refetchAction:
+                return {
+                    ...state,
+                    refetch: true,
+                }
+            case actionType.responseAction:
+                return {
+                    ...state,
+                    inited: true,
+                    loading: false,
+                    refetch: false,
+                    data: {
+                        ...state.data,
+                        ...action.payload
+                    },
+                }
+            case actionType.errorAction:
+                return {
+                    ...state,
+                    error: true,
+                }
+            default:
+                return state
+        }
+    }
+
+    const Controller = connect(
+        (state) => ({
+            inited: state[name].inited,
+            refetch: state[name].refetch,
+            loading: state[name].loading,
+            ...produceQueryVariables(state)
+        }),
+        (dispatch) => ({
+            dispatchLoading: () => dispatch(actions.loadingAction()),
+            dispatchResponse: (data) => dispatch(actions.responseAction(produceResponseData(data))),
+            dispatchError: () => dispatch(actions.errorAction())
+        })
+    )((props) => {
+        const {
+            inited,
+            refetch,
+            loading,
+            dispatchLoading,
+            dispatchResponse,
+            dispatchError,
+            ...queryVariables
+        } = props
+
+        const client = useMemo(() => new Client(), [])
+
+        useEffect(() => {
+            if (loading || (inited && !refetch)) return
+            
+            dispatchLoading()
+            
+            client.query({
+                query: queryStr,
+                fetchPolicy: 'network-only',
+                variables: { ...queryVariables },
+            })
+            .then((res) => {
+                dispatchResponse(res.data)
+            })
+            .catch((err) => {
+                console.log('error', err)
+                dispatchError()
+            })
+        })
+        
+        return null
+    })
+    
+    return {
+        reducer: {
+            [name]: reducer
+        },
+        actions: actions,
+        Controller: Controller,
+    }
 }

@@ -4,6 +4,7 @@ import http from 'http'
 import https from 'https'
 import httpProxy from 'http-proxy'
 import * as path from 'path'
+import html_template from './index.hbs'
 
 const PORT = process.env.PORT
 const PIGSKIT_RESTFUL_HOST = process.env.LOCAL ? 'localhost' : 'pigskit-restful-server'
@@ -37,6 +38,15 @@ app.post('/graphql', (req, res, next) => {
 
 app.get('/graphiql', (req, res, next) => {
     proxy.web(req, res, { target: `http://${PIGSKIT_GRAPHQL_HOST}:8000/graphiql` }, next)
+})
+
+app.get(/^\/$|\/home\/$|\/shop\/$/, (req, res) => {
+    res.send(html_template({ title: 'Pigskit' }))
+})
+
+app.get(/\/$/, (req, res) => {
+    let path  = req.path.split('/')
+    res.send(html_template({ title: path[path.length - 1] }))
 })
 
 app.use(express.static(__dirname + '/public/'))

@@ -12,13 +12,8 @@ export const StoreProvider = (props) => {
     )
 }
 
-import { deviceInfoReducer } from './reducers/device_info'
-import { userInfoReducer } from './reducers/user_info'
-
-export const defaultReducers = {
-    deviceInfo: deviceInfoReducer,
-    userInfo: userInfoReducer,
-}
-
-export { deviceInfoActions } from './reducers/device_info'
-export { userInfoActions } from './reducers/user_info'
+export { deviceInfoReducer, deviceInfoActions } from './reducers/device_info'
+export { userInfoReducer, userInfoActions, UserInfoProvider } from './reducers/user_info'
+export { shopInfoReducer, ShopInfoProvider } from './reducers/shop_info'
+export { guestSessionReducer, GuestSessionProvider } from './reducers/guest_session'
+export { shopProductsReducer, shopProductsActions, ShopProductsController } from './reducers/shop_products'

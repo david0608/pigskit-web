@@ -1,0 +1,140 @@
+.Cart-root {
+    color: rgba(0, 0, 0, 0.75);
+
+    .Decorate-Price {
+        font-size: 15px;
+        color: rgba(0, 0, 0, 0.6);
+        margin-left: auto;
+    }
+
+    >.Item {
+        border-radius: 4px;
+        border: solid 1px #dcdcdc;
+        margin-top: 8px;
+    }
+
+    >.Conclusion {
+        margin-top: 16px;
+        display: flex;
+        justify-content: flex-end;
+
+        >.Decorate-Price {
+            margin-left: unset;
+        }
+    }
+
+    .ErrorHint {
+        margin-top: 16px;
+        color: #f02040;
+        font-size: 14px;
+    }
+
+    .MuiButton-root {
+        margin-top: 8px;
+        height: 32px;
+        width: 100%;
+    }
+}
+
+.Item-outline {
+    padding: 8px 16px;
+
+    &.Expired {
+        background-color: #f9f9f9;
+        color: rgba(0, 0, 0, 0.3);
+
+        .Decorate-Price {
+            color: rgba(0, 0, 0, 0.3);
+        }
+    }
+
+    >.Customizes {
+        margin-top: 8px;
+
+        >.Customize {
+            padding: 4px 16px;
+            font-size: 12px;
+            display: flex;
+            flex-wrap: wrap;
+        
+            >.Selection {
+                margin-left: auto;
+            }
+        }
+    }
+
+    >.Remark {
+        margin-top: 8px;
+        font-size: 12px;
+    }
+
+    >.Footer {
+        display: flex;
+        flex-wrap: wrap;
+
+        >.Quantity {
+            margin-top: 8px;
+            font-size: 12px;
+        }
+    }
+}
+
+.Item-detail {
+    padding: 32px 16px 38px;
+
+    >.Header {
+        display: flex;
+        flex-wrap: wrap;
+
+        >.Name {
+            font-size: 22px;
+            font-weight: 600;
+        }
+    }
+
+    >.Customizes {
+        margin-top: 16px;
+
+        >.Customize {
+            padding: 8px 0px 8px 16px;
+
+            >.Name {
+                font-size: 18px;
+                font-weight: 600;
+            }
+
+            >.Selection {
+                margin-top: 4px;
+                padding: 0 0 0 16px;
+                display: flex;
+                flex-wrap: wrap;
+            }
+        }
+    }
+
+    >.MuiTextField-root {
+        width: 100%;
+        margin-top: 24px;
+    }
+
+    >.Quantity {
+        margin: 24px auto 0 0;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+
+        >.Label {
+            font-size: 18px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+
+        >.QuantityInput-root {
+            width: 180px;
+        }
+    }
+
+    >.Ok, >.Delete {
+        margin-top: 24px;
+    }
+}

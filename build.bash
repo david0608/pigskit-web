@@ -7,6 +7,7 @@ builds=(
     build-root
     build-home
     build-shop
+    build-menu
     build-test
     build-test-api
 )

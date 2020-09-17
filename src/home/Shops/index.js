@@ -53,7 +53,7 @@ const Body = () => {
         if (queryContext.error) {
             console.log('Query error:', queryContext.error)
         } else {
-            let data = queryContext.data()
+            let data = queryContext.data
             if (data && data.length > 0) {
                 children = data.map((e, i) => (
                     <ShopEntry

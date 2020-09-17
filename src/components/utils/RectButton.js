@@ -14,6 +14,10 @@ const rectButtonStyle = makeStyles({
         '&:hover': {
             backgroundColor: props => props.backgroundColorHover,
         }
+    },
+    disabled: {
+        color: 'white !important',
+        backgroundColor: props => props.backgroundColorDisabled,
     }
 })
 
@@ -22,12 +26,14 @@ const RectButton = React.memo(
         const {
             backgroundColor = '#f02040',
             backgroundColorHover = '#ff2040',
+            backgroundColorDisabled = '#f77f91',
             ...otherProps
         } = props
 
         const classes = rectButtonStyle({
             backgroundColor: backgroundColor,
             backgroundColorHover: backgroundColorHover,
+            backgroundColorDisabled: backgroundColorDisabled,
         })
 
         return (

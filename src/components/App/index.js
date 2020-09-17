@@ -1,8 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StoreProvider, defaultReducers } from '../store'
+import {
+    StoreProvider,
+    deviceInfoReducer,
+    userInfoReducer,
+    UserInfoProvider,
+} from '../store'
 import MeasureScreen from '../MeasureScreen'
-import { UserInfo } from '../Session'
 import DropScreenProvider from '../DropScreen'
 import './index.less'
 
@@ -15,18 +19,19 @@ const App = (props) => {
     return (
         <StoreProvider
             reducers={{
-                ...defaultReducers,
+                deviceInfo: deviceInfoReducer,
+                userInfo: userInfoReducer,
                 ...reducers
             }}
         >
-            <UserInfo>
+            <UserInfoProvider>
                 <MeasureScreen>
                     <DropScreenProvider>
                         {children}
                     </DropScreenProvider>
                     <div className='test'></div>
                 </MeasureScreen>
-            </UserInfo>
+            </UserInfoProvider>
         </StoreProvider>
     )
 }

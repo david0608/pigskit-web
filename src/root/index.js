@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import App from '../components/App'
 import { Page } from '../components/utils/Decorate/Page'
-import NavBar from '../components/NavBar'
+import AppBar from '../components/AppBar'
 
 const RootPage = connect(
     (state) => ({
@@ -21,7 +21,7 @@ const RootPage = connect(
 
 ReactDOM.render(
     <App>
-        <NavBar/>
+        <AppBar/>
         <RootPage/>
     </App>,
     document.getElementById('root')
