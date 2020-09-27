@@ -1,24 +1,25 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import UserShopInfo from '../UserShopInfo'
 import Product from './Product'
 
 const CreateProduct = connect(
     (state) => ({
         deviceType: state.deviceInfo.type,
+        shopId: state.userShop.data.shop.id,
+        authority: state.userShop.data.productAuthority,
     })
 )((props) => {
     const {
         deviceType,
+        shopId,
+        authority,
     } = props
 
-    const userShopInfoState = UserShopInfo.useState()
-
-    if (userShopInfoState.productAuthority === 'ALL') {
+    if (authority === 'ALL') {
         return <Product
             deviceType={deviceType}
-            shop_id={userShopInfoState.shop.id}
+            shop_id={shopId}
         />
     } else {
         return <Redirect to='/'/>

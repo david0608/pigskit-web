@@ -9,12 +9,13 @@ const SearchField = (props) => {
         className,
         label = 'Search',
         onCommit = () => {},
+        defaultValue = '',
         ...otherProps
     } = props
 
     const [value, setValue] = useState({
-        current: '',
-        old: '',
+        current: defaultValue,
+        old: defaultValue,
     })
 
     useEffect(() => {

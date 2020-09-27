@@ -11,8 +11,9 @@ import QuantityInput from '../../components/utils/QuantityInput'
 import RectButton from '../../components/utils/RectButton'
 import Loading from '../../components/utils/Loading'
 import Decorate from '../../components/utils/Decorate'
-import { shopProductsActions } from '../../components/store'
+import { shopProductsActions } from '../ShopProducts'
 import { orderInfoActions } from '../Order'
+import '../../styles/text.less'
 import './index.less'
 
 const {
@@ -43,10 +44,10 @@ const {
             }
         }
     `,
-    produceQueryVariables: (state) => ({
-        shopId: state.shopInfo.id,
+    produceDefaultVariables: state => ({
+        shopId: state.shopInfo.data.id,
     }),
-    produceResponseData: (data) => ({
+    produceResponseData: data => ({
         items: data.guest.carts[0].items,
     })
 })
@@ -87,7 +88,7 @@ const Cart = connect(
         }
         
         return {
-            shopId: state.shopInfo.id,
+            shopId: state.shopInfo.data.id,
             loading: loading,
             error: error,
             items: items,
@@ -183,13 +184,8 @@ const Cart = connect(
             <div className='Conclusion'>
                 Total : <Decorate.Price>{totalPrice}</Decorate.Price>
             </div>
-            {state.submitError && <div className='ErrorHint'>{state.submitError}</div>}
-            <RectButton
-                onClick={submitOrder}
-                disabled={expired}
-            >
-                submit order
-            </RectButton>
+            {state.submitError && <div className={clsx('ErrorHint', 'Text_error')}>{state.submitError}</div>}
+            <RectButton onClick={submitOrder} disabled={expired} loading={state.busy}>submit order</RectButton>
         </>
     }
 
@@ -229,7 +225,7 @@ const Item = (props) => {
 
 const ExpiredOutline = connect(
     (state) => ({
-        shopId: state.shopInfo.id,
+        shopId: state.shopInfo.data.id,
     }),
     (dispatch) => ({
         refetchCart: () => dispatch(actions.refetchAction())
@@ -288,17 +284,17 @@ const ExpiredOutline = connect(
                     ))
                 }
             </Decorate.DevideList>
-            {data.remark ? <div className='Remark'>{data.remark}</div> : null}
+            {data.remark && <div className={clsx('Remark', 'Text_fine')}>{data.remark}</div>}
             <div className='Footer'>
-                <div className='Quantity'>
-                    Quantity: {data.count}
-                </div>
+                <span className='Text_fine'>
+                    Quantity : {data.count}
+                </span>
                 <Decorate.Price>{data.totalPrice}</Decorate.Price>
             </div>
             <div className='ErrorHint'>
                 This item has expired.
             </div>
-            <RectButton onClick={deleteItem}>remove</RectButton>
+            <RectButton onClick={deleteItem} loading={state.busy}>remove</RectButton>
         </div>
     )
 })
@@ -320,11 +316,11 @@ const Outline = (props) => {
                     ))
                 }
             </Decorate.DevideList>
-            {data.remark ? <div className='Remark'>{data.remark}</div> : null}
+            {data.remark && <div className={clsx('Remark', 'Text_fine')}>{data.remark}</div>}
             <div className='Footer'>
-                <div className='Quantity'>
-                    Quantity: {data.count}
-                </div>
+                <span className='Text_fine'>
+                    Quantity : {data.count}
+                </span>
                 <Decorate.Price>{data.totalPrice}</Decorate.Price>
             </div>
         </div>
@@ -337,7 +333,7 @@ const OutlineCustomize = (props) => {
     } = props
 
     return (
-        <div className='Customize'>
+        <div className={clsx('Customize', 'Text_fine')}>
             <div className='Name'>
                 {data.name}
             </div>
@@ -350,7 +346,7 @@ const OutlineCustomize = (props) => {
 
 const Detail = connect(
     (state) => ({
-        shopId: state.shopInfo.id,
+        shopId: state.shopInfo.data.id,
     }),
     (dispatch) => ({
         refetchCart: () => dispatch(actions.refetchAction())
@@ -364,7 +360,7 @@ const Detail = connect(
     } = props
 
     const [state, setState] = useState({
-        busy: false,
+        busy: '',
         error: false,
     })
 
@@ -378,7 +374,7 @@ const Detail = connect(
             if (state.busy) return
 
             setState({
-                busy: true,
+                busy: 'COMMIT',
                 error: false,
             })
 
@@ -408,7 +404,7 @@ const Detail = connect(
             .finally(() => {
                 if (!abortTk.isAborted()) {
                     abort.signout(abortTk)
-                    setState({ busy: false })
+                    setState({ busy: '' })
                 }
             })
         },
@@ -425,7 +421,7 @@ const Detail = connect(
             if (state.busy) return
 
             setState({
-                busy: true,
+                busy: 'DELETE',
                 error: false,
             })
 
@@ -451,7 +447,7 @@ const Detail = connect(
             .finally(() => {
                 if (!abortTk.isAborted()) {
                     abort.signout(abortTk)
-                    setState({ busy: false })
+                    setState({ busy: '' })
                 }
             })
         },
@@ -461,9 +457,9 @@ const Detail = connect(
     return (
         <div className='Item-detail'>
             <div className='Header'>
-                <div className='Name'>
+                <span className='Text_header_2nd'>
                     {data.name}
-                </div>
+                </span>
                 <Decorate.Price>
                     {data.price}
                 </Decorate.Price>
@@ -482,8 +478,8 @@ const Detail = connect(
                 multiline
             />
             <div className='Quantity'>
-                <div className='Label'>
-                    Quantity:
+                <div className={clsx('Label', 'Text_bold')}>
+                    Quantity :
                 </div>
                 <QuantityInput
                     ref={refQuantity}
@@ -491,9 +487,9 @@ const Detail = connect(
                     minValue={1}
                 />
             </div>
-            <RectButton className='Ok' onClick={handleCommit}>ok</RectButton>
+            <RectButton className='Ok' onClick={handleCommit} loading={state.busy === 'COMMIT'}>ok</RectButton>
             <RectButton className='Cancel' onClick={handleCancel}>cancel</RectButton>
-            <RectButton className='Delete' onClick={handleDelete}>delete</RectButton>
+            <RectButton className='Delete' onClick={handleDelete} loading={state.busy === 'DELETE'}>delete</RectButton>
         </div>
     )
 })
@@ -505,9 +501,9 @@ const DetailCustomize = (props) => {
 
     return (
         <div className='Customize'>
-            <div className='Name'>
+            <span className='Text_header_3rd'>
                 {data.name}
-            </div>
+            </span>
             <div className='Selection'>
                 <div className='Name'>
                     {data.selection}

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { connect } from 'react-redux'
-import axios from '../../../utils/axios'
+import axios from '../utils/axios'
 
 const initState = {
     inited: false,
@@ -11,7 +11,7 @@ const actionType = {
     refetch: 'GUESTSESSION_REFETCH',
 }
 
-const guestSessionActions = {
+const actions = {
     init: () => ({
         type: actionType.init,
     }),
@@ -20,7 +20,7 @@ const guestSessionActions = {
     })
 }
 
-function guestSessionReducer(state = initState, action = {}) {
+function reducer(state = initState, action = {}) {
     switch (action.type) {
         case actionType.init:
             return {
@@ -37,13 +37,13 @@ function guestSessionReducer(state = initState, action = {}) {
     }
 }
 
-const GuestSessionProvider = connect(
+const Provider = connect(
     (state) => ({
         guestSessionInited: state.guestSession.inited,
-        shopId: state.shopInfo.id,
+        shopId: state.shopInfo.data.id,
     }),
     (dispatch) => ({
-        initGuestSession: () => dispatch(guestSessionActions.init())
+        initGuestSession: () => dispatch(actions.init())
     })
 )((props) => {
     const {
@@ -55,7 +55,7 @@ const GuestSessionProvider = connect(
 
     useEffect(() => {
         if (guestSessionInited) return
-
+        
         axios({
             method: 'PUT',
             url: '/api/cart',
@@ -78,8 +78,8 @@ const GuestSessionProvider = connect(
     }
 })
 
-export {
-    guestSessionReducer,
-    guestSessionActions,
-    GuestSessionProvider,
+export default {
+    reducer,
+    actions,
+    Provider,
 }

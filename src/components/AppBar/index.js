@@ -4,6 +4,7 @@ import clsx from 'clsx'
 import { TopBar } from '../utils/Decorate/TopBar'
 import SignInUp from './SignInUp'
 import User from './User'
+import '../../styles/text.less'
 import './index.less'
 
 const AppBar = connect(
@@ -41,7 +42,7 @@ const Logo = (props) => {
             className={clsx('Logo', deviceType)}
             onClick={() => location.href = `${location.origin}/`}
         >
-            <span>Pigskit</span>
+            <span className={clsx('Text_logo')}>Pigskit</span>
         </div>
     )
 }

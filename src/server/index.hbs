@@ -3,16 +3,33 @@
     <head>
         <title>{{title}}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Fredoka+One|Poppins:300,400,600"
+        >
+        <style>
+            body {
+                font-family: Poppins, sans-serif;
+                font-size: 14px;
+                font-weight: 400;
+                color: #333333;
+                margin: 0;
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                user-select: none;
+                -webkit-tap-highlight-color: transparent;
+            }
+            #root {
+                outline: none;
+            }
+        </style>
         <link href="index.css" rel="stylesheet">
     </head>
-    <body
-        style="
-        margin: 0px;
-        color: #f02040;
-        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
-        "
-    >
-        <div id="root" tabindex="-1" style="outline: none;"></div>
+    <body>
+        <div id="root" tabindex="-1"></div>
+        <script>
+            document.getElementById('root').style.minHeight = `${window.innerHeight}px`
+        </script>
         <script type="text/javascript" src="index.js"></script>
     </body>
 </html>

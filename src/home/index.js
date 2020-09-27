@@ -8,31 +8,27 @@ import AppBar from '../components/AppBar'
 import Navigator from '../components/Navigator'
 import Avatar from '../components/Avatar'
 import Path from '../components/Path'
-import Shops from './Shops'
+import Shops, { myShopsReducer, MyShopsController } from './Shops'
 import './index.less'
 
 const LINKS = [
     {
-        name: 'profile',
+        name: 'shops',
         to: '/',
     },
     {
-        name: 'shops',
-        to: '/shops',
+        name: 'profile',
+        to: '/profile',
     },
-    {
-        name: 'settings',
-        to: '/settings',
-    }
 ]
 
 const SwitchContent = () => (
     <Switch>
-        <Route path='/shops'>
-            <Shops/>
+        <Route path='/profile'>
+            {/* user profile page */}
         </Route>
         <Route path='/'>
-            
+            <Shops/>
         </Route>
     </Switch>
 )
@@ -76,8 +72,13 @@ const HomePage = connect(
 })
 
 ReactDOM.render(
-    <App>
+    <App
+        reducers={{
+            ...myShopsReducer
+        }}
+    >
         <CheckSignedIn>
+            <MyShopsController/>
             <HashRouter>
                 <AppBar/>
                 <HomePage/>

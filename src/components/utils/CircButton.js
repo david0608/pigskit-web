@@ -29,8 +29,8 @@ const CircButton = React.memo(
             backgroundColor = 'white',
             backgroundColorHover = '#f1f1f1f1',
             size = '24px',
-            labelSize = '20px',
-            labelColor = '#f02040',
+            labelSize = '16px',
+            labelColor = '#ff3333',
             ...innerProps
         } = props
 

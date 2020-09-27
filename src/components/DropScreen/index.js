@@ -68,6 +68,7 @@ class DropScreen extends React.PureComponent {
                 <CircButton
                     className='Close'
                     onClick={this.close.bind(this)}
+                    labelSize='20px'
                 >
                     <BsX/>
                 </CircButton>

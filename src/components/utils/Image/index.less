@@ -4,16 +4,19 @@
         border: solid 1px rgba(0, 0, 0, 0.2);
     }
 
-    &.blank {
+    &.blank, &.presize {
         position: relative;
-        border: solid 1px rgba(0, 0, 0, 0.2);
-        
+
         &::before {
             content: '';
             display: block;
             padding-top: 100%;
         }
-    
+    }
+
+    &.blank {
+        border: solid 1px rgba(0, 0, 0, 0.2);
+
         >svg {
             position: absolute;
             top: 50%;
@@ -22,5 +25,11 @@
             font-size: 40px;
             color: rgba(0, 0, 0, 0.6);
         }
+    }
+
+    &.presize>img {
+        position: absolute;
+        top: 0;
+        height: 100%;
     }
 }

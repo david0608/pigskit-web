@@ -7,6 +7,7 @@ import Abstract from '../../components/utils/Abstract'
 import Loading from '../../components/utils/Loading'
 import Decorate from '../../components/utils/Decorate'
 import { sort } from '../../utils/sort'
+import '../../styles/text.less'
 import './index.less'
 
 const {
@@ -36,10 +37,10 @@ const {
             }
         }
     `,
-    produceQueryVariables: (state) => ({
-        shopId: state.shopInfo.id,
+    produceDefaultVariables: state => ({
+        shopId: state.shopInfo.data.id,
     }),
-    produceResponseData: (data) => {
+    produceResponseData: data => {
         for (let order of data.guest.orders.values()) {
             let orderTotalPrice = 0
             let orderTotalCouunt = 0
@@ -57,11 +58,13 @@ const {
             order.totalCount = orderTotalCouunt
         }
 
+        sort({
+            arr: data.guest.orders,
+            getKey: e => new Date(e.orderAt)
+        })
+
         return {
-            orders: sort({
-                arr: data.guest.orders,
-                getKey: e => new Date(e.orderAt),
-            })
+            orders: data.guest.orders
         }
     }
 })
@@ -137,13 +140,15 @@ const OrderBody = (props) => {
     } = props
 
     return (
-        <Decorate.List className={clsx('Order-body', detail ? 'Detail' : 'Outline')}>
+        <Decorate.List className={clsx('Order-body', detail ? 'Detail' : 'Outline', detail ? 'Text_content' : 'Text_fine')}>
             <div className='Header'>
-                No.{data.orderNumber}
+                <div className={clsx(detail ? 'Text_header_2nd' : 'Text_header_3rd')}>
+                    No.{data.orderNumber}
+                </div>
                 {
                     !detail &&
                     <div className='Right'>
-                        {data.totalCount} items
+                        {data.totalCount}&nbsp;items
                     </div>
                 }
             </div>
@@ -155,17 +160,17 @@ const OrderBody = (props) => {
                     />
                 ))
             }
+            <div className='OrderAt'>
+                Order at :
+                <div className={clsx('Right', 'Text_fine')}>
+                    {`${(new Date(data.orderAt)).toLocaleString('en')}`}
+                </div>
+            </div>
             <div className='TotalPrice'>
-                Total :
+                Total&nbsp;:&nbsp;
                 <Decorate.Price className='Right'>
                     {data.totalPrice}
                 </Decorate.Price>
-            </div>
-            <div className='OrderAt'>
-                Order at :
-                <div className='Right'>
-                    {`${(new Date(data.orderAt)).toLocaleString('en')}`}
-                </div>
             </div>
         </Decorate.List>
     )
@@ -177,11 +182,11 @@ const Item = (props) => {
     } = props
     
     return (
-        <div className='Item'>
+        <div className={clsx('Item', 'Text_fine')}>
             <div className='Header'>
-                <div className='Name'>
+                <span className={clsx('Text_content', 'Text_bold')}>
                     {data.name}
-                </div>
+                </span>
                 <Decorate.Price className='Price'>
                     {data.totalPrice}
                 </Decorate.Price>
@@ -194,9 +199,9 @@ const Item = (props) => {
                     />
                 ))
             }
-            {data.remark && <div className='Remark'>{data.remark}</div>}
+            {data.remark && <span>{data.remark}</span>}
             <div className='Quantity'>
-                Quantity : {data.count}
+                Quantity&nbsp;:&nbsp;{data.count}
             </div>
         </div>
     )

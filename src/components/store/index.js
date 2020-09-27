@@ -14,6 +14,3 @@ export const StoreProvider = (props) => {
 
 export { deviceInfoReducer, deviceInfoActions } from './reducers/device_info'
 export { userInfoReducer, userInfoActions, UserInfoProvider } from './reducers/user_info'
-export { shopInfoReducer, ShopInfoProvider } from './reducers/shop_info'
-export { guestSessionReducer, GuestSessionProvider } from './reducers/guest_session'
-export { shopProductsReducer, shopProductsActions, ShopProductsController } from './reducers/shop_products'

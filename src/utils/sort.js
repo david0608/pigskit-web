@@ -1,9 +1,7 @@
-export function sort({
+export const sort = ({
     arr = [],
-    getKey = (e) => e,
-}) {
-    return quickSort(arr, 0, arr.length - 1, getKey)
-}
+    getKey = e => e
+}) => quickSort(arr, 0, arr.length - 1, getKey)
 
 function quickSort(arr, s, e, getKey) {
     let p = e
@@ -27,8 +25,7 @@ function quickSort(arr, s, e, getKey) {
             arr[p] = temp
             p = i
         }
-        arr = quickSort(arr, s, p - 1, getKey)
-        arr = quickSort(arr, p + 1, e, getKey)
+        quickSort(arr, s, p - 1, getKey)
+        quickSort(arr, p + 1, e, getKey)
     }
-    return arr
 }

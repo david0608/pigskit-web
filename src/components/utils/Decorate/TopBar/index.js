@@ -41,10 +41,10 @@ const Button = withStyles({
     },
     label: {
         fontSize: '16px',
+        fontFamily: 'Poppins, sans-serif',
         '& svg': {
-            color: '#f02040',
+            color: '#ff3333',
             fontSize: '20px',
-            marginRight: '10%',
         },
         '& img': {
             width: '34px',
@@ -63,7 +63,6 @@ const ButtonMobile = withStyles({
     label: {
         '& svg': {
             fontSize: '24px',
-            marginRight: 'unset',
         }
     }
 })(Button)

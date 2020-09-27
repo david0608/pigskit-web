@@ -6,25 +6,17 @@
 
         >.Name {
             flex: 1;
-            font-size: 20px;
+            font-size: 16px;
         }
 
         >.Desc {
             flex: 2;
-            margin-top: 2px;
-
-            &.NoDesc {
-                color: rgba(0, 0, 0, 0.4);
-            }
+            margin-top: 4px;
         }
     }
 
     >.Selections {
-        margin-top: 2px;
-
-        &.NoSelc {
-            color: rgba(0, 0, 0, 0.4);
-        }
+        margin-top: 4px;
 
         >.Selection {
             margin-bottom: 4px;
@@ -61,45 +53,24 @@
 }
 
 .Customize-preview {
+    >.Title, >.Desc {
+        margin-bottom: 16px;
+    }
+
     >.Title {
         display: flex;
 
-        >.MuiButton-root {
-            margin-left: auto;
-
-            >.MuiButton-label>svg {
-                font-size: 16px;
-            }
-        }
-    }
-
-    >.Desc {
-        margin-bottom: 24px;
-
-        &.NoDesc {
-            color: rgba(0, 0, 0, 0.4);
-        }
-    }
-
-    >.Title-selections {
-        display: flex;
-
-        >.New {
+        >.Right {
             margin-left: auto;
         }
     }
 }
 
 .NewSelection-root {
-    >.FoldList-Label>button svg {
-        font-size: 16px;
-    }
-
-    >.FoldList-List {
-        padding: 10px 15px !important;
+    &.Open>.FoldList-List {
+        padding: 10px 15px;
 
         >.Title {
-            font-size: 16px;
             margin-bottom: 10px;
         }
 

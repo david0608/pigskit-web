@@ -7,10 +7,11 @@ import App, { CheckSignedIn } from '../components/App'
 import { Page, Block, SideBar, Content } from '../components/utils/Decorate/Page'
 import AppBar from '../components/AppBar'
 import Path from '../components/Path'
-import UserShopInfo from './UserShopInfo'
-import Products from './Products'
-import CreateProduct from './CreateProduct'
 import Navigator from '../components/Navigator'
+import Products, { shopProductsReducer, ShopProductsController } from './Products'
+import Orders, { shopOrdersReducer, ShopOrdersController } from './Orders'
+import CreateProduct from './CreateProduct'
+import UserShop, { userShopReducer } from './UserShop'
 
 const LINKS = [
     {
@@ -20,6 +21,10 @@ const LINKS = [
     {
         name: 'products',
         to: '/products',
+    },
+    {
+        name: 'orders',
+        to: '/orders',
     }
 ]
 
@@ -27,6 +32,9 @@ const SwitchContent = () => (
     <Switch>
         <Route path='/products'>
             <Products/>
+        </Route>
+        <Route path='/orders'>
+            <Orders/>
         </Route>
         <Route path='/create_product'>
             <CreateProduct/>
@@ -40,13 +48,13 @@ const SwitchContent = () => (
 const ShopPage = connect(
     (state) => ({
         deviceType: state.deviceInfo.type,
+        shopName: state.userShop.data.shop.name,
     })
 )((props) => {
     const {
         deviceType,
+        shopName,
     } = props
-
-    const userShopInfoState = UserShopInfo.useState()
 
     let isDesktop = deviceType === 'desktop'
 
@@ -56,7 +64,7 @@ const ShopPage = connect(
                 <Path
                     path={[
                         {
-                            name: userShopInfoState.shop.name,
+                            name: shopName,
                         }
                     ]}
                 />
@@ -83,14 +91,22 @@ const ShopPage = connect(
 })
 
 ReactDOM.render(
-    <App>
+    <App
+        reducers={{
+            ...userShopReducer,
+            ...shopProductsReducer,
+            ...shopOrdersReducer
+        }}
+    >
         <CheckSignedIn>
-            <UserShopInfo.Provider>
+            <UserShop.Provider>
+                <ShopProductsController/>
+                <ShopOrdersController/>
                 <HashRouter>
                     <AppBar/>
                     <ShopPage/>
                 </HashRouter>
-            </UserShopInfo.Provider>
+            </UserShop.Provider>
         </CheckSignedIn>
     </App>,
     document.getElementById('root')

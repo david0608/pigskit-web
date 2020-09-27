@@ -25,7 +25,7 @@ class HeightComponent extends React.Component {
             isStart: false,
             isEnd: false,
         })
-        this.endOnTimeOut(50)
+        this.endOnTimeOut(200)
     }
 
     onResize({ entry }) {

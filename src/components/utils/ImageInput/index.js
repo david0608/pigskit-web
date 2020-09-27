@@ -45,8 +45,17 @@ class ImageInput extends React.PureComponent {
         })
     }
 
+    get tergetWidth() {
+        return this.props.targetWidth
+    }
+
     componentDidMount() {
         if (this.props.forwardRef) this.props.forwardRef.current = this
+    }
+
+    componentWillUnmount() {
+        this.srcImageUrl = null
+        this.imageUrl = null
     }
 
     onResize({ entry }) {
@@ -184,37 +193,24 @@ class EditImage extends React.PureComponent {
 
         if (!srcImage || !crop.width || !crop.height) return
 
-        const scaleX = srcImage.naturalWidth / 100
-        const scaleY = srcImage.naturalHeight / 100
+        const targetWidth = this.props.imageInput.targetWidth || 600
+        const targetHeight = targetWidth / crop.aspect
+
         const canvas = document.createElement('canvas')
-        canvas.width = crop.width * scaleX
-        canvas.height = crop.height * scaleY
+        canvas.width = targetWidth
+        canvas.height = targetHeight
         canvas.getContext('2d').drawImage(
             srcImage,
-            crop.x * scaleX,
-            crop.y * scaleY,
-            crop.width * scaleX,
-            crop.height * scaleY,
+            srcImage.naturalWidth * crop.x / 100,
+            srcImage.naturalHeight * crop.y / 100,
+            srcImage.naturalWidth * crop.width / 100,
+            srcImage.naturalHeight * crop.height / 100,
             0,
             0,
-            canvas.width,
-            canvas.height,
+            targetWidth,
+            targetHeight,
         )
-
-        new Promise((resolve, reject) => {
-            canvas.toBlob(
-                (blob) => {
-                    if (blob) {
-                        resolve(blob)
-                    } else {
-                        reject()
-                    }
-                },
-                'image/jpeg',
-                1,
-            )
-        })
-        .then((blob) => this.props.imageInput.commitEdit(crop, blob))
+        canvas.toBlob(blob => this.props.imageInput.commitEdit(crop, blob), 'image/jpeg', 0.9)
     }
 
     deleteImage() {
