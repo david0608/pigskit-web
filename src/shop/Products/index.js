@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import clsx from 'clsx'
 import { MdEdit } from 'react-icons/md'
 import { gql } from 'apollo-boost'
-import { QueryProvider, queryComponent, useQueryContext } from '../../utils/apollo'
+import { createQueryStore } from '../../utils/apollo'
 import Terminal from '../../components/Terminal'
 import Abstract from '../../components/utils/Abstract'
 import CircButton from '../../components/utils/CircButton'
@@ -11,97 +11,124 @@ import Image from '../../components/utils/Image'
 import Decorate from '../../components/utils/Decorate'
 import Loading from '../../components/utils/Loading'
 import { DeviderL } from '../../components/utils/Devider'
-import UserShopInfo from '../UserShopInfo'
+import '../../styles/text.less'
 import './index.less'
 
-const Products = React.memo(() => {
-    const userShopInfoState = UserShopInfo.useState()
-
-    const newUrl = userShopInfoState.productAuthority === 'ALL' ?
-        `${location.origin}${location.pathname}${location.search}#/create_product` : null
-
-    const Query = useMemo(
-        () => queryComponent({
-            queryStr: gql`
-                query shop_products($shop_id: Uuid, $product_key: Uuid, $product_name: String) {
-                    shop {
-                        search(id: $shop_id) {
-                            products(key: $product_key, name: $product_name) {
+const {
+    reducer,
+    actions,
+    Controller,
+} = createQueryStore({
+    name: 'shopProducts',
+    queryStr: gql`
+        query shop_products($shopId: Uuid!, $productKey: Uuid, $productName: String) {
+            shop {
+                search(id: $shopId) {
+                    products(key: $productKey, name: $productName) {
+                        key
+                        name
+                        description
+                        price
+                        hasPicture
+                        latestUpdate
+                        customizes {
+                            key
+                            name
+                            description
+                            latestUpdate
+                            selections {
                                 key
                                 name
-                                description
                                 price
-                                hasPicture
-                                latestUpdate
-                                customizes {
-                                    key
-                                    name
-                                    description
-                                    latestUpdate
-                                    selections {
-                                        key
-                                        name
-                                        price
-                                    }
-                                }
                             }
                         }
                     }
                 }
-            `,
-            queryVar: {
-                shop_id: userShopInfoState.shop.id,
-            },
-            paramDispatcher: (params) => ({
-                product_name: params.searchValue,
-            }),
-            resReducer: (data) => (data.shop?.search?.[0].products),
-        }),
-        []
-    )
+            }
+        }
+    `,
+    produceDefaultVariables: state => ({
+        shopId: state.userShop.data.shop.id,
+    }),
+    produceResponseData: data => ({
+        products: data.shop?.search?.[0].products,
+    })
+})
+
+export {
+    reducer as shopProductsReducer,
+    actions as shopProductsActions,
+    Controller as ShopProductsController,
+}
+
+const Products = connect(
+    state => ({
+        variables: state.shopProducts.variables,
+        productAuthority: state.userShop.data.productAuthority,
+    }),
+    dispatch => ({
+        refetch: variables => dispatch(actions.refetchAction(variables))
+    })
+)(props => {
+    const {
+        variables,
+        productAuthority,
+        refetch,
+    } = props
+
+    const newProps = productAuthority === 'ALL' ?
+        { url: `${location.origin}${location.pathname}${location.search}#/create_product` } :
+        undefined
+
+    const searchProps = {
+        defaultValue: variables.productName,
+        onCommit: value => refetch({ productName: value }),
+    }
 
     return (
-        <QueryProvider>
-            <Terminal
-                className='Products'
-                newUrl={newUrl}
-                QueryComponent={Query}
-                BodyComponent={Body}
-            />
-        </QueryProvider>
+        <Terminal
+            className='Products-root'
+            newProps={newProps}
+            searchProps={searchProps}
+            BodyComponent={Body}
+        />
     )
 })
 
-const Body = () => {
-    const queryContext = useQueryContext()
-    const userShopInfoState = UserShopInfo.useState()
+const Body = connect(
+    state => ({
+        loading: state.shopProducts.loading,
+        error: state.shopProducts.error,
+        products: state.shopProducts.data.products,
+        shopId: state.userShop.data.shop.id,
+    })
+)(props => {
+    const {
+        loading,
+        error,
+        products = [],
+        shopId,
+    } = props
 
-    if (!queryContext) return null
-
-    let children = null
-
-    if (queryContext.loading) {
-        children = <Loading/>
+    let productElements = null
+    
+    if (loading) {
+        productElements = <Loading/>
+    } else if (error) {
+        productElements = null
+    } else if (products.length === 0) {
+        productElements = <Decorate.Blank>No data.</Decorate.Blank>
     } else {
-        if (queryContext.error) {
-            console.log('Query error:', queryContext.error)
-        } else {
-            let data = queryContext.data
-            if (data && data.length > 0) {
-                children = data.map((e, i) => (
-                    <Abstract key={i}>
-                        <Outline data={e}/>
-                        <Detail data={e} shopId={userShopInfoState.shop.id}/>
-                    </Abstract>
-                ))
-            } else {
-                children = <Decorate.Blank className='Blank'>No data.</Decorate.Blank>
-            }
-        }
+        productElements = products.map((prod, i) => (
+            <Abstract key={i}>
+                <Outline data={prod}/>
+                <Detail data={prod} shopId={shopId}/>
+            </Abstract>
+        ))
     }
 
-    return <Decorate.List className='Products-body'>{children}</Decorate.List>
-}
+    return <Decorate.List className='Products-body'>{productElements}</Decorate.List>
+})
 
 const Outline = connect(
     (state) => ({
@@ -112,11 +139,11 @@ const Outline = connect(
         deviceType,
         data,
     } = props
-
+    
     return (
         <div className={clsx('Product-outline', deviceType)}>
             <div className='Name'>{data.name}</div>
-            {deviceType !== 'mobile' && <div className='Description'>{data.description}</div>}
+            {deviceType !== 'mobile' && <span className={clsx('Description', 'Text_remark')}>{data.description}</span>}
             <Decorate.Price className='Price'>{data.price}</Decorate.Price>
         </div>
     )
@@ -136,12 +163,15 @@ const Detail = connect(
     return (
         <div className={clsx('Product-detail', deviceType)}>
             <div className='Title'>
-                <div className='Name'>{data.name}</div>
+                <span className={clsx('Name', 'Text_header_2nd')}>{data.name}</span>
                 <CircButton><MdEdit/></CircButton>
             </div>
-            <Image url={data.hasPicture ? `/fs/shop/product/image?shop_id=${shopId}&product_key=${data.key}` : null}/>
+            <Image
+                url={data.hasPicture && `/fs/shop/product/image?shop_id=${shopId}&product_key=${data.key}`}
+                presize
+            />
             <div className='Info'>
-                <div className='Description'>{data.description}</div>
+                <span className={clsx('Description', 'Text_remark')}>{data.description}</span>
                 <Decorate.Price>{data.price}</Decorate.Price>
             </div>
             {
@@ -149,8 +179,8 @@ const Detail = connect(
                     return (
                         <div key={cus.key} className='Customize'>
                             <DeviderL/>
-                            <div className='Name'>{cus.name}</div>
-                            {cus.description && <div className='Description'>{cus.description}</div>}
+                            <div className={clsx('Name', 'Text_header_3rd')}>{cus.name}</div>
+                            {cus.description && <div className={clsx('Description', 'Text_remark')}>{cus.description}</div>}
                             {
                                 cus.selections.map((sel) => {
                                     return (

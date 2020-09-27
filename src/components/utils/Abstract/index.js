@@ -30,6 +30,9 @@ class Abstract extends React.Component {
     }
 
     shouldCloseOnBlur(event) {
+        // Never close after opened in debug mode.
+        if (this.props.debug) return
+
         let body = event.currentTarget
         let focused = event.relatedTarget
         if (!body.contains(focused) && this.state.focus) {

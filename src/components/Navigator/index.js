@@ -2,6 +2,7 @@ import React from 'react'
 import clsx from 'clsx'
 import { NavLink } from 'react-router-dom'
 import Decorate from '../utils/Decorate'
+import '../../styles/text.less'
 import './index.less'
 
 const Navigator = (props) => {
@@ -18,6 +19,7 @@ const Navigator = (props) => {
             {
                 links.map((e, i) => (
                     <NavLink
+                        className='Text_content'
                         key={i}
                         to={e.to}
                         activeClassName='Actived'

@@ -2,111 +2,101 @@ import React from 'react'
 import { connect } from 'react-redux'
 import clsx from 'clsx'
 import { GoPlus } from "react-icons/go"
+import { MdRefresh } from 'react-icons/md'
 import { FloatList } from '../utils/FloatList'
 import Button from '../utils/Button'
 import SearchField from '../utils/SearchField'
+import '../../styles/text.less'
 import './index.less'
 
-class Terminal extends React.PureComponent {
-    constructor(props) {
-        super(props)
-        this.params = {}
-        this.refQuery = React.createRef()
-    }
+const Terminal = props => {
+    const {
+        className,
+        title,
+        newProps,
+        searchProps,
+        refreshProps,
+        BodyComponent = () => null,
+        bodyProps = {},
+    } = props
 
-    search(val) {
-        this.params.searchValue = val
-        this.refresh()
-    }
-
-    refresh() {
-        this.refQuery.current?.refetch(this.params)
-    }
-
-    render() {
-        const {
-            className,
-            title,
-            newUrl,
-            NewComponent,
-            QueryComponent = () => null,
-            BodyComponent = () => null,
-        } = this.props
-
-        return (
-            <div className={clsx('Terminal-root', className)}>
-                <Title>{title}</Title>
-                <Control
-                    terminal={this}
-                    newUrl={newUrl}
-                    NewComponent={NewComponent}
-                />
-                <QueryComponent
-                    ref={this.refQuery}
-                >
-                    <BodyComponent/>
-                </QueryComponent>
-            </div>
-        )
-    }
+    return (
+        <div className={clsx('Terminal-root', className)}>
+            {title && <div className={clsx('Title', 'Text_header_1st')}>{title}</div>}
+            <Control
+                newProps={newProps}
+                searchProps={searchProps}
+                refreshProps={refreshProps}
+            />
+            <BodyComponent {...bodyProps}/>
+        </div>
+    )
 }
 
-const Title = (props) => (
-    props.children ?
-    <div className='Title'>
-        {props.children}
-    </div> :
-    null
-)
-
 const Control = connect(
-    (state) => ({
+    state => ({
         deviceType: state.deviceInfo.type,
     })
-)((props) => {
+)(props => {
     const {
         deviceType,
-        terminal,
-        newUrl,
-        NewComponent,
+        newProps,
+        searchProps,
+        refreshProps,
     } = props
 
     return (
         <div className={clsx('Control', deviceType)}>
-            <SearchField onCommit={(value) => terminal.search(value)}/>
+            {
+                searchProps &&
+                <SearchField
+                    className='Search'
+                    defaultValue={searchProps.defaultValue}
+                    onCommit={searchProps.onCommit}
+                />
+            }
             <div className='Right'>
-                <ControlItem
-                    className='New'
-                    deviceType={deviceType}
-                    onClick={newUrl ? () => location.href = newUrl : null}
-                    contentElements={NewComponent ? <NewComponent onComplete={() => terminal.refresh()}/> : null}
-                >
-                    <GoPlus/>New
-                </ControlItem>
+                {
+                    newProps &&
+                    <ControlItem
+                        className='New'
+                        deviceType={deviceType}
+                        url={newProps.url}
+                        Component={newProps.Component}
+                    >
+                        <GoPlus/>&nbsp;New
+                    </ControlItem>
+                }
+                {
+                    refreshProps &&
+                    <ControlRefresh
+                        onClick={refreshProps.onClick}
+                    />
+                }
             </div>
         </div>
     )
 })
 
-const ControlItem = (props) => {
+const ControlItem = props => {
     const {
         className,
         deviceType,
-        onClick,
-        contentElements,
+        url,
+        Component,
         children,
     } = props
 
-    if (onClick) {
+    if (url) {
         return (
             <Button
                 className={clsx('Control-item', className)}
-                onClick={onClick}
+                onClick={() => location.href = url}
             >
                 {children}
             </Button>
         )
-    } else if (contentElements) {
+    } else if (Component) {
         return (
             <FloatList
                 className='Control-item'
@@ -114,12 +104,27 @@ const ControlItem = (props) => {
                 fullScreen={deviceType === 'mobile'}
                 rightAligned
             >
-                {contentElements}
+                <Component/>
             </FloatList>
         )
     } else {
         return null
     }
+}
+
+const ControlRefresh = props => {
+    const {
+        onClick,
+    } = props
+
+    return (
+        <div
+            className={clsx('Control-item', 'Refresh')}
+            onClick={onClick}
+        >
+            <MdRefresh/>
+        </div>
+    )
 }
 
 export default Terminal

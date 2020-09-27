@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import clsx from 'clsx'
+import '../../styles/text.less'
 import './index.less'
 
 const Path = connect(
@@ -20,7 +21,7 @@ const Path = connect(
         <div className={clsx('Path-root', className)}>
             {
                 path.length === 0 ?
-                <div>{nickname || username}</div> :
+                <span>{nickname || username}</span> :
                 <Link
                     name={nickname || username}
                     endPoint='home'
@@ -28,8 +29,7 @@ const Path = connect(
             }
             {path.map((e, i) => (
                 <React.Fragment key={i}>
-                    <div>/</div>
-                    <Link {...e}/>
+                    &nbsp;/&nbsp;<Link {...e}/>
                 </React.Fragment>
             ))}
         </div>
@@ -44,16 +44,16 @@ const Link = (props) => {
 
     if (endPoint) {
         return (
-            <div
-                className='Link-root'
+            <span
+                className='Text_link'
                 onClick={() => location.href = `${location.origin}/${endPoint}`}
             >
                 {name}
-            </div>
+            </span>
         )
     } else {
         return (
-            <div>{name}</div>
+            <span>{name}</span>
         )
     }
 }

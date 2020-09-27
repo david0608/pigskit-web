@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import clsx from 'clsx'
 import { FiShoppingCart } from 'react-icons/fi'
 import { GoListUnordered } from 'react-icons/go'
 import { TopBar, TopBarButton } from '../../components/utils/Decorate/TopBar'
+import '../../styles/text.less'
 import './index.less'
 
 const MenuTopBar = () => {
@@ -19,8 +19,8 @@ const MenuTopBar = () => {
 
 const Logo = connect(
     (state) => ({
-        shopName: state.shopInfo.name,
-        shopId: state.shopInfo.id,
+        shopName: state.shopInfo.data.name,
+        shopId: state.shopInfo.data.id,
     })
 )((props) => {
     const {
@@ -30,17 +30,17 @@ const Logo = connect(
 
     return (
         <div
-            className={clsx('Logo')}
+            className='Logo'
             onClick={() => location.href = `${location.origin}${location.pathname}?id=${shopId}#/`}
         >
-            <span>{shopName}</span>
+            <span className='Text_logo_2nd'>{shopName}</span>
         </div>
     )
 })
 
 const NavButton = connect(
     (state) => ({
-        shopId: state.shopInfo.id,
+        shopId: state.shopInfo.data.id,
     })
 )((props) => {
     const {

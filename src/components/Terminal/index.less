@@ -1,25 +1,41 @@
 .Terminal-root {
-    color: rgba(0, 0, 0, 0.75);
-
     >.Title {
-        font-size: 24px;
-        font-weight: 600;
         margin-bottom: 24px;
     }
 
     >.Control {
         margin: 0px 0px 16px 0px;
 
-        >.SearchField-Root .MuiInputBase-root {
-            border-radius: 5px;
+        &.desktop, &.tablets {
+            height: 30px;
+            display: flex;
+
+            >.Search {
+                width: 40%;
+            }
+
+            >.Right {
+                margin-left: auto;
+            }
+        }
+
+        &.mobile {
+            >.Search, >.Right {
+                height: 30px;
+                width: 100%;
+            }
+
+            >.Search {
+                margin-bottom: 16px;
+            }
+
+            >.Right {
+                justify-content: flex-end;
+            }
         }
 
         >.Right {
-            height: 100%;
-
-            >button.Control-item {
-                padding: 1px 12px;
-            }
+            display: flex;
 
             >.Control-item {
                 height: 100%;
@@ -27,60 +43,41 @@
                 &.New, .New {
                     color: white;
                     background-color: #00A320;
-                    border-radius: 5px;
                 }
 
                 >.FoldList-Label {
                     height: 100%;
 
-                    &>button {
+                    button {
                         height: 100%;
-                        padding: 1px 12px;
-        
-                        svg {
-                            margin-right: 3px;
-                        }
                     }
                 }
 
                 >.FoldList-List {
                     padding: 10px 15px;
                 }
-            }
-        }
 
-        &.desktop, &.tablets {
-            height: 30px;
-            display: flex;
-
-            >.SearchField-Root {
-                width: 40%;
-            }
-
-            >.Right {
-                margin-left: auto;
-
-                >.Control-item {
+                &.Refresh {
+                    cursor: pointer;
                     height: 30px;
+                    width: 30px;
+                    border-radius: 15px;
+                    font-size: 24px;
+                    color: #777777;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-left: 12px;
+
+                    &:hover {
+                        background-color: #ececec;
+                    }
                 }
             }
         }
 
-        &.mobile {
-            >.SearchField-Root {
-                height: 30px;
-                width: 100%;
-            }
-
-            >.Right {
-                display: flex;
-                justify-content: flex-end;
-
-                >.Control-item {
-                    margin-top: 16px;
-                    height: 30px;
-                }
-            }
+        .MuiInputBase-root {
+            border-radius: 5px;
         }
     }
 }

@@ -15,7 +15,7 @@ const proxy = httpProxy.createProxyServer({})
 
 app.use((req, res, next) => {
     let contentLength = req.headers['content-length'] || 0
-    if (contentLength > 2000000) {
+    if (contentLength > 200000) {
         res.status(400).send({
             type: 'PayloadTooLarge',
         })
@@ -40,7 +40,7 @@ app.get('/graphiql', (req, res, next) => {
     proxy.web(req, res, { target: `http://${PIGSKIT_GRAPHQL_HOST}:8000/graphiql` }, next)
 })
 
-app.get(/^\/$|\/home\/$|\/shop\/$/, (req, res) => {
+app.get(/^\/$|\/home\/$|\/shop\/$|\/menu\/$/, (req, res) => {
     res.send(html_template({ title: 'Pigskit' }))
 })
 

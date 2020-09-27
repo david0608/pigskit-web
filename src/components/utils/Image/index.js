@@ -59,11 +59,12 @@ export class TryFetchImage extends React.PureComponent {
 const Image = (props) => {
     const {
         className,
+        presize,
         url,
     } = props
 
     return (
-        <div className={clsx('Image-root', !url && 'blank', className)}>
+        <div className={clsx('Image-root', !url && 'blank', presize && 'presize', className)}>
             {
                 url ?
                 <img src={`${pigskit_restful_origin()}${url}`}/> :

@@ -25,7 +25,9 @@ const Price = (props) => {
     return (
         <div className={clsx('Decorate-Price', className)}>
             <MdAttachMoney/>
-            {children}
+            <span>
+                {children}
+            </span>
         </div>
     )
 }

@@ -1,89 +1,7 @@
-import React, { useContext, useMemo, useEffect } from 'react'
+import { useMemo, useEffect } from 'react'
 import { connect } from 'react-redux'
 import ApolloClient from 'apollo-boost'
-import { ApolloProvider, useQuery } from '@apollo/react-hooks'
 import { pigskit_graphql_origin } from './service_origins'
-
-const Context = React.createContext()
-
-export function queryComponent(props) {
-    return React.forwardRef((componentProps, ref) => {
-        return <Query
-            ref={ref}
-            {...props}
-            {...componentProps}
-        />
-    })
-}
-
-export const Query = React.memo(React.forwardRef((props, ref) => {
-    const {
-        queryStr,
-        queryVar = {},
-        paramDispatcher,
-        resReducer,
-        children,
-    } = props
-
-    const { loading, error, data, refetch } = useQuery(queryStr, { variables: queryVar, fetchPolicy: 'network-only' })
-    const context = new QueryContext({
-        loading: loading,
-        error: error,
-        data: data,
-        resReducer: resReducer,
-    })
-
-    return (
-        <Context.Provider value={context}>
-            <RefetchQuery
-                forwardRef={ref}
-                refetch={refetch}
-                paramDispatcher={paramDispatcher}
-                queryVar={queryVar}
-            />
-            {children}
-        </Context.Provider>
-    )
-}))
-
-class RefetchQuery extends React.Component {
-    constructor(props) {
-        super(props)
-        this.forwardRef = props.forwardRef
-    }
-
-    componentDidMount() {
-        if (this.forwardRef) {
-            this.forwardRef.current = this
-        }
-    }
-
-    refetch(params = {}) {
-        const paramDispatcher = this.props.paramDispatcher || function(p) { return p }
-        this.props.refetch(Object.assign({}, this.props.queryVar, paramDispatcher(params)))
-    }
-
-    render() {
-        return null
-    }
-}
-
-export function useQueryContext() {
-    return useContext(Context)
-}
-
-class QueryContext {
-    constructor(props) {
-        this.loading = props.loading
-        this.error = props.error
-        this.rawData = props.data
-        this.resReducer = props.resReducer || function(r) { return r }
-    }
-
-    get data() {
-        return this.resReducer(this.rawData)
-    }
-}
 
 export class Client extends ApolloClient {
     constructor() {
@@ -94,16 +12,10 @@ export class Client extends ApolloClient {
     }
 }
 
-export const QueryProvider = (props) => {
-    return <ApolloProvider client={new Client}>
-        {props.children}
-    </ApolloProvider>
-}
-
 export function createQueryStore({
     name,
     queryStr,
-    produceQueryVariables = (state) => ({}),
+    produceDefaultVariables = state => ({}),
     produceResponseData = (data) => data,
 }) {
     if (!name) throw 'name must be provide in createQueryStroe.'
@@ -113,7 +25,8 @@ export function createQueryStore({
         refetch: false,
         loading: false,
         error: false,
-        data: null,
+        variables: {},
+        data: {},
     }
 
     const actionType = {
@@ -127,12 +40,13 @@ export function createQueryStore({
         loadingAction: () => ({
             type: actionType.loadingAction,
         }),
-        refetchAction: () => ({
+        refetchAction: (variables) => ({
             type: actionType.refetchAction,
+            payload: variables,
         }),
         responseAction: (data) => ({
             type: actionType.responseAction,
-            payload: data
+            payload: data,
         }),
         errorAction: () => ({
             type: actionType.errorAction
@@ -151,6 +65,10 @@ export function createQueryStore({
             case actionType.refetchAction:
                 return {
                     ...state,
+                    variables: {
+                        ...state.variables,
+                        ...action.payload
+                    },
                     refetch: true,
                 }
             case actionType.responseAction:
@@ -158,9 +76,7 @@ export function createQueryStore({
                     ...state,
                     inited: true,
                     loading: false,
-                    refetch: false,
                     data: {
-                        ...state.data,
                         ...action.payload
                     },
                 }
@@ -179,7 +95,8 @@ export function createQueryStore({
             inited: state[name].inited,
             refetch: state[name].refetch,
             loading: state[name].loading,
-            ...produceQueryVariables(state)
+            variables: state[name].variables,
+            ...produceDefaultVariables(state)
         }),
         (dispatch) => ({
             dispatchLoading: () => dispatch(actions.loadingAction()),
@@ -191,10 +108,11 @@ export function createQueryStore({
             inited,
             refetch,
             loading,
+            variables,
             dispatchLoading,
             dispatchResponse,
             dispatchError,
-            ...queryVariables
+            ...defaultVariables
         } = props
 
         const client = useMemo(() => new Client(), [])
@@ -207,12 +125,12 @@ export function createQueryStore({
             client.query({
                 query: queryStr,
                 fetchPolicy: 'network-only',
-                variables: { ...queryVariables },
+                variables: { ...defaultVariables, ...variables },
             })
-            .then((res) => {
+            .then(res => {
                 dispatchResponse(res.data)
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log('error', err)
                 dispatchError()
             })

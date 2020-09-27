@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react'
+import clsx from 'clsx'
 import { connect } from 'react-redux'
 import axios from '../../utils/axios'
 import { createAbort } from '../../utils/abort'
@@ -9,9 +10,10 @@ import Image from '../../components/utils/Image'
 import TextInput from '../../components/utils/TextInput'
 import QuantityInput from '../../components/utils/QuantityInput'
 import RectButton from '../../components/utils/RectButton'
-import Loading, { LoadingRing } from '../../components/utils/Loading'
+import Loading from '../../components/utils/Loading'
 import Decorate from '../../components/utils/Decorate'
 import { cartInfoActions } from '../Cart'
+import '../../styles/text.less'
 import './index.less'
 
 const Menu = connect(
@@ -213,15 +215,21 @@ class DetailComponent extends React.Component {
         return (
             <div className='Product-detail'>
                 <div className='Title'>
-                    <div className='Name'>
+                    <span className='Text_header_2nd'>
                         {this.name}
-                    </div>
+                    </span>
                     <Decorate.Price>
                         {this.price}
                     </Decorate.Price>
                 </div>
-                {this.hasPicture && <Image url={`/fs/shop/product/image?shop_id=${this.shopId}&product_key=${this.key}`}/>}
-                <div className='Description'>
+                {
+                    this.hasPicture &&
+                    <Image
+                        url={`/fs/shop/product/image?shop_id=${this.shopId}&product_key=${this.key}`}
+                        presize
+                    />
+                }
+                <div className={clsx('Description', 'Text_remark')}>
                     {this.description}
                 </div>
                 <Decorate.DevideList className='Customizes'>
@@ -245,8 +253,8 @@ class DetailComponent extends React.Component {
                     multiline
                 />
                 <div className='Quantity'>
-                    <div className='Label'>
-                        Quantity:
+                    <div className={clsx('Label', 'Text_bold')}>
+                        Quantity :
                     </div>
                     <QuantityInput
                         ref={this.refQuantityInput}
@@ -254,10 +262,8 @@ class DetailComponent extends React.Component {
                         minValue={1}
                     />
                 </div>
-                <RectButton onClick={this.commit.bind(this)}>
-                    {this.state.busy ? <LoadingRing/> : 'add to cart'}
-                </RectButton>
-                {this.state.error ? <div className='Error'>Encountered an error. Please try again.</div> : null}
+                <RectButton onClick={this.commit.bind(this)} loading={this.state.busy}>add to cart</RectButton>
+                {this.state.error && <div className={clsx('Error', 'Text_error')}>Encountered an error. Please try again.</div>}
             </div>
         )
     }
@@ -265,7 +271,7 @@ class DetailComponent extends React.Component {
 
 const Detail = connect(
     (state) => ({
-        shopId: state.shopInfo.id,
+        shopId: state.shopInfo.data.id,
     }),
     (dispatch) => ({
         refetchCart: () => dispatch(cartInfoActions.refetchAction()),
@@ -341,10 +347,10 @@ class Customize extends React.PureComponent {
 
         return (
             <div className='Customize-root'>
-                <div className='Title'>
+                <span className='Text_header_3rd'>
                     {this.name}
-                </div>
-                <div className='Info'>
+                </span>
+                <div className={clsx('Description', 'Text_remark')}>
                     {this.description}
                 </div>
                 {
@@ -359,7 +365,7 @@ class Customize extends React.PureComponent {
                     </Decorate.List> :
                     null
                 }
-                {error ? <div className='Error'>Please choose a selection.</div> : null}
+                {error ? <div className={clsx('Error', 'Text_error')}>Please choose a selection.</div> : null}
             </div>
         )
     }

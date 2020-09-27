@@ -1,5 +1,5 @@
 import { gql } from 'apollo-boost'
-import { createQueryStore } from '../../../utils/apollo'
+import { createQueryStore } from '../utils/apollo'
 
 const {
     reducer,
@@ -16,10 +16,10 @@ const {
             }
         }
     `,
-    produceQueryVariables: (state) => ({
-        shopId: state.shopInfo.id,
+    produceDefaultVariables: state => ({
+        shopId: state.shopInfo.data.id,
     }),
-    produceResponseData: (data) => ({
+    produceResponseData: data => ({
         products: { ...JSON.parse(data.shop.search[0].productsJson) }
     })
 })

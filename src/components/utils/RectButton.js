@@ -1,15 +1,16 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
+import { LoadingRing } from './Loading'
 
 const rectButtonStyle = makeStyles({
     root: {
-        fontFamily: 'inherit',
-        fontSize: '14px',
-        fontWeight: '400',
+        minHeight: '34px',
+        fontFamily: 'Poppins, sans-serif',
         color: 'white',
         border: 'unset',
         borderRadius: '0px',
+        padding: '0px',
         backgroundColor: props => props.backgroundColor,
         '&:hover': {
             backgroundColor: props => props.backgroundColorHover,
@@ -24,9 +25,11 @@ const rectButtonStyle = makeStyles({
 const RectButton = React.memo(
     (props) => {
         const {
-            backgroundColor = '#f02040',
-            backgroundColorHover = '#ff2040',
-            backgroundColorDisabled = '#f77f91',
+            backgroundColor = '#ee3333',
+            backgroundColorHover = '#ff3333',
+            backgroundColorDisabled = '#ee9999',
+            loading,
+            children,
             ...otherProps
         } = props
 
@@ -40,7 +43,9 @@ const RectButton = React.memo(
             <Button
                 classes={classes}
                 {...otherProps}
-            />
+            >
+                {loading ? <LoadingRing radius={10}/> : children}
+            </Button>
         )
     }
 )

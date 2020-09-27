@@ -1,107 +1,145 @@
 import React, { useState, useRef } from 'react'
+import clsx from 'clsx'
+import { connect } from 'react-redux'
 import { gql } from 'apollo-boost'
-import { QueryProvider, queryComponent, useQueryContext } from '../../utils/apollo'
+import { createQueryStore } from '../../utils/apollo'
 import axios from '../../utils/axios'
 import { useAbort } from '../../utils/abort'
 import Terminal from '../../components/Terminal'
 import TextInput from '../../components/utils/TextInput'
-import Button from '../../components/utils/Button'
+import RectButton from '../../components/utils/RectButton'
 import Loading from '../../components/utils/Loading'
 import Decorate from '../../components/utils/Decorate'
 import { FloatItem } from '../../components/utils/FloatList'
+import '../../styles/text.less'
 import './index.less'
 
-const Shops = React.memo(() => {
-    return <QueryProvider>
-        <Terminal
-            className='Shops'
-            NewComponent={New}
-            QueryComponent={Query}
-            BodyComponent={Body}
-        />
-    </QueryProvider>
-})
-
-const Query = queryComponent({
+const {
+    reducer,
+    actions,
+    Controller,
+} = createQueryStore({
+    name: 'myShops',
     queryStr: gql`
-        query my_shops($id: Uuid, $name: String) {
-            shop {
-                my(id: $id, name: $name) {
-                    id
-                    name
-                    latestUpdate
+        query my_shops($shopId: Uuid, $shopName: String) {
+            user {
+                me {
+                    shops(id: $shopId, name: $shopName) {
+                        shop {
+                            id
+                            name
+                            latestUpdate
+                        }
+                    }
                 }
             }
         }
     `,
-    paramDispatcher: (params) => ({
-        name: params.searchValue,
-    }),
-    resReducer: (data) => (data.shop.my)
+    produceResponseData: data => ({
+        shops: data.user.me.shops.map((e) => e.shop)
+    })
 })
 
-const Body = () => {
-    const queryContext = useQueryContext()
-
-    if (!queryContext) return null
-
-    let children = null
-
-    if (queryContext.loading) {
-        children = <Loading/>
-    } else {
-        if (queryContext.error) {
-            console.log('Query error:', queryContext.error)
-        } else {
-            let data = queryContext.data
-            if (data && data.length > 0) {
-                children = data.map((e, i) => (
-                    <ShopEntry
-                        key={i}
-                        shopId={e.id}
-                        shopName={e.name}
-                        description={e.description}
-                        latestUpdate={e.latestUpdate}
-                    />
-                ))
-            } else {
-                children = <Decorate.Blank>No data.</Decorate.Blank>
-            }
-        }
-    }
-
-    return <Decorate.DevideList>{children}</Decorate.DevideList>
+export {
+    reducer as myShopsReducer,
+    actions as myShopsActions,
+    Controller as MyShopsController,
 }
 
-const ShopEntry = (props) => {
+const Shops = connect(
+    state => ({
+        variables: state.myShops.variables,
+    }),
+    dispatch => ({
+        refetch: variables => dispatch(actions.refetchAction(variables)),
+    }),
+)(props => {
     const {
-        shopId,
-        shopName,
-        description,
-        latestUpdate,
+        variables,
+        refetch,
     } = props
 
-    const onClick = () => {
-        location.href = `${location.origin}/shop?id=${shopId}`
+    const newProps = {
+        Component: New
     }
-    
+
+    const searchProps = {
+        defaultValue: variables.shopName,
+        onCommit: value => refetch({ shopName: value }),
+    }
+
     return (
-        <div className='ShopEntry-Root'>
+        <Terminal
+            className='Shops-root'
+            newProps={newProps}
+            searchProps={searchProps}
+            BodyComponent={Body}
+        />
+    )
+})
+
+const Body = connect(
+    state => ({
+        loading: state.myShops.loading,
+        error: state.myShops.error,
+        shops: state.myShops.data.shops,
+    })
+)(props => {
+    const {
+        loading,
+        error,
+        shops = [],
+    } = props
+
+    let shopElements = null
+
+    if (loading) {
+        shopElements = <Loading/>
+    } else if (error) {
+        shopElements = null
+    } else if (shops.length === 0) {
+        shopElements = <Decorate.Blank>No data.</Decorate.Blank>
+    } else {
+        shopElements = shops.map((shop, i) => (
+            <ShopEntry
+                key={i}
+                data={shop}
+            />
+        ))
+    }
+
+    return <Decorate.DevideList>{shopElements}</Decorate.DevideList>
+})
+
+const ShopEntry = props => {
+    const {
+        data,
+    } = props
+
+    return (
+        <div className='ShopEntry-root'>
             <span
-                className='Name'
-                onClick={onClick}
+                className={clsx('Name', 'Text_header_2nd', 'Text_link')}
+                onClick={() => location.href = `${location.origin}/shop?id=${data.id}`}
             >
-                {shopName}
+                {data.name}
             </span>
-            <span>{description}</span>
-            <span className='LatestUpdate'>{`Latest updated at ${(new Date(latestUpdate)).toLocaleString('en')}`}</span>
+            {data.description}
+            <span className={clsx('LatestUpdate', 'Text_remark')}>
+                {`Latest updated at ${(new Date(data.latestUpdate)).toLocaleString('en')}`}
+            </span>
         </div>
     )
 }
 
-const New = (props) => {
+const New = connect(
+    () => ({}),
+    dispatch => ({
+        refetchMyShops: () => dispatch(actions.refetchAction()),
+    }),
+)(props => {
     const {
-        onComplete = () => {},
+        refetchMyShops,
     } = props
 
     const refName = useRef(null)
@@ -134,7 +172,7 @@ const New = (props) => {
                 })
                 .then((res) => {
                     if (!abortTk.isAborted() && res.status === 200) {
-                        onComplete()
+                        refetchMyShops()
                         refFoldItem.current.startFold()
                     }
                 })
@@ -161,27 +199,28 @@ const New = (props) => {
     }
 
     return (
-        <div className='ShopNew-Root'>
-            <span className='Desc'>Create a new shop.</span>
+        <div className='ShopNew-root'>
+            Create a new shop.
             <TextInput
                 ref={refName}
                 label='Shop name'
                 error={inputError ? true : false}
                 helperText={inputError}
             />
-            {hintError ? <p className='HintError'>{hintError}</p> : null}
+            {hintError && <span className={clsx('Text_error')}>{hintError}</span>}
             <FloatItem
                 ref={refFoldItem}
                 manualFold
             >
-                <Button
+                <RectButton
                     onClick={handleCreate}
+                    loading={busy}
                 >
                     Create    
-                </Button>
+                </RectButton>
             </FloatItem>
         </div>
     )
-}
+})
 
 export default Shops

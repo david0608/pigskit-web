@@ -8,7 +8,6 @@ import {
 } from '../store'
 import MeasureScreen from '../MeasureScreen'
 import DropScreenProvider from '../DropScreen'
-import './index.less'
 
 const App = (props) => {
     const {
@@ -29,7 +28,6 @@ const App = (props) => {
                     <DropScreenProvider>
                         {children}
                     </DropScreenProvider>
-                    <div className='test'></div>
                 </MeasureScreen>
             </UserInfoProvider>
         </StoreProvider>

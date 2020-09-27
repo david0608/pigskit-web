@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { FiLogOut } from "react-icons/fi"
-import axios from '../../utils/axios'
-import { TopBarFloatList } from '../utils/Decorate/TopBar'
-import { FloatItem } from '../utils/FloatList'
-import { TopBarButton } from '../utils/Decorate/TopBar'
-import RectButton from '../utils/RectButton'
-import { DeviderL } from '../utils/Devider'
-import { pigskit_restful_origin } from '../../utils/service_origins'
+import axios from '../../../utils/axios'
+import { TopBarFloatList, TopBarButton } from '../../utils/Decorate/TopBar'
+import { FloatItem } from '../../utils/FloatList'
+import RectButton from '../../utils/RectButton'
+import { DeviderL } from '../../utils/Devider'
+import { pigskit_restful_origin } from '../../../utils/service_origins'
+import './index.less'
 
 const User = connect(
     (state) => ({
@@ -17,7 +17,6 @@ const User = connect(
 )(React.memo(
     (props) => {
         const {
-            className,
             deviceType,
             username,
             nickname,
@@ -25,16 +24,17 @@ const User = connect(
 
         return (
             <TopBarFloatList
+                className='AppBarUser-root'
                 label={
                     <TopBarButton deviceType={deviceType}>
                         <img src={`${pigskit_restful_origin()}/fs/user/avatar`}/>
                     </TopBarButton>
                 }
             >
-                <p className='Title'>Hello, <strong>{nickname || username}</strong></p>
+                <p>Hello,&nbsp;<strong>{nickname || username}</strong></p>
                 <DeviderL/>
                 <FloatItem>
-                    <LinkButton url={`${location.origin}${location.pathname}#/shops`}>Your shops</LinkButton>
+                    <LinkButton url={`${location.origin}/home#/`}>Your shops</LinkButton>
                 </FloatItem>
                 <FloatItem>
                     <SignOutButton/>
@@ -87,7 +87,7 @@ const SignOutButton = () => {
             onClick={handleClick}
             backgroundColor='white'
         >
-            <FiLogOut/>Sign out
+            <FiLogOut/>&nbsp;Sign out
         </RectButton>
     )
 }

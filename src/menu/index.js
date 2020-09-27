@@ -1,18 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { HashRouter, Switch, Route } from 'react-router-dom'
-import {
-    StoreProvider,
-    deviceInfoReducer,
-    shopInfoReducer,
-    ShopInfoProvider,
-    guestSessionReducer,
-    GuestSessionProvider,
-    shopProductsReducer,
-    ShopProductsController,
-} from '../components/store'
+import { StoreProvider, deviceInfoReducer } from '../components/store'
 import MeasureScreen from '../components/MeasureScreen'
 import MenuTopBar from './MenuTopBar'
+import ShopInfo, { shopInfoReducer } from './ShopInfo'
+import { shopProductsReducer, ShopProductsController } from './ShopProducts'
+import GuestSession from './GuestSession'
 import Menu from './Menu'
 import Cart, { cartInfoReducer, CartInfoController } from './Cart'
 import Orders, { orderInfoReducer, OrderInfoController } from './Order'
@@ -38,23 +32,23 @@ const App = (props) => (
     <StoreProvider
         reducers={{
             deviceInfo: deviceInfoReducer,
-            shopInfo: shopInfoReducer,
-            guestSession: guestSessionReducer,
+            guestSession: GuestSession.reducer,
+            ...shopInfoReducer,
             ...shopProductsReducer,
             ...cartInfoReducer,
             ...orderInfoReducer
         }}
     >
-        <ShopInfoProvider>
-            <GuestSessionProvider>
+        <ShopInfo.Provider>
+            <GuestSession.Provider>
                 <ShopProductsController/>
                 <CartInfoController/>
                 <OrderInfoController/>
                 <MeasureScreen>
                     {props.children}
                 </MeasureScreen>
-            </GuestSessionProvider>
-        </ShopInfoProvider>
+            </GuestSession.Provider>
+        </ShopInfo.Provider>
     </StoreProvider>
 )
 

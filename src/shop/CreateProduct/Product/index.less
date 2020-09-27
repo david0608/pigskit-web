@@ -1,6 +1,7 @@
 .Product-root {
-    color: rgba(0, 0, 0, 0.75);
-    font-size: 14px;
+    >.Title {
+        margin-bottom: 24px;
+    }
 
     >.Info {
         display: flex;
@@ -23,7 +24,6 @@
         }
 
         >.ImageError {
-            color: #f44336;
             margin: 12px 0px 0px;
         }
     }
@@ -41,10 +41,6 @@
         margin-bottom: 36px;
     }
 
-    >.HintError {
-        color: #f44336;
-    }
-
     >.Footer {
         display: flex;
         justify-content: center;
@@ -56,15 +52,10 @@
 }
 
 .NewCustomize-root {
-    >.FoldList-Label>button svg {
-        font-size: 16px;
-    }
-
-    >.FoldList-List {
-        padding: 10px 15px !important;
+    &.Open>.FoldList-List {
+        padding: 10px 15px;
 
         >.Title {
-            font-size: 16px;
             margin-bottom: 10px;
         }
 

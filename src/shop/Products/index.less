@@ -1,7 +1,7 @@
 .Products-body {
     margin: 16px 0px 16px 0px;
 
-    >.Blank {
+    >.Decorate-Blank {
         background-color: #f9f9f9;
     }
 }
@@ -20,9 +20,9 @@
     }
 
     >.Description {
-        color: rgba(0, 0, 0, 0.6);
-        font-size: 14px;
         flex: 2;
+        display: flex;
+        align-items: center;
     }
 
     >.Price {
@@ -39,20 +39,14 @@
 
         >.Name {
             flex: 1;
-            font-size: 22px;
-            font-weight: 600;
-        }
-
-        >.MuiButton-root>.MuiButton-label>svg {
-            font-size: 16px;
         }
     }
 
     >.Image-root {
-        margin-top: 8px;
+        margin: 8px 0px 0px 40px;
         max-width: 400px;
 
-        &.blank::before {
+        &::before {
             padding-top: 50%;
         }
     }
@@ -62,8 +56,6 @@
         display: flex;
 
         >.Description {
-            color: rgba(0, 0, 0, 0.6);
-            font-size: 14px;
             flex: 1;
         }
     }
@@ -73,14 +65,10 @@
 
         >.Name {
             margin-top: 8px;
-            font-size: 18px;
-            font-weight: 500;
         }
 
         >.Description {
-            color: rgba(0, 0, 0, 0.6);
             padding: 8px 0px 0px 40px;
-            font-size: 14px;
         }
 
         >.Selection {
@@ -90,12 +78,15 @@
 
             >.Name {
                 flex: 1;
-                font-weight: 500;
             }
         }
     }
 
     &.mobile {
+        >.Image-root {
+            margin: 8px 0px 0px 0px;
+        }
+
         >.Info {
             padding: 8px 0px 0px 0px;
         }

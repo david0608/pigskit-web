@@ -10,8 +10,8 @@ import TextInput from '../../../components/utils/TextInput'
 import RectButton from '../../../components/utils/RectButton'
 import CircButton from '../../../components/utils/CircButton'
 import Decorate from '../../../components/utils/Decorate'
-import { T2 } from '../../../components/utils/Title'
 import { Selection, SelectionData } from '../Selection'
+import '../../../styles/text.less'
 import './index.less'
 
 export class CustomizeData {
@@ -133,15 +133,17 @@ const Outline = connect(
                 <div className='Name'>
                     {customize.name}
                 </div>
-                <div className={clsx('Desc', !customize.description && 'NoDesc')}>
-                    {customize.description || 'No description'}
-                </div>
-            </div>
-            <div className={clsx('Selections', !customize.hasSelection && 'NoSelc')}>
                 {
-                    customize.hasSelection ?
-                    customize.selectionsMap((sel, id) => {
-                        return (
+                    customize.description ?
+                    <div className='Desc'>{customize.description}</div> :
+                    <div className={clsx('Desc', 'Text_remark')}>No description</div>
+                }
+            </div>
+            {
+                customize.hasSelection ?
+                <div className='Selections'>
+                    {
+                        customize.selectionsMap((sel, id) => (
                             <div key={id} className='Selection'>
                                 <div className='Name'>
                                     {sel.name}
@@ -150,11 +152,13 @@ const Outline = connect(
                                     {sel.price}
                                 </Decorate.Price>
                             </div>
-                        )
-                    }) :
-                    'No selection'
-                }
-            </div>
+                        ))
+                    }
+                </div> :
+                <div className={clsx('Selections', 'Text_remark')}>
+                    No selection
+                </div>
+            }
         </div>
     )
 })
@@ -191,20 +195,22 @@ const Preview = (props) => {
 
     return (
         <div className='Customize-preview'>
-            <T2 className='Title'>
+            <div className={clsx('Title', 'Text_header_3rd')}>
                 {customize.name}
-                <CircButton onClick={toggleSwitch}><MdEdit/></CircButton>
-            </T2>
-            <div className={clsx('Desc', !customize.description && 'NoDesc')}>
-                {customize.description || 'No desciption'}
+                <CircButton className='Right' onClick={toggleSwitch}><MdEdit/></CircButton>
             </div>
-            <T2 className='Title-selections'>
+            {
+                customize.description ?
+                <div className={clsx('Desc')}>{customize.description}</div> :
+                <div className={clsx('Desc', 'Text_remark')}>No description</div>
+            }
+            <div className={clsx('Title', 'Text_header_3rd')}>
                 with selections
                 <NewSelection
-                    className='New'
+                    className='Right'
                     customize={customize}
                 />
-            </T2>
+            </div>
             <Decorate.List>
                 {
                     customize.hasSelection ?
@@ -285,7 +291,7 @@ const NewSelection = connect(
             rightAligned
             fullScreen={deviceType === 'mobile'}
         >
-            <div className='Title'>
+            <div className={clsx('Title', 'Text_header_3rd')}>
                 New selection
             </div>
             <TextInput

@@ -2,13 +2,15 @@ import React, { useRef, useState } from 'react'
 import { connect } from 'react-redux'
 import clsx from 'clsx'
 import { BsFillPersonFill } from 'react-icons/bs'
-import axios from '../../utils/axios'
-import { useAbort, createAbort } from '../../utils/abort'
-import { useDropScreen } from '../DropScreen'
-import { TopBarButton } from '../utils/Decorate/TopBar'
-import RectButton from '../utils/RectButton'
-import TextInput from '../utils/TextInput'
-import './SignInUp.less'
+import axios from '../../../utils/axios'
+import { useAbort, createAbort } from '../../../utils/abort'
+import { useDropScreen } from '../../DropScreen'
+import { TopBarButton } from '../../utils/Decorate/TopBar'
+import RectButton from '../../utils/RectButton'
+import TextInput from '../../utils/TextInput'
+import { LoadingRing } from '../../utils/Loading'
+import '../../../styles/text.less'
+import './index.less'
 
 const SignInUp = React.memo(
     (props) => {
@@ -25,7 +27,7 @@ const SignInUp = React.memo(
                 deviceType={deviceType}
                 onClick={() => refDropScreen.current.open(<SignInPage/>)}
             >
-                <BsFillPersonFill/>{deviceType === 'mobile' ? null : 'Sign in'}
+                <BsFillPersonFill/>{deviceType !== 'mobile' && '\xA0Sign in'}
             </TopBarButton>
         )
     }
@@ -44,80 +46,83 @@ const SignInPage = connect(
     const refUsername = useRef(null)
     const refPassword = useRef(null)
 
-    const [busy, setBusy] = useState(false)
+    const [busy, setBusy] = useState('')
     const [usernameError, setUsernameError] = useState('')
     const [passwordError, setPasswordError] = useState('')
     const [signInError, setSignInError] = useState('')
     const abort = useAbort()
 
     const handleSignIn = () => {
-        if (!busy) {
-            setUsernameError('')
-            setPasswordError('')
-            setSignInError('')
-            let checked = true
-            if (!refUsername.current.value) {
-                setUsernameError('Please enter username.')
-                checked = false
+        if (busy) return
+
+        let usernameError = ''
+        if (!refUsername.current.value) usernameError = 'Please enter username.'
+        let passwordError = ''
+        if (!refPassword.current.value) passwordError = 'Please enter password.'
+
+        setUsernameError(usernameError)
+        setPasswordError(passwordError)
+        setSignInError('')
+
+        if (usernameError || passwordError) return
+        setBusy('HANDLE_SIGNIN')
+
+        const abortTk = abort.signup()
+        axios({
+            method: 'POST',
+            url: '/api/user/session',
+            data: {
+                username: refUsername.current.value,
+                password: refPassword.current.value,
+            },
+            cancelToken: abortTk.axiosCancelTk()
+        })
+        .then((res) => {
+            location.href = `${location.origin}/home`
+        })
+        .catch((err) => {
+            if (abort.isAborted) return
+            switch (err.response.data.type) {
+                case 'Unauthorized':
+                    setSignInError('Invalid username or password.')
+                    break
+                default:
+                    setSignInError('Encountered an unknown error, please try again.')
             }
-            if (!refPassword.current.value) {
-                setPasswordError('Please enter password.')
-                checked = false
+        })
+        .finally(() => {
+            if (!abortTk.isAborted()) {
+                abort.signout(abortTk)
+                setBusy('')
             }
-            if (checked) {
-                setBusy(true)
-                axios({
-                    method: 'POST',
-                    url: '/api/user/session',
-                    data: {
-                        username: refUsername.current.value,
-                        password: refPassword.current.value,
-                    },
-                })
-                .then((res) => {
-                    if (res.status === 200) {
-                        location.href = `${location.origin}/home`
-                    }
-                })
-                .catch((err) => {
-                    switch (err.response.data.type) {
-                        case 'Unauthorized':
-                            setSignInError('Invalid username or password.')
-                            break
-                        default:
-                            setSignInError('Encountered an unknown error, please try again.')
-                    }
-                })
-                .finally(() => setBusy(false))
-            }
-        }
+        })
     }
 
     const handleSignUp = () => {
-        if (!busy) {
-            const abortTk = abort.signup()
-            setBusy(true)
-            axios({
-                method: 'POST',
-                url: '/api/user/register',
-                cancelToken: abortTk.axiosCancelTk(),
-            })
-            .then((res) => {
-                if (res.status === 200) refDropScreen.current.open(<SignUpPage/>)
-            })
-            .catch((err) => console.log(err.response))
-            .finally(() => {
-                if (!abortTk.isAborted()) {
-                    abort.signout(abortTk)
-                    setBusy(false)
-                }
-            })
-        }
-    }
+        if (busy) return
+        setBusy('HANDLE_SIGNUP')
 
+        const abortTk = abort.signup()
+        axios({
+            method: 'POST',
+            url: '/api/user/register',
+            cancelToken: abortTk.axiosCancelTk(),
+        })
+        .then(res => {
+            refDropScreen.current.open(<SignUpPage/>)
+        })
+        .catch(err => console.log(err.response))
+        .finally(() => {
+            if (!abortTk.isAborted()) {
+                abort.signout(abortTk)
+                setBusy('')
+            }
+        })
+    }
+    
     return (
         <div className={clsx('SignInPageRoot', deviceType)}>
-            <p className='Title'>Sign in</p>
+            <p className={clsx('Title', 'Text_header_2nd')}>Sign in</p>
             <TextInput
                 ref={refUsername}
                 className='TextInput'
@@ -134,14 +139,19 @@ const SignInPage = connect(
                 helperText={passwordError}    
             />
             <RectButton
-                className='RectButton'
                 onClick={handleSignIn}
+                loading={busy === 'HANDLE_SIGNIN'}
             >
                 Sign in
             </RectButton>
-            {signInError ? <span className='SignInError'>{signInError}</span> : null}
+            {signInError && <span className={clsx('SignInError', 'Text_error')}>{signInError}</span>}
             <p className='Hint'>
-                Don't have an account? <a onClick={handleSignUp}>Sign up here</a>
+                Don't have an account?&nbsp;
+                {
+                    busy === 'HANDLE_SIGNUP' ?
+                    <LoadingRing stroke='#dcdcdc' radius={8}/> :
+                    <a className='Text_link_highlight' onClick={handleSignUp}>Sign up here</a>
+                }
             </p>
         </div>
     )
@@ -236,7 +246,7 @@ class StepComponent extends React.Component {
         this.checkRef = React.createRef()
         this.abort = createAbort()
         this.state = {
-            busy: false,
+            busy: '',
             inputError: '',
             checkError: '',
             hintError: '',
@@ -248,82 +258,82 @@ class StepComponent extends React.Component {
     }
 
     next() {
-        if (!this.state.busy) {
-            const abort = this.abort.signup()
-            this.setState({
-                busy: true,
-                inputError: '',
-                checkError: '',
-                hintError: '',
+        if (this.state.busy) return
+
+        const abort = this.abort.signup()
+        this.setState({
+            busy: 'NEXT',
+            inputError: '',
+            checkError: '',
+            hintError: '',
+        })
+        Promise.resolve()
+        .then(() => {
+            if (this.props.isPassword && this.inputRef.current.value !== this.checkRef.current.value) {
+                throw new Error('CheckFailed')
+            }
+            return axios({
+                method: 'PATCH',
+                url: '/api/user/register',
+                data: {
+                    operation: this.props.operation,
+                    data: this.inputRef.current.value,
+                },
+                cancelToken: abort.axiosCancelTk()
             })
-            Promise.resolve()
-            .then(() => {
-                if (this.props.isPassword && this.inputRef.current.value !== this.checkRef.current.value) {
-                    throw new Error('CheckFailed')
-                }
-                return axios({
-                    method: 'PATCH',
-                    url: '/api/user/register',
-                    data: {
-                        operation: this.props.operation,
-                        data: this.inputRef.current.value,
-                    },
-                    cancelToken: abort.axiosCancelTk()
+            .catch(err => {
+                throw Error.fromAxios(err)
+            })
+        })
+        .then(this.props.onNextCB)
+        .catch(err => {
+            let errors = this.props.errors
+            console.log(err)
+            if (errors.input[err.type]) {
+                this.setState({
+                    inputError: errors.input[err.type],
                 })
-                .catch((err) => {
-                    throw Error.fromAxios(err)
+            } else if (errors.check[err.type]) {
+                this.setState({
+                    checkError: errors.check[err.type],
                 })
-            })
-            .then(this.props.onNextCB)
-            .catch((err) => {
-                let errors = this.props.errors
-                if (errors.input[err.type]) {
-                    this.setState({
-                        inputError: errors.input[err.type],
-                    })
-                } else if (errors.check[err.type]) {
-                    this.setState({
-                        checkError: errors.check[err.type],
-                    })
-                } else if (errors.hint[err.type]) {
-                    this.setState({
-                        hintError: errors.check[err.type],
-                    })
-                } else {
-                    this.setState({
-                        hintError: 'Encountered an unknown error, please try again.',
-                    })
-                }
-            })
-            .finally(() => {
-                if (!abort.isAborted()) {
-                    this.abort.signout(abort)
-                    this.setState({ busy: false })
-                }
-            })
-        }
+            } else if (errors.hint[err.type]) {
+                this.setState({
+                    hintError: errors.check[err.type],
+                })
+            } else {
+                this.setState({
+                    hintError: 'Encountered an unknown error, please try again.',
+                })
+            }
+        })
+        .finally(() => {
+            if (!abort.isAborted()) {
+                this.abort.signout(abort)
+                this.setState({ busy: '' })
+            }
+        })
     }
 
     back() {
-        if (!this.state.busy) {
-            const abort = this.abort.signup()
-            this.setState({ busy: true })
-            Promise.resolve()
-            .then(this.props.onBackCB)
-            .finally(() => {
-                if (!abort.isAborted()) {
-                    this.abort.signout(abort)
-                    this.setState({ busy: false })
-                }
-            })
-        }
+        if (this.state.busy) return
+        const abort = this.abort.signup()
+        this.setState({ busy: 'BACK' })
+        Promise.resolve()
+        .then(this.props.onBackCB)
+        .finally(() => {
+            if (!abort.isAborted()) {
+                this.abort.signout(abort)
+                this.setState({ busy: '' })
+            }
+        })
     }
 
     render() {
         return (<>
             {
                 this.state.hintError ?
-                <p className='HintError'>{this.state.hintError}</p> :
+                <p className={clsx('HintError', 'Text_highlight')}>{this.state.hintError}</p> :
                 <p className='Desc'>{this.props.desc}</p>
             }
             <TextInput
@@ -347,12 +357,22 @@ class StepComponent extends React.Component {
                 /> : null
             }
             {
-                this.props.onNextCB ?
-                <RectButton className='RectButton' onClick={() => this.next()}>Next</RectButton> : null
+                this.props.onNextCB &&
+                <RectButton
+                    onClick={this.next.bind(this)}
+                    loading={this.state.busy === 'NEXT'}
+                >
+                    Next
+                </RectButton>
             }
             {
-                this.props.onBackCB ?
-                <RectButton className='RectButton' onClick={() => this.back()}>Back</RectButton> : null
+                this.props.onBackCB &&
+                <RectButton
+                    onClick={this.back.bind(this)}
+                    loading={this.state.busy === 'BACK'}
+                >
+                    Back
+                </RectButton>
             }
         </>)
     }
@@ -457,7 +477,7 @@ const SignUpPage = connect(
 
     return (
         <div className={clsx('SignUpPageRoot', deviceType)}>
-            <p className='Title'>Sign up</p>
+            <p className={clsx('Title', 'Text_header_2nd')}>Sign up</p>
             {
                 finish ?
                     <>
@@ -471,9 +491,13 @@ const SignUpPage = connect(
                     <>
                         {SIGNUP_STEPS[step].render({ onNextCB: onNextCB, onBackCB: onBackCB, ...stepProps })}
                         <p className='Hint'>
-                            Already have an account? <a
+                            Already have an account?&nbsp;
+                            <a
+                                className='Text_link_highlight'
                                 onClick={() => refDropScreen.current.open(<SignInPage/>)}
-                            >Sign in here</a>
+                            >
+                                Sign in here
+                            </a>
                         </p>
                     </>
             }

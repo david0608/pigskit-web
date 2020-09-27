@@ -11,6 +11,7 @@ export const FoldList = (props) => {
         label,
         foldCatch,
         preventScroll,
+        debug,
         children,
     } = props
 
@@ -51,7 +52,7 @@ export const FoldList = (props) => {
 
     return (
         <div
-            className={clsx('FoldList-Root', open && 'Open', className)}
+            className={clsx('FoldList-Root', (open || debug) && 'Open', className)}
             tabIndex={-1}
             onBlur={closeWhenUnFocus}
             ref={refRoot}
@@ -64,7 +65,7 @@ export const FoldList = (props) => {
                 {label || <button>list</button>}
             </div>
             <ParentFold.Provider value={fold}>
-                {open && <FoldListList
+                {(open || debug) && <FoldListList
                     preventScroll={preventScroll}
                     children={children}
                 />}

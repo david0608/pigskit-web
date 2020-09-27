@@ -44,13 +44,13 @@ const labelStyle = makeStyles({
         left: '10px',
         transform: 'translate(0px, -50%) scale(1)',
         transition: 'color 200ms ,transform 200ms, top 200ms',
-        fontFamily: 'inherit',
+        fontFamily: 'Poppins, sans-serif',
     },
     focused: {
         color: 'black !important',
     },
     error: {
-        color: '#f44336 !important',
+        color: '#ff0000 !important',
     },
     shrink: {
         display: p => p.shrink?.display,
@@ -68,7 +68,7 @@ const helperTextStyle = makeStyles({
         right: '20px',
         bottom: 0,
         transform: 'translateY(100%)',
-        fontFamily: 'inherit',
+        fontFamily: 'Poppins, sans-serif',
         textAlign: 'right',
     }
 })

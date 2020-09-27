@@ -8,10 +8,11 @@ import TextInput from '../../../components/utils/TextInput'
 import CircButton from '../../../components/utils/CircButton'
 import RectButton from '../../../components/utils/RectButton'
 import Decorate from '../../../components/utils/Decorate'
-import { T1 } from '../../../components/utils/Title'
 import axios from '../../../utils/axios'
 import { createAbort } from '../../../utils/abort'
 import { Customize, CustomizeData } from '../Customize'
+import { shopProductsActions } from '../../Products'
+import '../../../styles/text.less'
 import './index.less'
 
 class ProductData {
@@ -161,6 +162,7 @@ class Product extends React.PureComponent {
             if (abortTK.isAborted() || res.status !== 200) {
                 throw new Error('Failed to create product.')
             } else {
+                this.props.refetchShopProducts()
                 location.href = `${location.origin}/shop/?id=${this.props.shop_id}#/products`
             }
         })
@@ -196,7 +198,7 @@ class Product extends React.PureComponent {
     render() {
         return (
             <div className='Product-root'>
-                <T1>Create a new product</T1>
+                <div className={clsx('Title', 'Text_header_2nd')}>Create a new product</div>
                 <div className='Info'>
                     <TextInput
                         onChange={(e) => this.data.name = e.target.value}
@@ -223,15 +225,15 @@ class Product extends React.PureComponent {
                         className='Image'
                         aspect={2}
                     />
-                    {this.state.imageError ? <p className='ImageError'>{this.state.imageError}</p> : null}
+                    {this.state.imageError ? <p className={clsx('ImageError', 'Text_error')}>{this.state.imageError}</p> : null}
                 </div>
-                <T1 className='Title-customize'>
+                <div className={clsx('Title-customize', 'Text_header_2nd')}>
                     with customizes
                     <NewCustomize
                         className='New'
                         product={this}
                     />
-                </T1>
+                </div>
                 <Decorate.List className='Customizes'>
                     {
                         this.hasCustomize ?
@@ -245,10 +247,11 @@ class Product extends React.PureComponent {
                         <Decorate.Blank>No customize</Decorate.Blank>
                     }
                 </Decorate.List>
-                {this.state.hintError ? <p className='HintError'>{this.state.hintError}</p> : null}
+                {this.state.hintError ? <p className={clsx('Text_error')}>{this.state.hintError}</p> : null}
                 <div className='Footer'>
                     <RectButton
                         onMouseDown={this.commit.bind(this)}
+                        loading={this.state.busy}
                     >
                         Ok
                     </RectButton>
@@ -294,7 +297,7 @@ const NewCustomize = connect(
             rightAligned
             fullScreen={deviceType === 'mobile'}
         >
-            <div className='Title'>
+            <div className={clsx('Title', 'Text_header_3rd')}>
                 New customize
             </div>
             <TextInput
@@ -322,4 +325,9 @@ const NewCustomize = connect(
     )
 })
 
-export default Product
+export default connect(
+    state => ({}),
+    dispatch => ({
+        refetchShopProducts: () => dispatch(shopProductsActions.refetchAction())
+    })
+)(Product)
