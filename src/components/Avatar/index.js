@@ -10,7 +10,7 @@ const Avatar = (props) => {
 
     return (
         <div className={clsx('Avatar-root', className)}>
-            <img src={`${pigskit_restful_origin()}/fs/user/avatar`}/>
+            <img src={`${pigskit_restful_origin()}/api/user/profile/avatar?default=true`}/>
         </div>
     )
 }

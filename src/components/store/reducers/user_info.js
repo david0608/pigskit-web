@@ -11,6 +11,10 @@ const initState = {
     username: '',
     // Record nickname of the user.
     nickname: '',
+    // Record email of the user.
+    email: '',
+    // Record phone of the user.
+    phone: '',
 }
 
 const actionType = {
@@ -19,12 +23,20 @@ const actionType = {
 }
 
 const userInfoActions = {
-    init: ({ signedIn, username, nickname }) => ({
+    init: ({
+        signedIn,
+        username,
+        nickname,
+        email,
+        phone,
+    }) => ({
         type: actionType.init,
         payload: {
             signedIn,
             username,
             nickname,
+            email,
+            phone,
         }
     }),
     refetch: () => ({

@@ -1,11 +1,15 @@
 import React from 'react'
 import clsx from 'clsx'
-import Measure from 'react-measure'
 import ReactCrop from 'react-image-crop'
 import "react-image-crop/dist/ReactCrop.css"
-import { GoPlus } from "react-icons/go"
+import { GoPlus, GoX, GoChevronRight, GoChevronDown } from "react-icons/go"
+import { TiArrowBack} from 'react-icons/ti'
 import { useDropScreen } from '../../DropScreen'
+import axios from '../../../utils/axios'
+import { createAbort } from '../../../utils/abort'
+import { ImageBase } from '../Image'
 import RectButton from '../RectButton'
+import CircButton from '../CircButton'
 import './index.less'
 
 class ImageInput extends React.PureComponent {
@@ -14,65 +18,98 @@ class ImageInput extends React.PureComponent {
         this.crop = {
             unit: '%',
             height: 100,
-            aspect: this.props.aspect || 1,
+            aspect: this.aspect,
         }
         this.state = {
-            height: 0,
-            srcImageUrl: null,
-            imageUrl: null,
+            originImageUrl: null,
+            sourceImageUrl: null,
+            targetImageUrl: null,
+            shouldDeleteOriginImage: false,
         }
+        this.abort = createAbort()
     }
 
-    get srcImageUrl() {
-        return this.state.srcImageUrl
+    get aspect() {
+        return this.props.aspect || 1
     }
 
-    set srcImageUrl(srcImageUrl) {
-        window.URL.revokeObjectURL(this.srcImageUrl)
+    get shouldDeleteOriginImage() {
+        return this.state.shouldDeleteOriginImage
+    }
+
+    get originImageUrl() {
+        return this.state.originImageUrl
+    }
+
+    set originImage(data) {
+        URL.revokeObjectURL(this.originImageUrl)
         this.setState({
-            srcImageUrl: srcImageUrl,
+            originImageUrl: data && URL.createObjectURL(data)
         })
     }
 
-    get imageUrl() {
-        return this.state.imageUrl
+    get sourceImageUrl() {
+        return this.state.sourceImageUrl
     }
 
-    set imageUrl(imageUrl) {
-        window.URL.revokeObjectURL(this.imageUrl)
+    set sourceImageUrl(url) {
+        URL.revokeObjectURL(this.sourceImageUrl)
         this.setState({
-            imageUrl: imageUrl,
+            sourceImageUrl: url,
         })
     }
 
-    get tergetWidth() {
-        return this.props.targetWidth
+    get targetImageUrl() {
+        return this.state.targetImageUrl
+    }
+
+    set targetImage(data) {
+        URL.revokeObjectURL(this.targetImageUrl)
+        this.setState({
+            targetImageUrl: data && URL.createObjectURL(data),
+        })
     }
 
     componentDidMount() {
         if (this.props.forwardRef) this.props.forwardRef.current = this
+        this.loadOriginImage()
     }
 
     componentWillUnmount() {
-        this.srcImageUrl = null
-        this.imageUrl = null
+        this.sourceImageUrl = null
+        this.targetImage = null
+        this.abort.abort()
     }
 
-    onResize({ entry }) {
-        if (entry) {
-            this.setState({
-                height: entry.width / this.crop.aspect,
-            })
-        }
+    loadOriginImage() {
+        let src = this.props.originImageSrc
+        if (!src) return
+
+        const abortTk = this.abort.signup()
+        axios({
+            method: 'GET',
+            url: src,
+            responseType: 'blob',
+            cancelToken: abortTk.axiosCancelTk(),
+        })
+        .then(res => {
+            if (abortTk.isAborted()) return
+            this.originImage = res.data
+        })
+        .catch(err => console.error(err))
+        .finally(() => {
+            if (abortTk.isAborted()) return
+            this.abort.signout(abortTk)
+        })
     }
 
-    loadSrcImageUrl(e) {
+    loadSourceImageUrl(e) {
         if (e.target.files?.length > 0) {
             const reader = new FileReader()
             reader.addEventListener(
                 'load',
                 () => {
-                    this.srcImageUrl = reader.result
+                    this.sourceImageUrl = reader.result
                     this.openEdit()
                 },
             )
@@ -80,8 +117,8 @@ class ImageInput extends React.PureComponent {
         }
     }
 
-    shouldClearSrcImageUrl() {
-        if (!this.imageUrl) this.srcImageUrl = null
+    shouldClearSourceImage() {
+        if (!this.targetImageUrl) this.sourceImageUrl = null
     }
 
     openEdit() {
@@ -93,68 +130,101 @@ class ImageInput extends React.PureComponent {
     }
 
     shouldOpenEdit() {
-        if (this.imageUrl) {
+        if (this.targetImageUrl) {
             this.openEdit()
         }
     }
 
-    closeEdit() {
+    commitEdit(crop, image) {
+        this.targetImage = image
+        this.recoverOriginImage()
+        this.crop = crop
         this.props.refDropScreen.current.close()
     }
 
-    commitEdit(crop, imageBlob) {
-        imageBlob.name = 'image.jpeg'
-        this.imageUrl = window.URL.createObjectURL(imageBlob)
-        this.crop = crop
-        this.closeEdit()
-    }
-
     deleteImage() {
-        this.srcImageUrl = null
-        this.imageUrl = null
+        this.sourceImageUrl = null
+        this.targetImage = null
         this.crop = {
             unit: '%',
             height: 100,
-            aspect: this.props.aspect || 1,
+            aspect: this.aspect,
         }
-        this.closeEdit()
+    }
+
+    deleteOriginImage() {
+        if (!this.originImageUrl) return
+        this.deleteImage()
+        this.setState({
+            shouldDeleteOriginImage: true
+        })
+    }
+
+    recoverOriginImage() {
+        if (!this.shouldDeleteOriginImage) return
+        this.setState({
+            shouldDeleteOriginImage: false
+        })
     }
 
     render() {
+        const {
+            className,
+            vertical,
+        } = this.props
+
         return (
-            <label
-                className={clsx('ImageInput-root', this.props.className)}
-            >
-                <Measure
-                    onResize={this.onResize.bind(this)}
-                >
-                    {({ measureRef }) => (
-                        <div
-                            ref={measureRef}
-                            className='Preview'
-                            style={{
-                                height: this.state.height,
-                            }}
-                            onClick={this.shouldOpenEdit.bind(this)}
-                        >
-                            {
-                                this.imageUrl ?
-                                <img src={this.imageUrl}/> :
-                                <GoPlus/>
-                            }
-                        </div>
-                    )}
-                </Measure>
+            <div className={clsx('ImageInput-root', vertical ? 'vertical' : 'horizon', className)}>
                 {
-                    !this.srcImageUrl &&
-                    <input
-                        className='Input'
-                        type='file'
-                        accept='image/*'
-                        onChange={this.loadSrcImageUrl.bind(this)}
-                    />
+                    this.originImageUrl &&
+                    <>
+                        <ImageBase
+                            className='Origin'
+                            src={this.originImageUrl}
+                            presize
+                        />
+                        <div className='Arrow'>{vertical ? <GoChevronDown/> : <GoChevronRight/>}</div>
+                    </>
                 }
-            </label>
+                <div className='Target'>
+                    {
+                        this.targetImageUrl ?
+                        <CircButton
+                            onClick={this.deleteImage.bind(this)}
+                            children={this.originImageUrl ? <TiArrowBack/> : <GoX/>}
+                        /> :
+                        (
+                            this.originImageUrl && (
+                                this.shouldDeleteOriginImage ?
+                                <CircButton
+                                    onClick={this.recoverOriginImage.bind(this)}
+                                    children={<TiArrowBack/>}
+                                /> :
+                                <CircButton
+                                    onClick={this.deleteOriginImage.bind(this)}
+                                    children={<GoX/>}
+                                />
+                            )
+                        )
+                    }
+                    <label>
+                        <ImageBase
+                            blankLabel={<GoPlus/>}
+                            src={this.targetImageUrl ? this.targetImageUrl : (this.shouldDeleteOriginImage ? null : this.originImageUrl)}
+                            onClick={this.shouldOpenEdit.bind(this)}
+                            presize
+                        />
+                        {
+                            !this.sourceImageUrl &&
+                            <input
+                                type='file'
+                                accept='image/*'
+                                onChange={this.loadSourceImageUrl.bind(this)}
+                            />
+                        }
+                    </label>
+                </div>
+            </div>
         )
     }
 }
@@ -184,14 +254,14 @@ class EditImage extends React.PureComponent {
     }
 
     onImageLoaded(image) {
-        this.srcImage = image
+        this.sourceImage = image
     }
 
     commitEdit() {
-        const srcImage = this.srcImage
+        const sourceImage = this.sourceImage
         const crop = this.state.crop
 
-        if (!srcImage || !crop.width || !crop.height) return
+        if (!sourceImage || !crop.width || !crop.height) return
 
         const targetWidth = this.props.imageInput.targetWidth || 600
         const targetHeight = targetWidth / crop.aspect
@@ -200,25 +270,28 @@ class EditImage extends React.PureComponent {
         canvas.width = targetWidth
         canvas.height = targetHeight
         canvas.getContext('2d').drawImage(
-            srcImage,
-            srcImage.naturalWidth * crop.x / 100,
-            srcImage.naturalHeight * crop.y / 100,
-            srcImage.naturalWidth * crop.width / 100,
-            srcImage.naturalHeight * crop.height / 100,
+            sourceImage,
+            sourceImage.naturalWidth * crop.x / 100,
+            sourceImage.naturalHeight * crop.y / 100,
+            sourceImage.naturalWidth * crop.width / 100,
+            sourceImage.naturalHeight * crop.height / 100,
             0,
             0,
             targetWidth,
             targetHeight,
         )
-        canvas.toBlob(blob => this.props.imageInput.commitEdit(crop, blob), 'image/jpeg', 0.9)
-    }
-
-    deleteImage() {
-        this.props.imageInput.deleteImage()
+        canvas.toBlob(
+            blob => {
+                blob.name = 'image.jpeg'
+                this.props.imageInput.commitEdit(crop, blob)
+            },
+            'image/jpeg',
+            0.9,
+        )
     }
 
     componentWillUnmount() {
-        this.props.imageInput.shouldClearSrcImageUrl()
+        this.props.imageInput.shouldClearSourceImage()
     }
 
     render() {
@@ -227,7 +300,7 @@ class EditImage extends React.PureComponent {
                 className='EditImage-root'
             >
                 <ReactCrop
-                    src={this.props.imageInput.srcImageUrl}
+                    src={this.props.imageInput.sourceImageUrl}
                     crop={this.state.crop}
                     onChange={this.onCropChange.bind(this)}
                     onImageLoaded={this.onImageLoaded.bind(this)}
@@ -237,12 +310,9 @@ class EditImage extends React.PureComponent {
                 >
                     <RectButton
                         onClick={this.commitEdit.bind(this)}
-                    >Ok</RectButton>
-                    <RectButton
-                        className='Delete'
-                        onClick={this.deleteImage.bind(this)}
-
-                    >Delete</RectButton>
+                    >
+                        Ok
+                    </RectButton>
                 </div>
             </div>
         )

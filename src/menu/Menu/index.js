@@ -225,7 +225,7 @@ class DetailComponent extends React.Component {
                 {
                     this.hasPicture &&
                     <Image
-                        url={`/fs/shop/product/image?shop_id=${this.shopId}&product_key=${this.key}`}
+                        url={`/api/shop/product/image?shop_id=${this.shopId}&product_key=${this.key}`}
                         presize
                     />
                 }

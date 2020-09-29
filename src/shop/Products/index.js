@@ -167,7 +167,7 @@ const Detail = connect(
                 <CircButton><MdEdit/></CircButton>
             </div>
             <Image
-                url={data.hasPicture && `/fs/shop/product/image?shop_id=${shopId}&product_key=${data.key}`}
+                url={data.hasPicture && `/api/shop/product/image?shop_id=${shopId}&product_key=${data.key}`}
                 presize
             />
             <div className='Info'>

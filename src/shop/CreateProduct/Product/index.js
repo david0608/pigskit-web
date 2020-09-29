@@ -139,8 +139,8 @@ class Product extends React.PureComponent {
             formData.append('shop_id', this.props.shop_id)
             formData.append('payload', this.data.toJsonString())
 
-            if (this.refImageInput.current?.imageUrl) {
-                return fetch(this.refImageInput.current.imageUrl)
+            if (this.refImageInput.current?.targetImageUrl) {
+                return fetch(this.refImageInput.current.targetImageUrl)
                     .then((res) => res.blob())
                     .then((image) => {
                         formData.append('image', image)

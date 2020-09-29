@@ -1,0 +1,82 @@
+.Profile-root {
+    >.Header {
+        padding-bottom: 24px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+
+        >button {
+            margin-left: auto;
+        }
+    }
+
+    >.Body {
+        >.Field {
+            padding: 12px 30px;
+            display: flex;
+            flex-wrap: wrap;
+    
+            >.Right {
+                margin-left: auto;
+            }
+        }
+    
+        >.Avatar {
+            padding: 24px 30px;
+            display: flex;
+
+            >.Image-root {
+                flex: 1;
+                max-width: 200px;
+                margin-left: auto;
+            }
+    
+            >.ImageInput-root {
+                flex: 1;
+                margin-left: auto;
+                justify-content: flex-end;
+
+                >div {
+                    max-width: 200px;
+                }
+            }
+        }
+    }
+
+    >.Error {
+        text-align: center;
+        margin-top: 8px;
+    }
+
+    >.Footer {
+        margin-top: 24px;
+        display: flex;
+        justify-content: center;
+
+        >button {
+            padding: 6px 12px;
+            margin: 0px 16px;
+        }
+    }
+
+    &.mobile {
+        >.Body {
+            >.Field {
+                padding: 12px 0px;
+            }
+
+            >.Avatar {
+                padding: 24px 0px;
+                display: block;
+
+                >.Image-root {
+                    margin: 8px auto;
+                }
+
+                >.ImageInput-root {
+                    margin: 8px auto;
+                }
+            }
+        }
+    }
+}

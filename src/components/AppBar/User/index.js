@@ -27,7 +27,7 @@ const User = connect(
                 className='AppBarUser-root'
                 label={
                     <TopBarButton deviceType={deviceType}>
-                        <img src={`${pigskit_restful_origin()}/fs/user/avatar`}/>
+                        <img src={`${pigskit_restful_origin()}/api/user/profile/avatar?default=true`}/>
                     </TopBarButton>
                 }
             >
@@ -35,6 +35,9 @@ const User = connect(
                 <DeviderL/>
                 <FloatItem>
                     <LinkButton url={`${location.origin}/home#/`}>Your shops</LinkButton>
+                </FloatItem>
+                <FloatItem>
+                    <LinkButton url={`${location.origin}/home#/profile`}>Your profile</LinkButton>
                 </FloatItem>
                 <FloatItem>
                     <SignOutButton/>

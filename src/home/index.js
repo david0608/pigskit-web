@@ -9,6 +9,7 @@ import Navigator from '../components/Navigator'
 import Avatar from '../components/Avatar'
 import Path from '../components/Path'
 import Shops, { myShopsReducer, MyShopsController } from './Shops'
+import Profile from './Profile'
 import './index.less'
 
 const LINKS = [
@@ -25,7 +26,7 @@ const LINKS = [
 const SwitchContent = () => (
     <Switch>
         <Route path='/profile'>
-            {/* user profile page */}
+            <Profile/>
         </Route>
         <Route path='/'>
             <Shops/>

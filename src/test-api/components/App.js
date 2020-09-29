@@ -436,29 +436,6 @@ const TestCartApi = () => {
 }
 
 const App = () => {
-
-    const upload_avatar = (evt) => {
-        evt.preventDefault()
-        const formdata = new FormData()
-
-        formdata.append('image', evt.target.files[0])
-
-        for (var value of formdata.values()) {
-            console.log(value)
-        }
-
-        testApi({
-            method: 'POST',
-            url: '/fs/user/avatar',
-            data: formdata,
-        })
-    }
-
-    const delete_avatar = () => testApi({
-        method: 'DELETE',
-        url: '/fs/user/avatar',
-    })
-
     return (
         <div className="App">
             <TestUserApi />
@@ -466,11 +443,6 @@ const App = () => {
             <TestShopApi />
             <TestProductApi />
             <TestCartApi/>
-            <div>
-                <input type='file' onChange={upload_avatar}/>
-                <button className="App" onClick={delete_avatar} >delete avatar</button>
-                <img src={`${location.origin}/fs/user/avatar`} />
-            </div>
         </div>
     )
 }

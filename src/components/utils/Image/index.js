@@ -19,7 +19,7 @@ export class TryFetchImage extends React.PureComponent {
         const abortTK = this.abort.signup()
         axios({
             method: 'GET',
-            url: this.props.src,
+            url: `${pigskit_restful_origin()}${this.props.url}`,
             responseType: 'blob',
             cancelToken: abortTK.axiosCancelTk(),
         })
@@ -44,32 +44,45 @@ export class TryFetchImage extends React.PureComponent {
     }
 
     render() {
-        return (
-            <div className={clsx('Image-root', !this.state.url && 'blank', this.props.className)}>
-                {
-                    this.state.url ?
-                    <img src={this.state.url}/> :
-                    <MdImage/>
-                }
-            </div>
-        )
+        const {
+            url,
+            ...otherProps
+        } = this.props
+
+        return <ImageBase {...otherProps} src={this.state.url} blankLabel={<MdImage/>}/>
     }
 }
 
-const Image = (props) => {
+const Image = props => {
+    const {
+        url,
+        ...otherProps
+    } = props
+
+    return <ImageBase {...otherProps} src={url && `${pigskit_restful_origin()}${url}`} blankLabel={<MdImage/>}/>
+}
+
+export const ImageBase = props => {
     const {
         className,
         presize,
-        url,
+        src,
+        onClick,
+        blankLabel,
     } = props
 
     return (
-        <div className={clsx('Image-root', !url && 'blank', presize && 'presize', className)}>
-            {
-                url ?
-                <img src={`${pigskit_restful_origin()}${url}`}/> :
-                <MdImage/>
-            }
+        <div
+            className={clsx(
+                'Image-root',
+                !src && 'blank',
+                presize && 'presize',
+                onClick && 'clickable',
+                className,
+            )}
+            onClick={onClick}
+        >
+            {src ? <img src={src}/> : blankLabel}
         </div>
     )
 }
