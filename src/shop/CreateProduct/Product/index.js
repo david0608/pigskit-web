@@ -172,7 +172,7 @@ class Product extends React.PureComponent {
             switch (err.response?.data?.type) {
                 case 'PayloadTooLarge':
                     this.setState({
-                        imageError: 'Image size too large.',
+                        imageError: 'Image oversize.',
                     })
                     break
                 default:

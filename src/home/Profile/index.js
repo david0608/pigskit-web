@@ -11,6 +11,7 @@ import TextInput from '../../components/utils/TextInput'
 import Button from '../../components/utils/Button'
 import CircButton from '../../components/utils/CircButton'
 import Decorate from '../../components/utils/Decorate'
+import { LoadingRing } from '../../components/utils/Loading'
 import { pigskit_restful_origin } from '../../utils/service_origins'
 import '../../styles/text.less'
 import './index.less'
@@ -106,10 +107,8 @@ const Edit = connect(
         phone,
     } = props
 
-    const [state, setState] = useState({
-        busy: false,
-        error: false,
-    })
+    const [busy, setBusy] = useState(false)
+    const [error, setError] = useState('')
 
     const toggleSwitch = useSwitch()
 
@@ -119,11 +118,9 @@ const Edit = connect(
     const abort = useAbort()
 
     const submit = () => {
-        if (state.busy) return
-        setState({
-            busy: true,
-            error: false,
-        })
+        if (busy) return
+        setBusy(true)
+        setError('')
 
         const abortTk = abort.signup()
         Promise.resolve()
@@ -159,16 +156,19 @@ const Edit = connect(
         .catch(err => {
             console.error(err)
             if (abortTk.isAborted()) return
-            setState({
-                error: true,
-            })
+            switch (err.response?.data?.type) {
+                case 'PayloadTooLarge':
+                    setError('Avatar image oversize.')
+                    break
+                default:
+                    setError('Encountered an unknown error, please try again.')
+            }
+            
         })
         .finally(() => {
             if (abortTk.isAborted()) return
-            this.abort.signout(abortTk)
-            this.setState({
-                busy: false,
-            })
+            abort.signout(abortTk)
+            setBusy(false)
         })
     }
     
@@ -207,10 +207,19 @@ const Edit = connect(
                 value={phone}
             />
         </Decorate.DevideList>
-        {state.error && <div className={clsx('Error', 'Text_error')}>Encountered an unknown error, please try again.</div>}
+        {error && <div className={clsx('Error', 'Text_error')}>{error}</div>}
         <div className='Footer'>
             <Button onClick={toggleSwitch}>Cancel</Button>
-            <Button onClick={submit}>Ok</Button>
+            <Button onClick={submit}>
+                {
+                    busy ?
+                    <LoadingRing
+                        radius={8}
+                        stroke='#888888'
+                    /> :
+                    'Ok'
+                }
+            </Button>
         </div>
     </>
     )

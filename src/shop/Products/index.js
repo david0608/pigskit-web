@@ -1,11 +1,16 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { connect } from 'react-redux'
 import clsx from 'clsx'
 import { MdEdit } from 'react-icons/md'
+import { IoMdTrash } from 'react-icons/io'
 import { gql } from 'apollo-boost'
 import { createQueryStore } from '../../utils/apollo'
+import axios from '../../utils/axios'
+import { useAbort } from '../../utils/abort'
 import Terminal from '../../components/Terminal'
 import Abstract from '../../components/utils/Abstract'
+import { FloatList, FloatItem } from '../../components/utils/FloatList'
+import RectButton from '../../components/utils/RectButton'
 import CircButton from '../../components/utils/CircButton'
 import Image from '../../components/utils/Image'
 import Decorate from '../../components/utils/Decorate'
@@ -85,13 +90,15 @@ const Products = connect(
         onCommit: value => refetch({ productName: value }),
     }
 
-    return (
+    return (<>
         <Terminal
             className='Products-root'
             newProps={newProps}
             searchProps={searchProps}
             BodyComponent={Body}
         />
+        <div className='test'></div>
+    </>
     )
 })
 
@@ -164,7 +171,22 @@ const Detail = connect(
         <div className={clsx('Product-detail', deviceType)}>
             <div className='Title'>
                 <span className={clsx('Name', 'Text_header_2nd')}>{data.name}</span>
-                <CircButton><MdEdit/></CircButton>
+                <CircButton
+                    onClick={() => location.href = `${location.origin}${location.pathname}${location.search}#/edit_product/${data.key}`}
+                    children={<MdEdit/>}
+                />
+                &emsp;
+                <FloatList
+                    className='Delete'
+                    rightAligned
+                    label={<CircButton children={<IoMdTrash/>}/>}
+                    children={
+                        <DeleteProduct
+                            shopId={shopId}
+                            productKey={data.key}
+                        />
+                    }
+                />
             </div>
             <Image
                 url={data.hasPicture && `/api/shop/product/image?shop_id=${shopId}&product_key=${data.key}`}
@@ -195,6 +217,90 @@ const Detail = connect(
                     )
                 })
             }
+        </div>
+    )
+})
+
+const DeleteProduct = connect(
+    () => ({}),
+    dispatch => ({
+        refetchProducts: () => dispatch(actions.refetchAction()),
+    })
+)(props => {
+    const {
+        shopId,
+        productKey,
+        refetchProducts,
+    } = props
+
+    const [state, setState] = useState({
+        busy: false,
+        error: '',
+    })
+
+    const refFloatItemYes = useRef(null)
+
+    const abort = useAbort()
+
+    const deleteProduct = () => {
+        if (state.busy) return
+        setState({
+            busy: true,
+            error: '',
+        })
+
+        const abortTk = abort.signup()
+        axios({
+            method: 'DELETE',
+            url: '/api/shop/product',
+            data: {
+                shop_id: shopId,
+                product_key: productKey,
+            },
+            cancelToken: abortTk.axiosCancelTk(),
+        })
+        .then(res => {
+            if (abortTk.isAborted()) return
+            refFloatItemYes.current.startFold()
+            refetchProducts()
+        })
+        .catch(err => {
+            console.error(err)
+            if (abortTk.isAborted()) return
+            switch (err.response.data.type) {
+                case 'Unauthorized':
+                    setState({ error: 'Permission denied. Please check.' })
+                    break
+                default:
+                    setState({ error: 'Encountered an unknown error. Please try again.' })
+            }
+            setState({ error: true })
+        })
+        .finally(() => {
+            if (abortTk.isAborted()) return
+            setState({ busy: false })
+        })
+    }
+
+    return (
+        <div className='DeleteProduct-root'>
+            Are you sure to delete the product?
+            {state.error && <div className={clsx('Text_error', 'Text_fine', 'Error')}>{state.error}</div>}
+            <FloatItem
+                className='Yes'
+                ref={refFloatItemYes}
+                manualFold
+                children={
+                    <RectButton
+                        onClick={deleteProduct}
+                        children='Yes'
+                    />
+                }
+            />
+            <FloatItem
+                className='No'
+                children={<RectButton children='No'/>}
+            />
         </div>
     )
 })
