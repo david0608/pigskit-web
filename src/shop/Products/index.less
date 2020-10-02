@@ -36,9 +36,46 @@
 
     >.Title {
         display: flex;
+        align-items: center;
 
         >.Name {
             flex: 1;
+        }
+
+        >.Delete {
+            z-index: 1;
+
+            .DeleteProduct-root {
+                width: 200px;
+                padding: 12px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                >.Error {
+                    margin-top: 8px;
+                }
+
+                >.FloatItem-Root {
+                    width: inherit;
+
+                    &.Yes {
+                        margin-top: 8px;
+                    }
+                    
+                    &.No {
+                        margin-top: 16px;
+                    }
+
+                    >button {
+                        width: inherit;
+                    }
+                }
+            }
+        }
+
+        >.FloatList-Root {
+            z-index: 1;
         }
     }
 
@@ -101,4 +138,8 @@
             }
         }
     }
+}
+
+.test {
+    height: 1000px;
 }

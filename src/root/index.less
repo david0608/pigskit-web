@@ -1,0 +1,54 @@
+.RootPage {
+    >.Slogan {
+        font-weight: 600;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &.desktop {
+            font-size: 64px;
+            margin: 128px 0;
+    
+            >div {
+                width: 898px;
+    
+                >div:nth-child(2) {
+                    text-align: center;
+                }
+                
+                >div:nth-child(3) {
+                    text-align: end;
+                }
+            }
+        }
+
+        &.tablets {
+            font-size: 40px;
+            margin: 96px 32px;
+
+            >div {
+                width: 100%;
+                max-width: 600px;
+
+                >div:nth-child(2) {
+                    text-align: center;
+                }
+
+                >div:nth-child(3) {
+                    text-align: end;
+                }
+            }
+        }
+
+        &.mobile {
+            font-size: 30px;
+            margin: 64px 0px;
+
+            >div {
+                >div:nth-child(3) {
+                    text-align: end;
+                }
+            }
+        }
+    }
+}
