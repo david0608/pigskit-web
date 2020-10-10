@@ -9,6 +9,7 @@ import Abstract from '../../components/utils/Abstract'
 import TextInput from '../../components/utils/TextInput'
 import QuantityInput from '../../components/utils/QuantityInput'
 import RectButton from '../../components/utils/RectButton'
+import Button from '../../components/utils/Button'
 import Loading from '../../components/utils/Loading'
 import Decorate from '../../components/utils/Decorate'
 import { shopProductsActions } from '../ShopProducts'
@@ -185,7 +186,7 @@ const Cart = connect(
                 Total : <Decorate.Price>{totalPrice}</Decorate.Price>
             </div>
             {state.submitError && <div className={clsx('ErrorHint', 'Text_error')}>{state.submitError}</div>}
-            <RectButton onClick={submitOrder} disabled={expired} loading={state.busy}>submit order</RectButton>
+            <RectButton onMouseDown={submitOrder} disabled={expired} loading={state.busy}>submit order</RectButton>
         </>
     }
 
@@ -291,7 +292,7 @@ const ExpiredOutline = connect(
                 </span>
                 <Decorate.Price>{data.totalPrice}</Decorate.Price>
             </div>
-            <div className='ErrorHint'>
+            <div className={clsx('ErrorHint', 'Text_error')}>
                 This item has expired.
             </div>
             <RectButton onClick={deleteItem} loading={state.busy}>remove</RectButton>
@@ -487,9 +488,23 @@ const Detail = connect(
                     minValue={1}
                 />
             </div>
-            <RectButton className='Ok' onClick={handleCommit} loading={state.busy === 'COMMIT'}>ok</RectButton>
-            <RectButton className='Cancel' onClick={handleCancel}>cancel</RectButton>
-            <RectButton className='Delete' onClick={handleDelete} loading={state.busy === 'DELETE'}>delete</RectButton>
+            <div className='Footer'>
+                <Button
+                    className='Left'
+                    onClick={handleDelete}
+                    loading={state.busy === 'DELETE'}
+                    children='Delete'
+                />
+                <Button
+                    onClick={handleCancel}
+                    children='Cancel'
+                />
+                <Button
+                    onClick={handleCommit}
+                    loading={state.busy === 'COMMIT'}
+                    children='Ok'
+                />
+            </div>
         </div>
     )
 })
@@ -504,14 +519,17 @@ const DetailCustomize = (props) => {
             <span className='Text_header_3rd'>
                 {data.name}
             </span>
-            <div className='Selection'>
-                <div className='Name'>
-                    {data.selection}
+            {
+                data.selection &&
+                <div className='Selection'>
+                    <div className='Name'>
+                        {data.selection}
+                    </div>
+                    <Decorate.Price>
+                        {data.selectionPrice}
+                    </Decorate.Price>
                 </div>
-                <Decorate.Price>
-                    {data.selectionPrice}
-                </Decorate.Price>
-            </div>
+            }
         </div>
     )
 }

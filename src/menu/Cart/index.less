@@ -110,7 +110,22 @@
         }
     }
 
-    >.Ok, >.Delete {
-        margin-top: 24px;
+    >.Footer {
+        margin-top: 32px;
+        display: flex;
+        justify-content: flex-end;
+
+        button {
+            width: 64px;
+            height: 32px;
+
+            &:not(:first-child) {
+                margin-left: 8px;
+            }
+
+            &.Left {
+                margin-right: auto;
+            }
+        }
     }
 }

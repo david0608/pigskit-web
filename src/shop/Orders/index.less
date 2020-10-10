@@ -2,36 +2,8 @@
     >.Decorate-Blank {
         background-color: #f9f9f9;
     }
-}
 
-.Order-outline {
-    padding: 12px 16px;
-    display: flex;
-    flex-wrap: wrap;
-
-    >.OrderAt {
-        margin-left: auto;
-        display: flex;
-        align-items: center;
-    }
-}
-
-.Order-detail {
-    padding: 24px 16px;
-    
-    >div {
-        border-bottom: solid 1px #dcdcdc;
-
-        &:last-child {
-            border-bottom: unset;
-        }
-    }
-
-    >.Item, >.TotalPrice, >.OrderAt {
-        padding: 12px 0px;
-    }
-
-    >.TotalPrice, >.OrderAt {
+    .DataField {
         display: flex;
         flex-wrap: wrap;
 
@@ -40,41 +12,44 @@
         }
     }
 
-    >.Item {
-        >div {
-            margin-bottom: 4px;
+    .Order-outline {
+        padding: 12px 16px;
 
-            &:last-child {
-                margin-bottom: unset;
-            }
-        }
-
-        >.Header {
+        >.OrderAt {
             display: flex;
-            flex-wrap: wrap;
-
-            >.Right {
-                margin-left: auto;
-            }
-        }
-
-        >.Customize {
-            padding: 0px 40px;
-            display: flex;
-            flex-wrap: wrap;
-
-            >.Selection {
-                margin-left: auto;
-            }
-        }
-
-        >.Quantity {
-            text-align: end;
+            align-items: center;
         }
     }
 
-    &.mobile {
-        >.Item>.Customize {
+    .Order-detail {
+        padding: 24px 16px;
+        
+        >* {
+            padding: 12px 0px;
+    
+            &:not(:last-child) {
+                border-bottom: solid 1px #dcdcdc;
+            }
+        }
+    
+        >.Item {
+            >*:not(:first-child) {
+                margin-top: 4px;
+            }
+    
+            >.Quantity {
+                text-align: end;
+            }
+        }
+    
+        &.desktop, &.tablets {
+            >.Item>.Customize {
+                width: 256px;
+                margin-left: 64px;
+            }
+        }
+    
+        &.mobile>.Item>.Customize {
             padding: 0px 24px;
         }
     }
