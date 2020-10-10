@@ -10,8 +10,7 @@ import Navigator from '../components/Navigator'
 import Outline from './Outline'
 import Products, { shopProductsReducer, ShopProductsController } from './Products'
 import Orders, { shopOrdersReducer, ShopOrdersController } from './Orders'
-import CreateProduct from './CreateProduct'
-import EditProduct from './EditProduct'
+import { CreateProduct, EditProduct } from './ManipulateProduct'
 import UserShop, { userShopReducer } from './UserShop'
 
 const LINKS = [

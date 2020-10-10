@@ -79,11 +79,12 @@
             width: 200px;
         }
 
-        >.FloatItem-Root>.MuiButton-root {
-            padding: 3px 8px;
+        >.FloatItem-Root {
+            margin: 0 auto;
 
-            >.MuiButton-label {
-                text-transform: none;
+            >button {
+                width: 64px;
+                height: 32px;
             }
         }
     }
@@ -99,20 +100,24 @@
         &.Name {
             max-width: 200px;
         }
+
+        &.Desc {
+            max-width: 400px;
+        }
     }
 
     >.Footer {
         display: flex;
 
-        >.MuiButton-root {
-            padding: 3px 8px;
-            margin-right: 8px;
-    
-            >.MuiButton-label {
-                text-transform: none;
+        >button {
+            width: 64px;
+            height: 32px;
+
+            &:not(:last-child) {
+                margin-right: 8px;
             }
-    
-            &.Delete {
+
+            &.Right {
                 margin-left: auto;
             }
         }
