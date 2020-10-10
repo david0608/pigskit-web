@@ -20,15 +20,15 @@
     >.Footer {
         display: flex;
 
-        >.MuiButton-root {
-            padding: 3px 8px;
-            margin-right: 8px;
+        >button {
+            width: 64px;
+            height: 32px;
 
-            >.MuiButton-label {
-                text-transform: none;
+            &:not(:last-child) {
+                margin-right: 8px;
             }
-    
-            &.Delete {
+
+            &.Right {
                 margin-left: auto;
             }
         }

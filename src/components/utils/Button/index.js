@@ -1,7 +1,7 @@
 import React from 'react'
 import clsx from 'clsx'
-import { LoadingRing } from './Loading'
-import './Button.less'
+import { LoadingRing } from '../Loading'
+import './index.less'
 
 const Button = (props) => {
     const {

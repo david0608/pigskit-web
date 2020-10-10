@@ -52,23 +52,17 @@
                 flex-direction: column;
                 align-items: center;
 
-                >.Error {
+                >* {
                     margin-top: 8px;
                 }
 
-                >.FloatItem-Root {
-                    width: inherit;
+                >.Footer {
+                    display: flex;
 
-                    &.Yes {
-                        margin-top: 8px;
-                    }
-                    
-                    &.No {
-                        margin-top: 16px;
-                    }
-
-                    >button {
-                        width: inherit;
+                    >.FloatItem-Root>button {
+                        width: 64px;
+                        height: 32px;
+                        margin: 0px 8px;
                     }
                 }
             }
@@ -138,8 +132,4 @@
             }
         }
     }
-}
-
-.test {
-    height: 1000px;
 }

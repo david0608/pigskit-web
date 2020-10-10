@@ -10,7 +10,7 @@ import { useAbort } from '../../utils/abort'
 import Terminal from '../../components/Terminal'
 import Abstract from '../../components/utils/Abstract'
 import { FloatList, FloatItem } from '../../components/utils/FloatList'
-import RectButton from '../../components/utils/RectButton'
+import Button from '../../components/utils/Button'
 import CircButton from '../../components/utils/CircButton'
 import Image from '../../components/utils/Image'
 import Decorate from '../../components/utils/Decorate'
@@ -90,15 +90,13 @@ const Products = connect(
         onCommit: value => refetch({ productName: value }),
     }
 
-    return (<>
+    return (
         <Terminal
             className='Products-root'
             newProps={newProps}
             searchProps={searchProps}
             BodyComponent={Body}
         />
-        <div className='test'></div>
-    </>
     )
 })
 
@@ -285,22 +283,23 @@ const DeleteProduct = connect(
     return (
         <div className='DeleteProduct-root'>
             Are you sure to delete the product?
-            {state.error && <div className={clsx('Text_error', 'Text_fine', 'Error')}>{state.error}</div>}
-            <FloatItem
-                className='Yes'
-                ref={refFloatItemYes}
-                manualFold
-                children={
-                    <RectButton
-                        onClick={deleteProduct}
-                        children='Yes'
-                    />
-                }
-            />
-            <FloatItem
-                className='No'
-                children={<RectButton children='No'/>}
-            />
+            {state.error && <div className={clsx('Text_error', 'Text_fine')}>{state.error}</div>}
+            <div className='Footer'>
+                <FloatItem
+                    children={<Button children='No'/>}
+                />
+                <FloatItem
+                    ref={refFloatItemYes}
+                    manualFold
+                    children={
+                        <Button
+                            onClick={deleteProduct}
+                            children='Yes'
+                            loading={state.busy}
+                        />
+                    }
+                />
+            </div>
         </div>
     )
 })
