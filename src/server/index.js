@@ -28,10 +28,6 @@ app.use('/api', (req, res, next) => {
     proxy.web(req, res, { target: `http://${PIGSKIT_RESTFUL_HOST}:8001/api` }, next)
 })
 
-app.use('/fs', (req, res, next) => {
-    proxy.web(req, res, { target: `http://${PIGSKIT_RESTFUL_HOST}:8001/fs` }, next)
-})
-
 app.post('/graphql', (req, res, next) => {
     proxy.web(req, res, { target: `http://${PIGSKIT_GRAPHQL_HOST}:8000/graphql` }, next)
 })
@@ -40,13 +36,8 @@ app.get('/graphiql', (req, res, next) => {
     proxy.web(req, res, { target: `http://${PIGSKIT_GRAPHQL_HOST}:8000/graphiql` }, next)
 })
 
-app.get(/^\/$|\/home\/$|\/shop\/$|\/menu\/$/, (req, res) => {
+app.get(/^\/$|^\/home\/$|^\/shop\/$|^\/menu\/$/, (req, res) => {
     res.send(html_template({ title: 'Pigskit' }))
-})
-
-app.get(/\/$/, (req, res) => {
-    let path  = req.path.split('/')
-    res.send(html_template({ title: path[path.length - 1] }))
 })
 
 app.use(express.static(__dirname + '/public/'))

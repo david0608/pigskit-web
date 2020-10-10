@@ -9,6 +9,7 @@ const MODULE_PATH = path.join(__dirname, `src/${NAME}`)
 const PUBLIC_PATH = path.join(__dirname, `dist/public/${NAME === 'root' ? '' : NAME}`)
 
 module.exports = {
+    mode: 'production',
     entry: path.join(MODULE_PATH, 'index.js'),
     output: {
         path: PUBLIC_PATH,
