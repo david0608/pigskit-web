@@ -1,5 +1,4 @@
 const path = require('path')
-const webpack = require('webpack')
 const TerserPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
@@ -58,9 +57,5 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: 'index.css'
         }),
-        new webpack.DefinePlugin({
-            PIGSKIT_RESTFUL_ORIGIN: JSON.stringify(""),
-            PIGSKIT_GRAPHQL_ORIGIN: JSON.stringify("")
-        })
     ]
 }
