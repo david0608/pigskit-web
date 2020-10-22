@@ -1,53 +1,53 @@
 .RootPage {
-    >.Slogan {
-        font-weight: 600;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    >.Welcome {
+        >.Logo {
+            text-align: center;
+        }
+
+        >.Slogan {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            color: #444444;
+        }
 
         &.desktop {
-            font-size: 64px;
             margin: 128px 0;
-    
-            >div {
-                width: 898px;
-    
-                >div:nth-child(2) {
-                    text-align: center;
-                }
-                
-                >div:nth-child(3) {
-                    text-align: end;
-                }
+
+            >.Logo {
+                font-size: 80px;
+            }
+
+            >.Slogan {
+                font-size: 32px;
+                font-weight: 600;
+                margin-top: 48px;
             }
         }
 
         &.tablets {
-            font-size: 40px;
             margin: 96px 32px;
 
-            >div {
-                width: 100%;
-                max-width: 600px;
+            >.Logo {
+                font-size: 64px;
+            }
 
-                >div:nth-child(2) {
-                    text-align: center;
-                }
-
-                >div:nth-child(3) {
-                    text-align: end;
-                }
+            >.Slogan {
+                font-size: 24px;
+                font-weight: 600;
+                margin-top: 48px;
             }
         }
 
         &.mobile {
-            font-size: 30px;
-            margin: 64px 0px;
+            margin: 96px 16px;
+            >.Logo {
+                font-size: 48px;
+            }
 
-            >div {
-                >div:nth-child(3) {
-                    text-align: end;
-                }
+            >.Slogan {
+                font-size: 20px;
+                margin-top: 48px;
             }
         }
     }
