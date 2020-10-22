@@ -1,9 +1,12 @@
 {
     "presets": [
+        // Allow usage of JSX syntax.
         "@babel/preset-react"
     ],
     "plugins": [
+        // Allow usage of syntax that declare properties directly in class.
         "@babel/plugin-proposal-class-properties",
+        // Allow usage of obj?.foo?.bar syntax.
         "@babel/plugin-proposal-optional-chaining"
     ]
 }

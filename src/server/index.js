@@ -8,12 +8,14 @@ import html_template from './index.hbs'
 
 // The port then server will listen to.
 const PORT = process.env.PORT
+// During development the env_variable `LOCAL` should be set as true that indicate that servers must be proxied locally.
 const PIGSKIT_RESTFUL_HOST = process.env.LOCAL ? 'localhost' : 'pigskit-restful-server'
 const PIGSKIT_GRAPHQL_HOST = process.env.LOCAL ? 'localhost' : 'pigskit-graphql-server'
 
 const app = express()
 const proxy = httpProxy.createProxyServer({})
 
+// Limit content length.
 app.use((req, res, next) => {
     let contentLength = req.headers['content-length'] || 0
     if (contentLength > 200000) {
@@ -25,22 +27,27 @@ app.use((req, res, next) => {
     }
 })
 
+// Proxy RESTful server.
 app.use('/api', (req, res, next) => {
     proxy.web(req, res, { target: `http://${PIGSKIT_RESTFUL_HOST}:8001/api` }, next)
 })
 
+// Proxy GraphQL query on GraphQL server.
 app.post('/graphql', (req, res, next) => {
     proxy.web(req, res, { target: `http://${PIGSKIT_GRAPHQL_HOST}:8000/graphql` }, next)
 })
 
+// Proxy GraphiQL page on GraphQL server.
 app.get('/graphiql', (req, res, next) => {
     proxy.web(req, res, { target: `http://${PIGSKIT_GRAPHQL_HOST}:8000/graphiql` }, next)
 })
 
+// Host web pages.
 app.get(/^\/$|^\/home\/$|^\/shop\/$|^\/menu\/$/, (req, res) => {
     res.send(html_template({ title: 'Pigskit' }))
 })
 
+// Host web assets.
 app.use(express.static(__dirname + '/public/'))
 
 // Server listen to `PORT` if it is specified.
