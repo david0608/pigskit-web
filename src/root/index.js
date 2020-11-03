@@ -19,11 +19,12 @@ const RootPage = connect(
 
     return (
         <Page className='RootPage'>
-            <div className={clsx('Slogan', 'Text_highlight', deviceType)}>
-                <div>
-                    <div>The most</div>
-                    <div>competent assistant</div>
-                    <div>for your shop</div>
+            <div className={clsx('Welcome', 'Text_highligh', deviceType)}>
+                <div className={clsx('Logo', 'Text_logo')}>Pigskit</div>
+                <div className="Slogan">
+                    <span>The most</span>&nbsp;
+                    <span>competent assistant</span>&nbsp;
+                    <span>for your shop</span>
                 </div>
             </div>
         </Page>

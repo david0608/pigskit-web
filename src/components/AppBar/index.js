@@ -2,9 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import clsx from 'clsx'
 import { TopBar } from '../utils/Decorate/TopBar'
+import Icon from '../utils/Icon'
 import SignInUp from './SignInUp'
 import User from './User'
-import '../../styles/text.less'
 import './index.less'
 
 const AppBar = connect(
@@ -42,7 +42,7 @@ const Logo = (props) => {
             className={clsx('Logo', deviceType)}
             onClick={() => location.href = `${location.origin}/`}
         >
-            <span className={clsx('Text_logo')}>Pigskit</span>
+            <Icon/>
         </div>
     )
 }
