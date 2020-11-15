@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { HashRouter, Switch, Route } from 'react-router-dom'
 import App, { CheckSignedIn } from '../components/App'
-import { Page, Block, SideBar, Content } from '../components/utils/Decorate/Page'
+import Page from '../components/Page'
 import AppBar from '../components/AppBar'
 import Path from '../components/Path'
 import Navigator from '../components/Navigator'
@@ -62,8 +62,8 @@ const ShopPage = connect(
     let isDesktop = deviceType === 'desktop'
 
     return (
-        <Page className='ShopPage'>
-            <Block>
+        <Page.Root className='ShopPage'>
+            <Page.Block>
                 <Path
                     path={[
                         {
@@ -71,25 +71,25 @@ const ShopPage = connect(
                         }
                     ]}
                 />
-            </Block>
+            </Page.Block>
             {
                 isDesktop ?
-                <Block deviceType={deviceType}>
-                    <SideBar>
+                <Page.Block deviceType={deviceType}>
+                    <Page.SideBar>
                         <Navigator vertical={isDesktop} links={LINKS}/>
-                    </SideBar>
-                    <Content>
+                    </Page.SideBar>
+                    <Page.Content>
                         <SwitchContent/>
-                    </Content>
-                </Block> :
+                    </Page.Content>
+                </Page.Block> :
                 <>
                 <Navigator vertical={isDesktop} links={LINKS}/>
-                <Block deviceType={deviceType}>
+                <Page.Block deviceType={deviceType}>
                     <SwitchContent/>
-                </Block>
+                </Page.Block>
                 </>
             }
-        </Page>
+        </Page.Root>
     )
 })
 

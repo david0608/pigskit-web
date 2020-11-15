@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import clsx from 'clsx'
 import App from '../components/App'
-import { Page } from '../components/utils/Decorate/Page'
+import Page from '../components/Page'
 import AppBar from '../components/AppBar'
 import '../styles/text.less'
 import './index.less'
@@ -18,7 +18,7 @@ const RootPage = connect(
     } = props
 
     return (
-        <Page className='RootPage'>
+        <Page.Root className='RootPage'>
             <div className={clsx('Welcome', 'Text_highligh', deviceType)}>
                 <div className={clsx('Logo', 'Text_logo')}>Pigskit</div>
                 <div className="Slogan">
@@ -27,7 +27,7 @@ const RootPage = connect(
                     <span>for your shop</span>
                 </div>
             </div>
-        </Page>
+        </Page.Root>
     )
 })
 
