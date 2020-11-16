@@ -15,7 +15,7 @@ import CircButton from '../../components/utils/CircButton'
 import Image from '../../components/utils/Image'
 import Decorate from '../../components/Decorate'
 import Loading from '../../components/utils/Loading'
-import { DeviderL } from '../../components/utils/Devider'
+import Devider from '../../components/Devider'
 import '../../styles/text.less'
 import './index.less'
 
@@ -198,7 +198,7 @@ const Detail = connect(
                 data.customizes.map((cus) => {
                     return (
                         <div key={cus.key} className='Customize'>
-                            <DeviderL/>
+                            <Devider.Light/>
                             <div className={clsx('Name', 'Text_header_3rd')}>{cus.name}</div>
                             {cus.description && <div className={clsx('Description', 'Text_remark')}>{cus.description}</div>}
                             {

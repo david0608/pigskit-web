@@ -9,7 +9,7 @@ import axios from '../../utils/axios'
 import TopBar from '../TopBar'
 import { FloatItem } from '../utils/FloatList'
 import RectButton from '../utils/RectButton'
-import { DeviderL } from '../utils/Devider'
+import Devider from '../Devider'
 import { pigskit_restful_origin } from '../../utils/service_origins'
 
 const UserRoot = styled(TopBar.FloatList)`
@@ -65,7 +65,7 @@ const User = connectDeviceInfoType(
                     rightAligned
                 >
                     <p>Hello,&nbsp;<strong>{nickname || username}</strong></p>
-                    <DeviderL/>
+                    <Devider.Light/>
                     <FloatItem>
                         <LinkButton url={`${location.origin}/home#/`}>Your shops</LinkButton>
                     </FloatItem>
