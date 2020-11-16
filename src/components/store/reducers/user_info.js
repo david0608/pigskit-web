@@ -107,8 +107,27 @@ const UserInfoProvider = connect(
     }
 })
 
+function connectUserInfoSignedIn(Component) {
+    return connect(
+        state => ({
+            userSignedIn: state.userInfo.signedIn,
+        })
+    )(Component)
+}
+
+function connectUserInfoUsernameNickname(Component) {
+    return connect(
+        state => ({
+            username: state.userInfo.username,
+            nickname: state.userInfo.nickname,
+        })
+    )(Component)
+}
+
 export {
     userInfoReducer,
     userInfoActions,
     UserInfoProvider,
+    connectUserInfoSignedIn,
+    connectUserInfoUsernameNickname,
 }

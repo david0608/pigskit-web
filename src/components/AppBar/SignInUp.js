@@ -1,45 +1,104 @@
 import React, { useRef, useState } from 'react'
-import { connect } from 'react-redux'
+import styled from 'styled-components'
 import clsx from 'clsx'
 import { BsFillPersonFill } from 'react-icons/bs'
-import axios from '../../../utils/axios'
-import { useAbort, createAbort } from '../../../utils/abort'
-import { useDropScreen } from '../../DropScreen'
-import { TopBarButton } from '../../utils/Decorate/TopBar'
-import RectButton from '../../utils/RectButton'
-import TextInput from '../../utils/TextInput'
-import { LoadingRing } from '../../utils/Loading'
-import '../../../styles/text.less'
-import './index.less'
+import { connectDeviceInfoType } from '../store'
+import axios from '../../utils/axios'
+import { useAbort, createAbort } from '../../utils/abort'
+import { useDropScreen } from '../DropScreen'
+import TopBar from '../TopBar'
+import RectButton from '../utils/RectButton'
+import TextInput from '../utils/TextInput'
+import { LoadingRing } from '../utils/Loading'
+import '../../styles/text.less'
 
-const SignInUp = React.memo(
-    (props) => {
-        const {
-            className,
-            deviceType,
-        } = props
-
-        const refDropScreen = useDropScreen()
-
-        return (
-            <TopBarButton
-                className={className}
-                deviceType={deviceType}
-                onClick={() => refDropScreen.current.open(<SignInPage/>)}
-            >
-                <BsFillPersonFill/>{deviceType !== 'mobile' && '\xA0Sign in'}
-            </TopBarButton>
-        )
-    }
-)
-
-const SignInPage = connect(
-    (state) => ({
-        deviceType: state.deviceInfo.type,
-    })
-)((props) => {
+const SignInUp = connectDeviceInfoType(props => {
     const {
-        deviceType
+        deviceType,
+    } = props
+
+    const refDropScreen = useDropScreen()
+
+    return (
+        <TopBar.Button
+            deviceType={deviceType}
+            onClick={() => refDropScreen.current.open(<SignInPage />)}
+        >
+            <BsFillPersonFill/>{deviceType !== 'mobile' && '\xA0Sign in'}
+        </TopBar.Button>
+    )
+})
+
+const SignInUpRoot = styled.div`
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &.mobile {
+        width: unset;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .Title {
+        position: relative;
+        height: 50px;
+        width: 80%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 1px;
+            width: 100%;
+            background-color: #d4d4d4;
+        }
+    }
+
+    .TextInput {
+        width: 80%;
+        height: 36px;
+        margin-top: 25px;
+    }
+
+    .MuiButton-root {
+        width: 80%;
+        margin-top: 25px;
+    }
+
+    .FinishButton {
+        width: 80%;
+        margin: 10px 0px 25px 0px;
+    }
+
+    .SignInError {
+        text-align: center;
+        width: 80%;
+        margin-top: 5px;
+    }
+
+    .Hint {
+        width: 80%;
+        display: flex;
+        align-items: center;
+    }
+
+    .Desc, .HintError {
+        width: 80%;
+        margin: 25px 0px 0px 0px;
+    }
+`
+
+const SignInPage = connectDeviceInfoType(props => {
+    const {
+        deviceType,
     } = props
 
     const refDropScreen = useDropScreen()
@@ -121,7 +180,7 @@ const SignInPage = connect(
     }
     
     return (
-        <div className={clsx('SignInPageRoot', deviceType)}>
+        <SignInUpRoot className={clsx(deviceType)}>
             <p className={clsx('Title', 'Text_header_2nd')}>Sign in</p>
             <TextInput
                 ref={refUsername}
@@ -153,7 +212,7 @@ const SignInPage = connect(
                     <a className='Text_link_highlight' onClick={handleSignUp}>Sign up here</a>
                 }
             </p>
-        </div>
+        </SignInUpRoot>
     )
 })
 
@@ -412,11 +471,7 @@ const SIGNUP_STEPS = [
     new PasswordStep({}),
 ]
 
-const SignUpPage = connect(
-    (state) => ({
-        deviceType: state.deviceInfo.type,
-    })
-)((props) => {
+const SignUpPage = connectDeviceInfoType(props => {
     const {
         deviceType,
     } = props
@@ -476,7 +531,7 @@ const SignUpPage = connect(
     }
 
     return (
-        <div className={clsx('SignUpPageRoot', deviceType)}>
+        <SignInUpRoot className={clsx(deviceType)}>
             <p className={clsx('Title', 'Text_header_2nd')}>Sign up</p>
             {
                 finish ?
@@ -501,7 +556,7 @@ const SignUpPage = connect(
                         </p>
                     </>
             }
-        </div>
+        </SignInUpRoot>
     )
 })
 

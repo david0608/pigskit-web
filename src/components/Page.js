@@ -1,7 +1,7 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import clsx from 'clsx'
 import styled from 'styled-components'
+import { connectDeviceInfoType } from './store'
 
 const Root = styled.div`
     max-width: 1200px;
@@ -38,11 +38,7 @@ const BlockComponent = styled.div`
     }
 `
 
-const Block = connect(
-    state => ({
-        deviceType: state.deviceInfo.type,
-    })
-)(props => {
+const Block = connectDeviceInfoType(props => {
     const {
         className,
         deviceType,

@@ -1,3 +1,5 @@
+import { connect } from "react-redux"
+
 const initState = {
     // Indicate current user device type, can be 'desktop', 'tablets' or 'mobile'.
     type: 'unknown',
@@ -32,7 +34,25 @@ function deviceInfoReducer(state = initState, action = {}) {
     }
 }
 
+function connectDeviceInfoType(Component) {
+    return connect(
+        state => ({
+            deviceType: state.deviceInfo.type,
+        })
+    )(Component)
+}
+
+function connectDeviceInfoScrolled(Component) {
+    return connect(
+        state => ({
+            deviceScrolled: state.deviceInfo.scrolled,
+        })
+    )(Component)
+}
+
 export {
     deviceInfoReducer,
     deviceInfoActions,
+    connectDeviceInfoType,
+    connectDeviceInfoScrolled,
 }

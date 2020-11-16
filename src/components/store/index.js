@@ -12,5 +12,17 @@ export const StoreProvider = (props) => {
     )
 }
 
-export { deviceInfoReducer, deviceInfoActions } from './reducers/device_info'
-export { userInfoReducer, userInfoActions, UserInfoProvider } from './reducers/user_info'
+export {
+    deviceInfoReducer,
+    deviceInfoActions,
+    connectDeviceInfoType,
+    connectDeviceInfoScrolled,
+} from './reducers/device_info'
+
+export {
+    userInfoReducer,
+    userInfoActions,
+    UserInfoProvider,
+    connectUserInfoSignedIn,
+    connectUserInfoUsernameNickname,
+} from './reducers/user_info'

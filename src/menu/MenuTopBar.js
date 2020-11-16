@@ -1,21 +1,37 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 import { FiShoppingCart } from 'react-icons/fi'
 import { GoListUnordered } from 'react-icons/go'
-import { TopBar, TopBarButton } from '../../components/utils/Decorate/TopBar'
-import '../../styles/text.less'
-import './index.less'
+import TopBar from '../components/TopBar'
+import '../styles/text.less'
 
-const MenuTopBar = () => {
+const TopBarRoot = styled(TopBar.Root)`
+    height: 48px;
 
-    return (
-        <TopBar className='MenuTopBar'>
-            <NavButton to='/orders'><GoListUnordered/></NavButton>
-            <Logo/>
-            <NavButton className='CartButton' to='/cart'><FiShoppingCart/></NavButton>
-        </TopBar>
-    )
-}
+    &.TopBar-body>.TopBar-content {
+        max-width: 498px;
+
+        >.Logo {
+            margin-left: auto;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        >.CartButton {
+            margin-left: auto;
+        }
+    }
+`
+
+const MenuTopBar = () => (
+    <TopBarRoot>
+        <NavButton to='/orders'><GoListUnordered/></NavButton>
+        <Logo/>
+        <NavButton className='CartButton' to='/cart'><FiShoppingCart/></NavButton>
+    </TopBarRoot>
+)
 
 const Logo = connect(
     (state) => ({
@@ -51,13 +67,13 @@ const NavButton = connect(
     } = props
 
     return (
-        <TopBarButton
+        <TopBar.Button
             className={className}
             deviceType='mobile'
             onClick={() => location.href = `${location.origin}${location.pathname}?id=${shopId}#${to}`}
         >
             {children}
-        </TopBarButton>
+        </TopBar.Button>
     )
 })
 
