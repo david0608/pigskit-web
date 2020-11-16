@@ -107,7 +107,6 @@ const Button = props => {
     )
 }
 
-
 const FloatList = styled(UtilFloatList)`
     height: 100%;
 
@@ -133,7 +132,7 @@ const FloatList = styled(UtilFloatList)`
 `
 
 export default {
-    Root: Root,
-    Button: Button,
-    FloatList: FloatList,
+    Root,
+    Button,
+    FloatList,
 }

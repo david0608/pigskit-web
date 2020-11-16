@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import Abstract from '../../../components/utils/Abstract'
 import TextInput from '../../../components/utils/TextInput'
 import Button from '../../../components/utils/Button'
-import Decorate from '../../../components/utils/Decorate'
+import Decorate from '../../../components/Decorate'
 import './index.less'
 
 export default class Selection extends React.PureComponent {

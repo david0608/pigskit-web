@@ -1,7 +1,7 @@
 import React from 'react'
 import clsx from 'clsx'
 import { NavLink } from 'react-router-dom'
-import Decorate from '../utils/Decorate'
+import Decorate from '../Decorate'
 import '../../styles/text.less'
 import './index.less'
 
