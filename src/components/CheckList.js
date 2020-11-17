@@ -1,7 +1,7 @@
 import React from 'react'
+import styled from 'styled-components'
 import clsx from 'clsx'
 import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md'
-import './index.less'
 
 const CheckList = (props) => {
     const {
@@ -32,6 +32,12 @@ const CheckList = (props) => {
     )
 }
 
+const CheckItemRoot = styled.div`
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+`
+
 const CheckItem = (props) => {
     const {
         itemKey,
@@ -43,13 +49,13 @@ const CheckItem = (props) => {
     const checked = isChecked(itemKey)
 
     return (
-        <div
+        <CheckItemRoot
             className={clsx('CheckItem-root', checked && 'Checked')}
             onClick={() => onCheck(itemKey)}
         >
             {checked ? <MdCheckBox/> : <MdCheckBoxOutlineBlank/>}
             {children}
-        </div>
+        </CheckItemRoot>
     )
 }
 
