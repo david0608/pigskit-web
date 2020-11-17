@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import Abstract from '../../../components/utils/Abstract'
+import Abstract from '../../../components/Abstract'
 import TextInput from '../../../components/utils/TextInput'
 import Button from '../../../components/utils/Button'
 import Decorate from '../../../components/Decorate'

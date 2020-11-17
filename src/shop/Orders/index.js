@@ -5,7 +5,7 @@ import { gql } from 'apollo-boost'
 import { createQueryStore } from '../../utils/apollo'
 import { sort } from '../../utils/sort'
 import Terminal from '../../components/Terminal'
-import Abstract from '../../components/utils/Abstract'
+import Abstract from '../../components/Abstract'
 import Decorate from '../../components/Decorate'
 import { Loading } from '../../components/Loading'
 import '../../styles/text.less'
@@ -152,7 +152,7 @@ const OrdersBody = connect(
     } else {
         let orders = data.orders || []
         if (orders.length === 0) {
-            ordersElement = <Decorate.Blank>No order.</Decorate.Blank>
+            ordersElement = <Decorate.Blank className='Blank'>No order.</Decorate.Blank>
         } else {
             ordersElement = orders.map((order, i) => (
                 <Abstract key={i}>

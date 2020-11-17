@@ -8,7 +8,7 @@ import { createQueryStore } from '../../utils/apollo'
 import axios from '../../utils/axios'
 import { useAbort } from '../../utils/abort'
 import Terminal from '../../components/Terminal'
-import Abstract from '../../components/utils/Abstract'
+import Abstract from '../../components/Abstract'
 import { FloatList, FloatItem } from '../../components/utils/FloatList'
 import Button from '../../components/utils/Button'
 import CircButton from '../../components/utils/CircButton'
@@ -122,7 +122,7 @@ const Body = connect(
     } else if (error) {
         productElements = null
     } else if (products.length === 0) {
-        productElements = <Decorate.Blank>No data.</Decorate.Blank>
+        productElements = <Decorate.Blank className='Blank'>No data.</Decorate.Blank>
     } else {
         productElements = products.map((prod, i) => (
             <Abstract key={i}>

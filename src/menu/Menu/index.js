@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import axios from '../../utils/axios'
 import { createAbort } from '../../utils/abort'
 import SearchField from '../../components/SearchField'
-import Abstract from '../../components/utils/Abstract'
+import Abstract from '../../components/Abstract'
 import CheckList from '../../components/utils/CheckList'
 import Image from '../../components/utils/Image'
 import TextInput from '../../components/utils/TextInput'
@@ -95,7 +95,7 @@ const Outline = (props) => {
             <div className='Name'>
                 {data.name}
             </div>
-            <Decorate.Price>
+            <Decorate.Price className='Price'>
                 {data.price}
             </Decorate.Price>
         </div>
@@ -218,7 +218,7 @@ class DetailComponent extends React.Component {
                     <span className='Text_header_2nd'>
                         {this.name}
                     </span>
-                    <Decorate.Price>
+                    <Decorate.Price className='Price'>
                         {this.price}
                     </Decorate.Price>
                 </div>
@@ -387,7 +387,7 @@ const Selection = (props) => {
             <div className='Name'>
                 {name}
             </div>
-            <Decorate.Price>
+            <Decorate.Price className='Price'>
                 {price}
             </Decorate.Price>
         </div>

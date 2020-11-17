@@ -1,7 +1,28 @@
 import React from 'react'
+import styled from 'styled-components'
 import clsx from 'clsx'
-import Transition from '../Transition'
-import './index.less'
+import Transition from './utils/Transition'
+
+const AbstractRoot = styled.div`
+    cursor: pointer;
+    outline: none;
+
+    &.blur {
+        background-color: #f9f9f9;
+
+        >.Abstract-body:hover {
+            background-color: #ececec;
+        }
+    }
+
+    &.focus {
+        cursor: unset;
+    }
+
+    >.Abstract-body {
+        outline: none;
+    }
+`
 
 class Abstract extends React.Component {
     constructor(props) {
@@ -56,9 +77,9 @@ class Abstract extends React.Component {
         } = this.props
         
         return (
-            <div
+            <AbstractRoot
                 ref={this.refRoot}
-                className={clsx('Abstract-root', this.state.focus ? 'focus' : 'blur', className)}
+                className={clsx(this.state.focus ? 'focus' : 'blur', className)}
                 tabIndex={-1}
             >
                 <Transition.Height
@@ -72,7 +93,7 @@ class Abstract extends React.Component {
                 >
                     {children}
                 </Transition.Height>
-            </div>
+            </AbstractRoot>
         )
     }
 }

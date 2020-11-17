@@ -5,7 +5,7 @@ import { gql } from 'apollo-boost'
 import { createQueryStore } from '../../utils/apollo'
 import axios from '../../utils/axios'
 import { useAbort } from '../../utils/abort'
-import Abstract from '../../components/utils/Abstract'
+import Abstract from '../../components/Abstract'
 import TextInput from '../../components/utils/TextInput'
 import QuantityInput from '../../components/utils/QuantityInput'
 import RectButton from '../../components/utils/RectButton'
@@ -183,7 +183,7 @@ const Cart = connect(
                 ))
             }
             <div className='Conclusion'>
-                Total : <Decorate.Price>{totalPrice}</Decorate.Price>
+                Total : <Decorate.Price className='Price'>{totalPrice}</Decorate.Price>
             </div>
             {state.submitError && <div className={clsx('ErrorHint', 'Text_error')}>{state.submitError}</div>}
             <RectButton onMouseDown={submitOrder} disabled={expired} loading={state.busy}>submit order</RectButton>
@@ -290,7 +290,7 @@ const ExpiredOutline = connect(
                 <span className='Text_fine'>
                     Quantity : {data.count}
                 </span>
-                <Decorate.Price>{data.totalPrice}</Decorate.Price>
+                <Decorate.Price className='Price'>{data.totalPrice}</Decorate.Price>
             </div>
             <div className={clsx('ErrorHint', 'Text_error')}>
                 This item has expired.
@@ -322,7 +322,7 @@ const Outline = (props) => {
                 <span className='Text_fine'>
                     Quantity : {data.count}
                 </span>
-                <Decorate.Price>{data.totalPrice}</Decorate.Price>
+                <Decorate.Price className='Price'>{data.totalPrice}</Decorate.Price>
             </div>
         </div>
     )
@@ -461,7 +461,7 @@ const Detail = connect(
                 <span className='Text_header_2nd'>
                     {data.name}
                 </span>
-                <Decorate.Price>
+                <Decorate.Price className='Price'>
                     {data.price}
                 </Decorate.Price>
             </div>
@@ -525,7 +525,7 @@ const DetailCustomize = (props) => {
                     <div className='Name'>
                         {data.selection}
                     </div>
-                    <Decorate.Price>
+                    <Decorate.Price className='Price'>
                         {data.selectionPrice}
                     </Decorate.Price>
                 </div>
