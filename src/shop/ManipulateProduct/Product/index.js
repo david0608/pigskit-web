@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { GoPlus } from "react-icons/go"
 import { createAbort } from '../../../utils/abort'
 import { FloatList, FloatItem } from '../../../components/utils/FloatList'
-import ImageInput from '../../../components/utils/ImageInput'
+import ImageInput from '../../../components/ImageInput'
 import TextInput from '../../../components/utils/TextInput'
 import CircButton from '../../../components/utils/CircButton'
 import Button from '../../../components/utils/Button'

@@ -1,16 +1,74 @@
 import React from 'react'
+import styled from 'styled-components'
 import clsx from 'clsx'
 import ReactCrop from 'react-image-crop'
 import "react-image-crop/dist/ReactCrop.css"
 import { GoPlus, GoX, GoChevronRight, GoChevronDown } from "react-icons/go"
 import { TiArrowBack} from 'react-icons/ti'
-import { useDropScreen } from '../../DropScreen'
-import axios from '../../../utils/axios'
-import { createAbort } from '../../../utils/abort'
-import { ImageBase } from '../../Image'
-import RectButton from '../RectButton'
-import CircButton from '../CircButton'
-import './index.less'
+import { useDropScreen } from './DropScreen'
+import axios from '../utils/axios'
+import { createAbort } from '../utils/abort'
+import { ImageBase } from './Image'
+import RectButton from './utils/RectButton'
+import CircButton from './utils/CircButton'
+
+const ImageInputRoot = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    >.Origin {
+        flex: 1;
+    }
+
+    >.Arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        >svg {
+            font-size: 24px;
+        }
+    }
+
+    &.horizon {
+        >.Arrow {
+            margin: 0px 10px;
+        }
+    }
+
+    &.vertical {
+        flex-direction: column;
+
+        >.Arrow {
+            margin: 10px 0px;
+        }
+
+        >div {
+            width: 100%;
+        }
+    }
+
+    .Target {
+        flex: 1;
+        position: relative;
+
+        button {
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            z-index: 1;
+        }
+
+        .Image-root {
+            border: dashed 1px rgba(0, 0, 0, 0.75);
+        }
+
+        input {
+            display: none;
+        }
+    }
+`
 
 class ImageInput extends React.PureComponent {
     constructor(props) {
@@ -174,7 +232,7 @@ class ImageInput extends React.PureComponent {
         } = this.props
 
         return (
-            <div className={clsx('ImageInput-root', vertical ? 'vertical' : 'horizon', className)}>
+            <ImageInputRoot className={clsx('ImageInput-root', vertical ? 'vertical' : 'horizon', className)}>
                 {
                     this.originImageUrl &&
                     <>
@@ -224,7 +282,7 @@ class ImageInput extends React.PureComponent {
                         }
                     </label>
                 </div>
-            </div>
+            </ImageInputRoot>
         )
     }
 }
@@ -238,6 +296,30 @@ export default React.forwardRef((props, ref) => {
         {...props}
     />
 })
+
+const EditImageRoot = styled.div`
+    text-align: center;
+    padding: 40px 16px 16px;
+
+    img {
+        max-width: 80vw;
+        max-height: 70vh;
+    }
+
+    >.Footer {
+        margin-top: 16px;
+        display: flex;
+
+        >.MuiButton-root {
+            margin: 0 auto;
+            padding: 3px 8px;
+
+            >.MuiButton-label {
+                text-transform: none;
+            }
+        }
+    }
+`
 
 class EditImage extends React.PureComponent {
     constructor(props) {
@@ -296,7 +378,7 @@ class EditImage extends React.PureComponent {
 
     render() {
         return (
-            <div
+            <EditImageRoot
                 className='EditImage-root'
             >
                 <ReactCrop
@@ -314,7 +396,7 @@ class EditImage extends React.PureComponent {
                         Ok
                     </RectButton>
                 </div>
-            </div>
+            </EditImageRoot>
         )
     }
 }
