@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { connect } from 'react-redux'
 import axios from '../../utils/axios'
 import { createAbort } from '../../utils/abort'
-import SearchField from '../../components/utils/SearchField'
+import SearchField from '../../components/SearchField'
 import Abstract from '../../components/utils/Abstract'
 import CheckList from '../../components/utils/CheckList'
 import Image from '../../components/utils/Image'
@@ -59,7 +59,7 @@ const Menu = connect(
 
     return (
         <div className='Menu-root'>
-            <SearchField onCommit={(value) => setState({ searchProductName: new RegExp(value.toUpperCase())})}/>
+            <SearchField className='SearchField' onCommit={(value) => setState({ searchProductName: new RegExp(value.toUpperCase())})}/>
             <Decorate.List className='Products'>{productElements}</Decorate.List>
         </div>
     )
