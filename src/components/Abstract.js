@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import clsx from 'clsx'
-import Transition from './utils/Transition'
+import Transition from './Transition'
 
 const AbstractRoot = styled.div`
     cursor: pointer;

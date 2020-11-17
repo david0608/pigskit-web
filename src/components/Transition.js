@@ -1,6 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
-import Size from '../Size'
+import Measure from 'react-measure'
 
 class HeightComponent extends React.Component {
     constructor(props) {
@@ -80,11 +80,17 @@ class HeightComponent extends React.Component {
                 style={style}
                 {...otherProps}
             >
-                <Size.Provider
+                <Measure
                     onResize={this.onResize.bind(this)}
                 >
-                    {children}
-                </Size.Provider>
+                    {({ measureRef }) => {
+                        return (
+                            <div ref={measureRef}>
+                                {children}
+                            </div>
+                        )
+                    }}
+                </Measure>
             </div>
         )
     }

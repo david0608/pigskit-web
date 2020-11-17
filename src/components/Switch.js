@@ -1,10 +1,14 @@
 import React, { useState, useContext, useRef } from 'react'
 import clsx from 'clsx'
-import './index.less'
+import styled from 'styled-components'
 
 const SwitchContext = React.createContext()
 
-export const Switch = (props) => {
+const SwitchRoot = styled.div`
+    outline: none;
+`
+
+const Switch = (props) => {
     const {
         className,
         defaultContent,
@@ -21,7 +25,7 @@ export const Switch = (props) => {
     }
 
     return (
-        <div
+        <SwitchRoot
             ref={refRoot}
             className={clsx('Switch-Root', switched && 'Switched', className)}
             tabIndex={-1}
@@ -33,10 +37,15 @@ export const Switch = (props) => {
                     defaultContent
                 }
             </SwitchContext.Provider>
-        </div>
+        </SwitchRoot>
     )
 }
 
-export function useSwitch() {
+function useSwitch() {
     return useContext(SwitchContext)
+}
+
+export {
+    Switch,
+    useSwitch,
 }
