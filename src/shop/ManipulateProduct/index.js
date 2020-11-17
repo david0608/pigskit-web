@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { gql } from 'apollo-boost'
 import { Client } from '../../utils/apollo'
 import axios from '../../utils/axios'
-import Loading from '../../components/utils/Loading'
+import { Loading } from '../../components/Loading'
 import Payload from '../../utils/payload'
 import Product from './Product'
 

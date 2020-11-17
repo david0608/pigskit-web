@@ -7,7 +7,7 @@ import { sort } from '../../utils/sort'
 import Terminal from '../../components/Terminal'
 import Abstract from '../../components/utils/Abstract'
 import Decorate from '../../components/Decorate'
-import Loading from '../../components/utils/Loading'
+import { Loading } from '../../components/Loading'
 import '../../styles/text.less'
 import './index.less'
 

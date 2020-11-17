@@ -9,7 +9,7 @@ import { useDropScreen } from '../DropScreen'
 import TopBar from '../TopBar'
 import RectButton from '../utils/RectButton'
 import TextInput from '../utils/TextInput'
-import { LoadingRing } from '../utils/Loading'
+import { LoadingRing } from '../Loading'
 import '../../styles/text.less'
 
 const SignInUp = connectDeviceInfoType(props => {

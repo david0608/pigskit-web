@@ -1,9 +1,15 @@
 import React from 'react'
-import clsx from 'clsx'
+import styled from 'styled-components'
 import TweenOne from 'rc-tween-one'
 import SvgDrawPlugin from 'rc-tween-one/lib/plugin/SvgDrawPlugin'
 TweenOne.plugins.push(SvgDrawPlugin)
-import './index.less'
+
+const LoadingRoot = styled.div`
+    padding: 32px 0px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+`
 
 const Loading = React.memo(
     (props) => {
@@ -14,19 +20,19 @@ const Loading = React.memo(
         } = props
 
         return (
-            <div className={clsx('Loading', className)}>
+            <LoadingRoot className={className}>
                 <LoadingRing
                     radius={16}
                     strokeWidth={4}
                     stroke='#dcdcdc'
                     {...otherProps}
                 />
-            </div>
+            </LoadingRoot>
         )
     }
 )
 
-export const LoadingRing = (props) => {
+const LoadingRing = (props) => {
     return (
         <TweenOne
             animation={{
@@ -109,4 +115,7 @@ function ringPos(radius, strokeWidth, ratio) {
     }
 }
 
-export default Loading
+export {
+    Loading,
+    LoadingRing,
+}

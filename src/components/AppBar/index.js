@@ -6,7 +6,7 @@ import {
     connectUserInfoSignedIn,
 } from '../store'
 import TopBar from '../TopBar'
-import Icon from '../utils/Icon'
+import Icon from '../Icon'
 import SignInUp from './SignInUp'
 import User from './User'
 
