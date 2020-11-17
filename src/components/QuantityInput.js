@@ -1,8 +1,36 @@
 import React from 'react'
+import styled from 'styled-components'
 import clsx from 'clsx'
 import { FaPlus, FaMinus } from 'react-icons/fa'
-import Button from '../Button'
-import './index.less'
+import Button from './utils/Button'
+
+const QuantityInputRoot = styled.div`
+    height: 30px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #dcdcdc;
+    display: flex;
+
+    input {
+        flex: 3;
+        height: 100%;
+        border: none;
+        padding: 0;
+        outline: none;
+        font-size: 18px;
+        text-align: center;
+        min-width: 32px;
+    }
+
+    button {
+        flex: 1;
+        height: 100%;
+        margin: 0;                      // for mobile browsers.
+        border: none;
+        border-radius: 0;
+        justify-content: center;
+    }
+`
 
 class QuantityInput extends React.Component {
     constructor(props) {
@@ -75,7 +103,7 @@ class QuantityInput extends React.Component {
         } = this.props
 
         return (
-            <div className={clsx('QuantityInput-root', className)}>
+            <QuantityInputRoot className={clsx('QuantityInput-root', className)}>
                 <Button onClick={this.minusOne.bind(this)}>
                     <FaMinus/>
                 </Button>
@@ -88,7 +116,7 @@ class QuantityInput extends React.Component {
                 <Button onClick={this.plusOne.bind(this)}>
                     <FaPlus/>
                 </Button>
-            </div>
+            </QuantityInputRoot>
         )
     }
 }
