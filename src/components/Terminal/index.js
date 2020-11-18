@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { GoPlus } from "react-icons/go"
 import { MdRefresh } from 'react-icons/md'
 import { FloatList } from '../utils/FloatList'
-import Button from '../utils/Button'
+import Button from '../Button'
 import SearchField from '../SearchField'
 import '../../styles/text.less'
 import './index.less'

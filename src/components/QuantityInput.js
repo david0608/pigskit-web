@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import clsx from 'clsx'
 import { FaPlus, FaMinus } from 'react-icons/fa'
-import Button from './utils/Button'
+import Button from './Button'
 
 const QuantityInputRoot = styled.div`
     height: 30px;
