@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import clsx from 'clsx'
 import { BsX } from 'react-icons/bs'
-import CircButton from '../utils/CircButton'
+import CircButton from '../CircButton'
 import './index.less'
 
 const Context = React.createContext()

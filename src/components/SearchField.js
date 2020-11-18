@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import clsx from 'clsx'
 import { BsX } from 'react-icons/bs'
-import TextInput from './utils/TextInput'
+import TextInput from './TextInput'
 
 const SearchFieldRoot = styled.div`
     position: relative;

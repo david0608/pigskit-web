@@ -9,8 +9,8 @@ import { useDropScreen } from './DropScreen'
 import axios from '../utils/axios'
 import { createAbort } from '../utils/abort'
 import { ImageBase } from './Image'
-import RectButton from './utils/RectButton'
-import CircButton from './utils/CircButton'
+import RectButton from './RectButton'
+import CircButton from './CircButton'
 
 const ImageInputRoot = styled.div`
     display: flex;

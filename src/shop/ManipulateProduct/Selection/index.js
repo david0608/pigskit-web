@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import Abstract from '../../../components/Abstract'
-import TextInput from '../../../components/utils/TextInput'
+import TextInput from '../../../components/TextInput'
 import Button from '../../../components/Button'
 import Decorate from '../../../components/Decorate'
 import './index.less'

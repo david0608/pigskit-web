@@ -8,7 +8,7 @@ import {
 import axios from '../../utils/axios'
 import TopBar from '../TopBar'
 import { FloatItem } from '../utils/FloatList'
-import RectButton from '../utils/RectButton'
+import RectButton from '../RectButton'
 import Devider from '../Devider'
 import { pigskit_restful_origin } from '../../utils/service_origins'
 
