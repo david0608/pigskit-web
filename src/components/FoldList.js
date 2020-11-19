@@ -1,11 +1,22 @@
 import React, { useState, useContext, useRef, useCallback } from 'react'
+import styled from 'styled-components'
 import clsx from 'clsx'
-import usePreventBodyScroll from '../../../utils/preventBodyScroll'
-import './index.less'
+import { withClass } from '../components/utils'
+import usePreventBodyScroll from '../utils/preventBodyScroll'
 
 const ParentFold = React.createContext()
 
-export const FoldList = (props) => {
+const FoldListRoot = withClass(
+    'FoldList-Root',
+    styled.div`
+        outline: none;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-start;
+    `,
+)
+
+const FoldList = (props) => {
     const {
         className,
         label,
@@ -51,43 +62,69 @@ export const FoldList = (props) => {
     }
 
     return (
-        <div
-            className={clsx('FoldList-Root', (open || debug) && 'Open', className)}
+        <FoldListRoot
+            className={clsx((open || debug) && 'Open', className)}
             tabIndex={-1}
             onBlur={closeWhenUnFocus}
             ref={refRoot}
         >
-            <div
-                className='FoldList-Label'
+            <FoldListLabel
                 onFocus={(e) => e.stopPropagation()}
                 onClick={toggle}
             >
-                {label || <button>list</button>}
-            </div>
-            <ParentFold.Provider value={fold}>
-                {(open || debug) && <FoldListList
-                    preventScroll={preventScroll}
-                    children={children}
-                />}
+                {
+                    label || <button>list</button>
+                }
+            </FoldListLabel>
+            <ParentFold.Provider
+                value={fold}
+            >
+                {
+                    (open || debug) &&
+                    <FoldListList
+                        preventScroll={preventScroll}
+                        children={children}
+                    />
+                }
             </ParentFold.Provider>
-        </div>
+        </FoldListRoot>
     )
 }
 
-const FoldListList = (props) => {
+const FoldListLabel = withClass(
+    'FoldList-Label',
+    styled.div`
+        outline: none;
+    `,
+)
+
+const FoldListListRoot = withClass(
+    'FoldList-List',
+    styled.div`
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        outline: none;
+    `,
+)
+
+const FoldListList = props => {
     const {
         preventScroll,
-        children
+        ...otherProps
     } = props
 
     if (preventScroll) usePreventBodyScroll()
 
-    return <div
-        className='FoldList-List'
-    >
-        {children}
-    </div>
+    return <FoldListListRoot {...otherProps}/>
 }
+
+const FoldItemRoot = withClass(
+    'FoldItem-Root',
+    styled.div`
+        display: inline-block,
+    `,
+)
 
 class FoldItemComponent extends React.Component {
     constructor(props) {
@@ -115,12 +152,25 @@ class FoldItemComponent extends React.Component {
     }
 
     render() {
-        return <div
-            className={clsx('FoldItem-Root', this.props.className)}
-            onClick={() => this.shouldFold()}
-            children={this.props.children}
-        />
+        const {
+            className,
+            children,
+        } = this.props
+
+        return (
+            <FoldItemRoot
+                className={className}
+                onClick={() => this.shouldFold()}
+            >
+                {children}
+            </FoldItemRoot>
+        )
     }
 }
 
-export const FoldItem = React.forwardRef((props, ref) => <FoldItemComponent forwardRef={ref} {...props} />)
+const FoldItem = React.forwardRef((props, ref) => <FoldItemComponent forwardRef={ref} {...props}/>)
+
+export {
+    FoldList,
+    FoldItem,
+}

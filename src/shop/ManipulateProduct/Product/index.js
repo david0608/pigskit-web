@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import clsx from 'clsx'
 import { GoPlus } from "react-icons/go"
 import { createAbort } from '../../../utils/abort'
-import { FloatList, FloatItem } from '../../../components/utils/FloatList'
+import { FloatList, FloatItem } from '../../../components/FloatList'
 import ImageInput from '../../../components/ImageInput'
 import TextInput from '../../../components/TextInput'
 import CircButton from '../../../components/CircButton'
@@ -242,6 +242,7 @@ const NewCustomize = connect(
             setNameError('Name is required.')
             return
         }
+        setNameError('')
         product.createCustomize({
             name: refName.current.value,
             description: refDesc.current.value,

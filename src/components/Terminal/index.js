@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import clsx from 'clsx'
 import { GoPlus } from "react-icons/go"
 import { MdRefresh } from 'react-icons/md'
-import { FloatList } from '../utils/FloatList'
+import { FloatList } from '../FloatList'
 import Button from '../Button'
 import SearchField from '../SearchField'
 import '../../styles/text.less'

@@ -10,7 +10,7 @@ import TextInput from '../../components/TextInput'
 import RectButton from '../../components/RectButton'
 import { Loading } from '../../components/Loading'
 import Decorate from '../../components/Decorate'
-import { FloatItem } from '../../components/utils/FloatList'
+import { FloatItem } from '../../components/FloatList'
 import '../../styles/text.less'
 import './index.less'
 

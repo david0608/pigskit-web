@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { Button as MuiButton } from '@material-ui/core'
 import { connectDeviceInfoScrolled } from './store'
 import { withClass } from './utils'
-import { FloatList as UtilFloatList } from './utils/FloatList'
+import { FloatList as UtilFloatList } from './FloatList'
 
 const RootSpace = styled.div`
     height: 64px;
