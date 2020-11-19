@@ -5,9 +5,9 @@ import {
     deviceInfoReducer,
     userInfoReducer,
     UserInfoProvider,
-} from '../store'
-import MeasureScreen from '../MeasureScreen'
-import DropScreenProvider from '../DropScreen'
+} from './store'
+import MeasureScreen from './MeasureScreen'
+import DropScreenProvider from './DropScreen'
 
 const App = (props) => {
     const {
