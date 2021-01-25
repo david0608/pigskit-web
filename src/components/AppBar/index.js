@@ -1,38 +1,66 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 import clsx from 'clsx'
-import { TopBar } from '../utils/Decorate/TopBar'
-import Icon from '../utils/Icon'
+import TopBar from '../TopBar'
+import Icon from '../Icon'
 import SignInUp from './SignInUp'
 import User from './User'
-import './index.less'
+
+const AppBarRoot = styled(TopBar.Root)`
+    >.TopBar-content {
+        >.Logo {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+    
+            &.desktop {
+                margin-left: 30px;
+            }
+    
+            &.tablets, &.mobile {
+                position: absolute;
+                height: 100%;
+                left: 50%;
+                transform: translate(-50%, 0px);
+            }
+        }
+    
+        .Buttons {
+            margin-left: auto;
+        }
+    }
+`
 
 const AppBar = connect(
-    (state) => ({
-        deviceType: state.deviceInfo.type,
+    state => ({
         userSignedIn: state.userInfo.signedIn,
     })
-)((props) => {
+)(props => {
     const {
-        deviceType,
         userSignedIn,
     } = props
 
     return (
-        <TopBar className='AppBar-root'>
-            <Logo deviceType={deviceType}/>
+        <AppBarRoot>
+            <Logo />
             <div className='Buttons'>
                 {
                     userSignedIn ?
-                    <User deviceType={deviceType}/> :
-                    <SignInUp deviceType={deviceType}/>
+                    <User /> :
+                    <SignInUp />
                 }
             </div>
-        </TopBar>
+        </AppBarRoot>
     )
 })
 
-const Logo = (props) => {
+const Logo = connect(
+    state => ({
+        deviceType: state.deviceInfo.type,
+    })
+)(props => {
     const {
         deviceType,
     } = props
@@ -40,11 +68,11 @@ const Logo = (props) => {
     return (
         <div
             className={clsx('Logo', deviceType)}
-            onClick={() => location.href = `${location.origin}/`}
+            onClick={() => location.href = `${location.origin}/#/`}
         >
-            <Icon/>
+            <Icon />
         </div>
     )
-}
+})
 
 export default AppBar

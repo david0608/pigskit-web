@@ -3,8 +3,8 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-// Specify the module name, or uses `root` as default.
-const NAME = process.env.MODULE || 'root'
+// Specify the module name, or uses `main` as default.
+const NAME = process.env.MODULE || 'main'
 const MODULE_PATH = path.join(__dirname, `src/${NAME}`)
 // Specify Pigskit RESTful server origin if `REST_SERVER_PORT` provided.
 const PIGSKIT_RESTFUL_ORIGIN = process.env.REST_SERVER_PORT ? `http://localhost:${process.env.REST_SERVER_PORT}` : ''
