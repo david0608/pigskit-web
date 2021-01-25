@@ -3,9 +3,9 @@ const TerserPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-const NAME = process.env.MODULE || 'root'
+const NAME = process.env.MODULE || 'main'
 const MODULE_PATH = path.join(__dirname, `src/${NAME}`)
-const PUBLIC_PATH = path.join(__dirname, `dist/public/${NAME === 'root' ? '' : NAME}`)
+const PUBLIC_PATH = path.join(__dirname, `dist/public/${NAME === 'main' ? '' : NAME}`)
 
 module.exports = {
     mode: 'production',

@@ -9,13 +9,9 @@
     "start": "LOCAL=true node dist/server.js",
     "restart": "npm run build && npm run start",
     "build-server": "webpack --config webpack.config.server.js",
-    "build-root": "npm run webpack-prod",
-    "build-home": "MODULE=home npm run webpack-prod",
-    "build-shop": "MODULE=shop npm run webpack-prod",
+    "build-main": "npm run webpack-prod",
     "build-menu": "MODULE=menu npm run webpack-prod",
-    "dev-root": "npm run webpack-dev",
-    "dev-home": "MODULE=home npm run webpack-dev",
-    "dev-shop": "MODULE=shop npm run webpack-dev",
+    "dev-main": "npm run webpack-dev",
     "dev-menu": "MODULE=menu npm run webpack-dev",
     "dev-test": "MODULE=test npm run webpack-dev",
     "dev-test-api": "MODULE=test-api npm run webpack-dev",
@@ -43,7 +39,8 @@
     "react-measure": "^2.3.0",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "styled-components": "^5.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
