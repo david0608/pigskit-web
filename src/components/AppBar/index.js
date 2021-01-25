@@ -1,10 +1,7 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import clsx from 'clsx'
-import {
-    connectDeviceInfoType,
-    connectUserInfoSignedIn,
-} from '../store'
 import TopBar from '../TopBar'
 import Icon from '../Icon'
 import SignInUp from './SignInUp'
@@ -36,7 +33,11 @@ const AppBarRoot = styled(TopBar.Root)`
     }
 `
 
-const AppBar = connectUserInfoSignedIn(props => {
+const AppBar = connect(
+    state => ({
+        userSignedIn: state.userInfo.signedIn,
+    })
+)(props => {
     const {
         userSignedIn,
     } = props
@@ -55,7 +56,11 @@ const AppBar = connectUserInfoSignedIn(props => {
     )
 })
 
-const Logo = connectDeviceInfoType(props => {
+const Logo = connect(
+    state => ({
+        deviceType: state.deviceInfo.type,
+    })
+)(props => {
     const {
         deviceType,
     } = props
@@ -63,7 +68,7 @@ const Logo = connectDeviceInfoType(props => {
     return (
         <div
             className={clsx('Logo', deviceType)}
-            onClick={() => location.href = `${location.origin}/`}
+            onClick={() => location.href = `${location.origin}/#/`}
         >
             <Icon />
         </div>

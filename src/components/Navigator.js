@@ -4,7 +4,6 @@ import clsx from 'clsx'
 import { NavLink } from 'react-router-dom'
 import { withClass } from './utils'
 import Decorate from './Decorate'
-import '../styles/text.less'
 
 const styles = `
     &.Horizontal {

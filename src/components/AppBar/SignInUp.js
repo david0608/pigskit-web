@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import clsx from 'clsx'
 import { BsFillPersonFill } from 'react-icons/bs'
-import { connectDeviceInfoType } from '../store'
+import { actions as userInfoActions } from '../../store/user_info'
 import axios from '../../utils/axios'
 import { useAbort, createAbort } from '../../utils/abort'
 import { useDropScreen } from '../DropScreen'
@@ -10,9 +11,12 @@ import TopBar from '../TopBar'
 import RectButton from '../RectButton'
 import TextInput from '../TextInput'
 import { LoadingRing } from '../Loading'
-import '../../styles/text.less'
 
-const SignInUp = connectDeviceInfoType(props => {
+const SignInUp = connect(
+    state => ({
+        deviceType: state.deviceInfo.type,
+    })
+)(props => {
     const {
         deviceType,
     } = props
@@ -96,9 +100,17 @@ const SignInUpRoot = styled.div`
     }
 `
 
-const SignInPage = connectDeviceInfoType(props => {
+const SignInPage = connect(
+    state => ({
+        deviceType: state.deviceInfo.type,
+    }),
+    dispatch => ({
+        signIn: () => dispatch(userInfoActions.refetch())
+    })
+)(props => {
     const {
         deviceType,
+        signIn,
     } = props
 
     const refDropScreen = useDropScreen()
@@ -137,7 +149,8 @@ const SignInPage = connectDeviceInfoType(props => {
             cancelToken: abortTk.axiosCancelTk()
         })
         .then((res) => {
-            location.href = `${location.origin}/home`
+            signIn()
+            location.href = `${location.origin}#/home`
         })
         .catch((err) => {
             if (abort.isAborted) return
@@ -471,7 +484,11 @@ const SIGNUP_STEPS = [
     new PasswordStep({}),
 ]
 
-const SignUpPage = connectDeviceInfoType(props => {
+const SignUpPage = connect(
+    state => ({
+        deviceType: state.deviceInfo.type,
+    })
+)(props => {
     const {
         deviceType,
     } = props

@@ -1,8 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import clsx from 'clsx'
 import { Button as MuiButton } from '@material-ui/core'
-import { connectDeviceInfoScrolled } from './store'
 import { withClass } from './utils'
 import { FloatList as UtilFloatList } from './FloatList'
 
@@ -32,15 +32,19 @@ const RootSpace = styled.div`
 
 const RootBody = withClass('TopBar-body', RootSpace)
 
-const Root = connectDeviceInfoScrolled(props => {
+const Root = connect(
+    state => ({
+        scrolled: state.deviceInfo.scrolled,
+    })
+)(props => {
     const {
         className,
-        deviceScrolled,
+        scrolled,
         children,
     } = props
 
     return (<>
-        <RootBody className={clsx(className, deviceScrolled && 'Scrolled')}>
+        <RootBody className={clsx(className, scrolled && 'Scrolled')}>
             <div className='TopBar-content'>
                 {children}
             </div>

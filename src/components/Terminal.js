@@ -1,14 +1,13 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import clsx from 'clsx'
 import { GoPlus } from "react-icons/go"
 import { MdRefresh } from 'react-icons/md'
-import { connectDeviceInfoType } from './store'
 import { withClass } from './utils'
 import { FloatList } from './FloatList'
 import Button from './Button'
 import SearchField from './SearchField'
-import '../styles/text.less'
 
 const TerminalRoot = withClass(
     'Terminal-root',
@@ -123,48 +122,50 @@ const Terminal = props => {
 
 export default Terminal
 
-const Control = connectDeviceInfoType(
-    props => {
-        const {
-            deviceType,
-            newProps,
-            searchProps,
-            refreshProps,
-        } = props
+const Control = connect(
+    state => ({
+        deviceType: state.deviceInfo.type,
+    })
+)(props => {
+    const {
+        deviceType,
+        newProps,
+        searchProps,
+        refreshProps,
+    } = props
 
-        return (
-            <div className={clsx('Control', deviceType)}>
+    return (
+        <div className={clsx('Control', deviceType)}>
+            {
+                searchProps &&
+                <SearchField
+                    className='Search'
+                    defaultValue={searchProps.defaultValue}
+                    onCommit={searchProps.onCommit}
+                />
+            }
+            <div className='Right'>
                 {
-                    searchProps &&
-                    <SearchField
-                        className='Search'
-                        defaultValue={searchProps.defaultValue}
-                        onCommit={searchProps.onCommit}
+                    newProps &&
+                    <ControlItem
+                        className='New'
+                        deviceType={deviceType}
+                        url={newProps.url}
+                        Component={newProps.Component}
+                    >
+                        <GoPlus/>&nbsp;New
+                    </ControlItem>
+                }
+                {
+                    refreshProps &&
+                    <ControlRefresh
+                        onClick={refreshProps.onClick}
                     />
                 }
-                <div className='Right'>
-                    {
-                        newProps &&
-                        <ControlItem
-                            className='New'
-                            deviceType={deviceType}
-                            url={newProps.url}
-                            Component={newProps.Component}
-                        >
-                            <GoPlus/>&nbsp;New
-                        </ControlItem>
-                    }
-                    {
-                        refreshProps &&
-                        <ControlRefresh
-                            onClick={refreshProps.onClick}
-                        />
-                    }
-                </div>
             </div>
-        )
-    }
-)
+        </div>
+    )
+})
 
 const ControlItem = props => {
     const {

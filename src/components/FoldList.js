@@ -126,6 +126,12 @@ const FoldItemRoot = withClass(
     `,
 )
 
+const FoldItemContext = React.createContext()
+
+function useFoldItem() {
+    return useContext(FoldItemContext)
+}
+
 class FoldItemComponent extends React.Component {
     constructor(props) {
         super(props)
@@ -162,7 +168,9 @@ class FoldItemComponent extends React.Component {
                 className={className}
                 onClick={() => this.shouldFold()}
             >
-                {children}
+                <FoldItemContext.Provider value={this}>
+                    {children}
+                </FoldItemContext.Provider>
             </FoldItemRoot>
         )
     }
@@ -173,4 +181,5 @@ const FoldItem = React.forwardRef((props, ref) => <FoldItemComponent forwardRef=
 export {
     FoldList,
     FoldItem,
+    useFoldItem,
 }

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react'
 import Measure from 'react-measure'
 import { connect } from 'react-redux'
-import { deviceInfoActions } from './store'
+import { actions as deviceInfoActions } from '../store/device_info'
 
 const mapStateToProps = (state) => ({
     deviceType: state.deviceInfo.type,

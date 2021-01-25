@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
-import { FiLogOut } from "react-icons/fi"
-import {
-    connectDeviceInfoType,
-    connectUserInfoUsernameNickname,
-} from '../store'
+import { FiLogOut } from 'react-icons/fi'
+import { actions as userInfoActions } from '../../store/user_info'
+import { actions as userShopsActions } from '../../store/user_shops'
 import axios from '../../utils/axios'
+import { useAbort } from '../../utils/abort'
 import TopBar from '../TopBar'
 import { FloatItem } from '../FloatList'
 import RectButton from '../RectButton'
@@ -44,42 +44,44 @@ const UserRoot = styled(TopBar.FloatList)`
     }
 `
 
-const User = connectDeviceInfoType(
-    connectUserInfoUsernameNickname(
-        props => {
-            const {
-                deviceType,
-                username,
-                nickname,
-            } = props
+const User = connect(
+    state => ({
+        deviceType: state.deviceInfo.type,
+        username: state.userInfo.username,
+        nickname: state.userInfo.nickname,
+    })
+)(props => {
+    const {
+        deviceType,
+        username,
+        nickname,
+    } = props
 
-            return (
-                <UserRoot
-                    label={
-                        <TopBar.Button
-                            deviceType={deviceType}
-                        >
-                            <img src={`${pigskit_restful_origin()}/api/user/profile/avatar?default=true`}/>
-                        </TopBar.Button>
-                    }
-                    rightAligned
+    return (
+        <UserRoot
+            label={
+                <TopBar.Button
+                    deviceType={deviceType}
                 >
-                    <p>Hello,&nbsp;<strong>{nickname || username}</strong></p>
-                    <Devider.Light/>
-                    <FloatItem>
-                        <LinkButton url={`${location.origin}/home#/`}>Your shops</LinkButton>
-                    </FloatItem>
-                    <FloatItem>
-                        <LinkButton url={`${location.origin}/home#/profile`}>Your profile</LinkButton>
-                    </FloatItem>
-                    <FloatItem>
-                        <SignOutButton/>
-                    </FloatItem>
-                </UserRoot>
-            )
-        }
+                    <img src={`${pigskit_restful_origin()}/api/user/profile/avatar?default=true`}/>
+                </TopBar.Button>
+            }
+            rightAligned
+        >
+            <p>Hello,&nbsp;<strong>{nickname || username}</strong></p>
+            <Devider.Light/>
+            <FloatItem>
+                <LinkButton url={`${location.origin}/#/home`}>Your shops</LinkButton>
+            </FloatItem>
+            <FloatItem>
+                <LinkButton url={`${location.origin}/#/home/profile`}>Your profile</LinkButton>
+            </FloatItem>
+            <FloatItem manualFold>
+                <SignOutButton/>
+            </FloatItem>
+        </UserRoot>
     )
-)
+})
 
 const LinkButton = props => {
     const {
@@ -96,23 +98,42 @@ const LinkButton = props => {
     )
 }
 
-const SignOutButton = () => {
+const SignOutButton = connect(
+    state => ({}),
+    dispatch => ({
+        signOut: () => {
+            dispatch(userInfoActions.refetch())
+            dispatch(userShopsActions.reset())
+        }
+    })
+)(props => {
+    const {
+        signOut,
+    } = props
+
     const [busy, setBusy] = useState(false)
+    const abort = useAbort()
 
     const handleClick = () => {
-        if (!busy) {
-            setBusy(true)
-            axios({
-                method: 'DELETE',
-                url: '/api/user/session',
-            })
-            .then((res) => {
-                if (res.status === 200) {
-                    location.href = `${location.origin}/`
-                }
-            })
-            .finally(() => setBusy(false))
-        }
+        if (busy) return
+        setBusy(true)
+
+        const abortTk = abort.signup()
+        axios({
+            method: 'DELETE',
+            url: '/api/user/session',
+            cancelToken: abortTk.axiosCancelTk(),
+        })
+        .then(res => {
+            signOut()
+            location.href = `${location.origin}/#/`
+        })
+        .finally(() => {
+            if (!abortTk.isAborted()) {
+                abort.signout(abortTk)
+                setBusy(false)
+            }
+        })
     }
 
     return (
@@ -123,6 +144,6 @@ const SignOutButton = () => {
             <FiLogOut/>&nbsp;Sign out
         </RectButton>
     )
-}
+})
 
 export default User

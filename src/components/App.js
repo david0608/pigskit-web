@@ -1,11 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {
-    StoreProvider,
-    deviceInfoReducer,
-    userInfoReducer,
-    UserInfoProvider,
-} from './store'
+import { StoreProvider } from '../store'
+import { reducer as deviceInfoReducer } from '../store/device_info'
+import { reducer as userInfoReducer, Provider as UserInfoProvider } from '../store/user_info'
 import MeasureScreen from './MeasureScreen'
 import DropScreenProvider from './DropScreen'
 

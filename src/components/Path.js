@@ -1,8 +1,7 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import { withClass } from './utils'
-import { connectUserInfoUsernameNickname } from './store'
-import '../styles/text.less'
 
 const PathRoot = withClass(
     'Path-root',
@@ -13,38 +12,41 @@ const PathRoot = withClass(
     `,
 )
 
-const Path = connectUserInfoUsernameNickname(
-    props => {
-        const {
-            username,
-            nickname,
-            className,
-            path = [],
-        } = props
+const Path = connect(
+    state => ({
+        username: state.userInfo.username,
+        nickname: state.userInfo.nickname,
+    })
+)(props => {
+    const {
+        username,
+        nickname,
+        className,
+        path = [],
+    } = props
 
-        return (
-            <PathRoot
-                className={className}
-            >
-                {
-                    path.length === 0 ?
-                    <span>{nickname || username}</span> :
-                    <Link
-                        name={nickname || username}
-                        endPoint='home'
-                    />
-                }
-                {
-                    path.map((e, i) => (
-                        <React.Fragment key={i}>
-                            &nbsp;/&nbsp;<Link {...e}/>
-                        </React.Fragment>
-                    ))
-                }
-            </PathRoot>
-        )
-    }
-)
+    return (
+        <PathRoot
+            className={className}
+        >
+            {
+                path.length === 0 ?
+                <span>{nickname || username}</span> :
+                <Link
+                    name={nickname || username}
+                    endPoint='home'
+                />
+            }
+            {
+                path.map((e, i) => (
+                    <React.Fragment key={i}>
+                        &nbsp;/&nbsp;<Link {...e}/>
+                    </React.Fragment>
+                ))
+            }
+        </PathRoot>
+    )
+})
 
 const Link = (props) => {
     const {
@@ -56,7 +58,7 @@ const Link = (props) => {
         return (
             <span
                 className='Text_link'
-                onClick={() => location.href = `${location.origin}/${endPoint}`}
+                onClick={() => location.href = `${location.origin}#/${endPoint}`}
             >
                 {name}
             </span>
